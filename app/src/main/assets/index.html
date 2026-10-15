@@ -52,13 +52,18 @@ button,input,select,textarea{font:inherit;color:inherit}
 main{padding-block:0 calc(170px + env(safe-area-inset-bottom,0px))}
 .stack{display:grid;gap:16px;padding-block:16px}
 h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-height:1.2;text-wrap:balance}
+h2.hi{display:flex;align-items:center;gap:10px}
+.lt{display:inline-flex;align-items:center;gap:7px;color:var(--fg);font-weight:600;font-size:15px}
+.btn .mi{width:20px;height:20px}
+.x .mi{width:20px;height:20px}
+.msw .m{display:inline-flex;align-items:center;gap:8px}
 .muted{color:var(--muted)} .small{font-size:14px}
 .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .money{font-family:var(--f-display);font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
 
 /* ছবি-আইকন */
 .ic{width:48px;height:48px;flex:none;display:block}
-.ic.s{width:30px;height:30px} .ic.m{width:40px;height:40px} .ic.l{width:56px;height:56px}
+.ic.xs{width:22px;height:22px} .ic.s{width:30px;height:30px} .ic.m{width:40px;height:40px} .ic.l{width:56px;height:56px}
 .mi{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
 /* ===== উপরের নীল অংশ ===== */
@@ -78,11 +83,13 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .brk span{font-size:12.5px;color:var(--band-muted)}
 .brk b{font-family:var(--f-display);font-size:17px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;line-height:1.2}
 .brk em{display:block;font-style:normal;font-size:11.5px;font-weight:600;color:var(--band-muted)}
-.pigrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pigrow div{display:flex;align-items:center;gap:8px;background:var(--band-tile);border-radius:14px;padding:8px 10px;min-width:0}
+.pigrow{display:grid;grid-template-columns:1fr;gap:8px}
+.pigrow button{width:100%;border:0;cursor:pointer;color:inherit;text-align:left;font:inherit;display:flex;align-items:center;gap:8px;background:var(--band-tile);border-radius:14px;padding:8px 10px;min-width:0}
 .pigrow .ic{width:32px;height:32px}
 .pigrow span{display:grid;font-size:12.5px;color:var(--band-muted);line-height:1.25;min-width:0}
-.pigrow b{color:var(--band-fg);font-family:var(--f-display);font-size:19px;overflow-wrap:anywhere}
+.pigrow b{color:var(--band-fg);font-family:var(--f-display);font-size:21px;overflow-wrap:anywhere}
+.pigrow .go{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--band-fg);background:var(--band-line);border-radius:999px;padding:3px 10px}
+.pigrow .go svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.6}
 
 .demo{background:var(--warn-bg);color:var(--warn);font-size:14px}
 .demo .wrap{padding-block:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -105,6 +112,7 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 /* প্রগ্রেস বার: কতটা পেয়েছে */
 .bar{height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
 .bar i{display:block;height:100%;border-radius:999px;background:var(--c)}
+.barlbl span{display:inline-flex;align-items:center;gap:4px}
 .barlbl{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--muted);margin-top:-6px;flex-wrap:wrap}
 .barlbl b{color:var(--fg);font-family:var(--f-display);font-size:16px}
 .facts{display:flex;flex-wrap:wrap;gap:6px}
@@ -226,9 +234,10 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .item .main .s{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
 .amt{font-family:var(--f-display);font-weight:700;font-size:19px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .amt.in{color:var(--good)} .amt.out{color:var(--bad)}
-.x{width:38px;height:38px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:22px;line-height:1}
+.x{width:40px;height:40px;border-radius:12px;border:0;background:var(--surface-2);color:var(--muted);cursor:pointer;font-size:22px;line-height:1;display:grid;place-items:center;flex:none}
+.x.del{color:var(--bad);background:var(--bad-bg)}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.three div{background:var(--surface-2);border-radius:12px;padding:8px 10px;display:grid;min-width:0}
+.three div{background:var(--surface-2);border-radius:12px;padding:8px 10px;display:grid;min-width:0;justify-items:start;gap:1px}
 .three span{font-size:12.5px;color:var(--muted)} .three b{font-family:var(--f-display);font-size:18px;overflow-wrap:anywhere}
 
 /* ===== ফর্ম ===== */
@@ -252,10 +261,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 
 /* ===== নিচের মেনু ===== */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);z-index:5;box-shadow:0 -4px 16px rgba(23,32,58,.06)}
-nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
-.tab{border:0;background:transparent;padding:6px 2px 8px;display:grid;justify-items:center;gap:1px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
-.tab .pill{width:52px;height:34px;border-radius:12px;display:grid;place-items:center}
-.tab .ic{width:28px;height:28px}
+nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tab{border:0;background:transparent;padding:6px 2px 8px;display:grid;justify-items:center;gap:1px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.tab .pill{width:60px;height:38px;border-radius:12px;display:grid;place-items:center}
+.tab .ic{width:31px;height:31px}
 .tab[aria-current="page"]{color:var(--accent);font-weight:700}
 .tab[aria-current="page"] .pill{background:var(--accent-soft)}
 
@@ -383,6 +392,10 @@ const IC={
   cal:`<rect x="6" y="9" width="36" height="33" rx="6" fill="#eef2fb" stroke="#c7d0e6" stroke-width="1.5"/><path d="M6 15a6 6 0 0 1 6-6h24a6 6 0 0 1 6 6v5H6z" fill="#e0534a"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#7a2620"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#7a2620"/><g fill="#9aa5c4"><rect x="11" y="25" width="6" height="5" rx="1.5"/><rect x="21" y="25" width="6" height="5" rx="1.5"/><rect x="11" y="33" width="6" height="5" rx="1.5"/><rect x="21" y="33" width="6" height="5" rx="1.5"/></g><rect x="31" y="25" width="6" height="5" rx="1.5" fill="#ef7d17"/><rect x="31" y="33" width="6" height="5" rx="1.5" fill="#1c9862"/>`,
   gear:`<g fill="#7d88a6" transform="translate(24 24)">${[0,45,90,135,180,225,270,315].map(a=>`<rect x="-3.5" y="-20" width="7" height="9" rx="2" transform="rotate(${a})"/>`).join('')}<circle r="14"/></g><circle cx="24" cy="24" r="6" fill="#eef2fb"/>`,
   lock:`<rect x="10" y="21" width="28" height="21" rx="4" fill="#2546b0"/><path d="M16 21v-5a8 8 0 0 1 16 0v5" stroke="#2546b0" stroke-width="4.5" fill="none"/><circle cx="24" cy="30" r="3" fill="#fff"/><rect x="22.5" y="31" width="3" height="6" rx="1.5" fill="#fff"/>`,
+  sun:`<circle cx="24" cy="24" r="9.5" fill="#ffc83d"/><path d="M24 5v5M24 38v5M5 24h5M38 24h5M10.6 10.6l3.5 3.5M33.9 33.9l3.5 3.5M10.6 37.4l3.5-3.5M33.9 14.1l3.5-3.5" stroke="#f0a400" stroke-width="3.5" stroke-linecap="round"/>`,
+  question:`<circle cx="24" cy="24" r="20" fill="#e3a019"/><text x="24" y="33" text-anchor="middle" font-size="26" font-weight="800" fill="#fff" font-family="sans-serif">?</text>`,
+  info:`<circle cx="24" cy="24" r="20" fill="#2f78d6"/><rect x="21.5" y="21" width="5" height="14" rx="2.5" fill="#fff"/><circle cx="24" cy="14.5" r="3.2" fill="#fff"/>`,
+  note:`<rect x="9" y="5" width="30" height="38" rx="4" fill="#eef2fb" stroke="#9aa5c4" stroke-width="2"/><path d="M15 15h18M15 22h18M15 29h12" stroke="#5f7fd8" stroke-width="3" stroke-linecap="round"/>`,
   purse:`<rect x="7" y="9" width="28" height="12" rx="2" fill="#36b47a" transform="rotate(-8 21 15)"/><rect x="4" y="15" width="38" height="27" rx="6" fill="#a8652f"/><rect x="4" y="15" width="38" height="6" rx="3" fill="#874e22"/><rect x="28" y="24" width="16" height="11" rx="4" fill="#874e22"/><circle cx="34" cy="29.5" r="2.8" fill="#f6cc55"/>`,
   bag:`<path d="M9 17h30l-2.6 24a3 3 0 0 1-3 2.7H14.6a3 3 0 0 1-3-2.7z" fill="#ef7d17"/><path d="M17 21v-7a7 7 0 0 1 14 0v7" stroke="#a24704" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="17" cy="22" r="2" fill="#a24704"/><circle cx="31" cy="22" r="2" fill="#a24704"/>`,
   backup:`<path d="M13 36a9 9 0 0 1-1-18 12 12 0 0 1 23 2 8 8 0 0 1 1 16z" fill="#9db6f4"/><path d="M24 39V24M18 29l6-6 6 6" stroke="#2546b0" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
@@ -394,8 +407,14 @@ const ico=(k,cls='',extra='')=>`<svg class="ic ${cls}" viewBox="0 0 48 48" aria-
 // ছোট একরঙা আইকন (ক্যালেন্ডারের ঘরে)
 const MI={tick:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',cross:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   umb:'<path d="M3.5 12a8.5 8.5 0 0 1 17 0z"/><path d="M12 12v6.5a2 2 0 0 1-4 0"/>',lock:'<rect x="6" y="11" width="12" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>',
+  trash:'<path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/><path d="M10 11v5.5M14 11v5.5"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  arrow:'<path d="M9 6l6 6-6 6"/>',
   mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/>',
   sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'};
+const lab=(icon,text)=>`<span class="lt">${ico(icon,'xs')}${text}</span>`;
+const h2i=(icon,text)=>`<h2 class="hi">${ico(icon,'s')}${text}</h2>`;
 const mi=k=>`<svg class="mi" viewBox="0 0 24 24" aria-hidden="true">${MI[k]}</svg>`;
 
 /* ================= হিসাবের মূল লজিক ================= */
@@ -476,12 +495,11 @@ function totals(){
     }
   }
   r.due=r.sal+r.allow+r.ot;   // ঋণাত্মক হলে কোম্পানি অগ্রিম দিয়েছে
-  r.wallet=S.wallet.reduce((t,w)=>t+(w.dir==='in'?w.amount:-w.amount),0);
   const ev=cashEvents(); r.cash=ev.length?ev[ev.length-1].bal:0;
   return r;
 }
 
-// হাতের টাকা: যা পেয়েছেন (বেতন, ওভারটাইম, চাইলে হাতখরচ) − জমা খাতায় রাখা + জমা থেকে তোলা − খরচ
+// হাতের টাকা: যা পেয়েছেন (বেতন, ওভারটাইম, চাইলে হাতখরচ) + অন্য আয় − খরচ
 function cashEvents(){
   const ev=[], st=startDay();
   S.salary.forEach(x=>ev.push({date:x.date,amt:x.amount,t:`${fmtMonth(x.month)} মাসের বেতন`,ic:'salary'}));
@@ -493,7 +511,6 @@ function cashEvents(){
     if(S.cashAllow&&c.allowGot>0){const m=mkOf(ds);const g=allowByM[m]||(allowByM[m]={amt:0,n:0,date:ds});g.amt+=c.allowGot;g.n++;if(ds>g.date)g.date=ds}
   }
   for(const m in allowByM){const g=allowByM[m];ev.push({date:g.date,amt:g.amt,t:`${mName(m)} মাসের হাতখরচ (${bn(g.n)} দিন)`,ic:'coins'})}
-  S.wallet.forEach(w=>ev.push({date:w.date,amt:w.dir==='in'?-w.amount:w.amount,t:w.dir==='in'?'জমা খাতায় রাখলাম':'জমা খাতা থেকে তুললাম',ic:'piggy',arrow:w.dir,note:w.note}));
   (S.cash||[]).forEach(x=>ev.push({date:x.date,amt:x.dir==='in'?x.amount:-x.amount,t:x.dir==='in'?'অন্য আয়':'খরচ করলাম',ic:x.dir==='in'?'coins':'bag',note:x.note,id:x.id}));
   ev.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
   let bal=0; ev.forEach(e=>{bal+=e.amt;e.bal=bal});
@@ -501,15 +518,15 @@ function cashEvents(){
 }
 
 /* ================= UI অবস্থা ================= */
-const ui={tab:'home',month:mkOf(today()),ledger:'wallet',unlocked:false,other:{}};
+const ui={tab:'home',month:mkOf(today()),ledger:'cash',unlocked:false,other:{}};
 const CH={l:'<path d="M15 6l-6 6 6 6"/>',r:'<path d="M9 6l6 6-6 6"/>'};
 const svgLine=p=>`<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
-const TABS=[['home','হোম','home'],['cal','ক্যালেন্ডার','cal'],['ledger','খাতা','piggy'],['leave','ছুটি','leave'],['settings','সেটিংস','gear']];
+const TABS=[['home','হোম','home'],['cal','ক্যালেন্ডার','cal'],['ledger','টাকা','purse'],['settings','সেটিংস','gear']];
 
 function render(){
   renderTop();
   document.getElementById('tabs').innerHTML=TABS.map(([k,l,ic])=>`<button class="tab" data-act="tab" data-v="${k}" ${ui.tab===k?'aria-current="page"':''}><span class="pill">${ico(ic)}</span>${l}</button>`).join('');
-  document.getElementById('page').innerHTML=({home:pageHome,cal:pageCal,ledger:pageLedger,leave:pageLeave,settings:pageSettings})[ui.tab]();
+  document.getElementById('page').innerHTML=({home:pageHome,cal:pageCal,ledger:pageLedger,settings:pageSettings})[ui.tab]();
   if(modalFn) document.getElementById('modalBody').innerHTML=modalFn();
 }
 
@@ -523,7 +540,7 @@ const dueSay=(name,v)=>v<0?`${name}ে ${sayTk(v)} অগ্রিম পেয�
 function renderTop(){
   const t=totals();
   const say=(t.due>=0?`কোম্পানির কাছে মোট পাবেন ${sayTk(t.due)}। `:`কোম্পানি থেকে মোট ${sayTk(t.due)} অগ্রিম পেয়েছেন। `)+
-    dueList(t)+`। হাতে আছে ${sayTk(t.cash)}। জমা খাতায় আছে ${sayTk(t.wallet)}।`;
+    dueList(t)+`। হাতে আছে ${sayTk(t.cash)}।`;
   document.getElementById('top').innerHTML=`
   <div class="band"><div class="wrap">
     <div class="brand"><h1>আমার হিসাব</h1><span class="today">${fmtDate(today(),true)}</span></div>
@@ -539,14 +556,13 @@ function renderTop(){
       <div>${ico('ot')}<span>ওভারটাইম</span><b>${t.otMoved&&!t.ot?'<em>বেতনে যোগ</em>':''}${dueTxt(t.ot)}</b></div>
     </div>
     <div class="pigrow">
-      <div>${ico('purse')}<span>হাতে আছে<b>${t.cash<0?'−':''}${tk(Math.abs(t.cash))}</b></span></div>
-      <div>${ico('piggy')}<span>জমা খাতায়<b>${tk(t.wallet)}</b></span></div>
+      <button data-act="tab" data-v="ledger">${ico('purse')}<span>হাতে আছে<b>${t.cash<0?'−':''}${tk(Math.abs(t.cash))}</b></span><span class="go">হিসাব দেখুন<svg viewBox="0 0 24 24" aria-hidden="true">${MI.arrow}</svg></span></button>
     </div>
   </div></div>
   ${S.demo?`<div class="demo"><div class="wrap"><span>নমুনা হিসাব দেখানো হচ্ছে</span><button class="btn sm" data-act="clearDemo">নমুনা মুছুন</button></div></div>`:''}`;
 }
 
-const monthSwitch=()=>`<div class="msw"><button class="icon-btn" data-act="mPrev" aria-label="আগের মাস">${svgLine(CH.l)}</button><span class="m">${fmtMonth(ui.month)}</span><button class="icon-btn" data-act="mNext" aria-label="পরের মাস">${svgLine(CH.r)}</button></div>`;
+const monthSwitch=()=>`<div class="msw"><button class="icon-btn" data-act="mPrev" aria-label="আগের মাস">${svgLine(CH.l)}</button><span class="m">${ico('cal','s')}${fmtMonth(ui.month)}</span><button class="icon-btn" data-act="mNext" aria-label="পরের মাস">${svgLine(CH.r)}</button></div>`;
 
 // কার্ডের মাথা: ছবি, নাম, বড় করে বাকি
 function cardHead(icon,title,sub,exp,got,moved){
@@ -555,7 +571,7 @@ function cardHead(icon,title,sub,exp,got,moved){
     ${moved&&d>0?`<div class="due moved"><span>বাকি, বেতনে যোগ</span><b>${tk(d)}</b></div>`
       :`<div class="due ${d<=0?'ok':''}"><span>${d<0?'বেশি পেয়েছি':d===0?'বাকি নেই':'বাকি'}</span><b>${tk(Math.abs(d))}</b></div>`}</div>
     <div class="bar" role="img" aria-label="${bn(exp?Math.round(Math.min(got,exp)/exp*100):0)}% পেয়েছেন"><i style="width:${exp?Math.min(100,got/exp*100):(got?100:0)}%"></i></div>
-    <div class="barlbl"><span>পেয়েছি <b>${tk(got)}</b></span><span>মোট পাওনা <b>${tk(exp)}</b></span></div>`;
+    <div class="barlbl"><span>${mi('tick')} পেয়েছি <b>${tk(got)}</b></span><span>মোট পাওনা <b>${tk(exp)}</b></span></div>`;
 }
 
 /* ---------- দিনের এন্ট্রি (হোম ও ক্যালেন্ডার দুই জায়গাতেই) ---------- */
@@ -563,9 +579,18 @@ function dayEditor(ds){
   const c=dayCalc(ds), s=c.s, r=c.r, W=ds===today()?'আজ':'এই দিন';
   if(!s) return `<p class="muted">আগে সেটিংসে বেতনের নিয়ম সেট করুন।</p>`;
   if(ds<startDay()) return `<p class="muted">এই দিন হিসাব শুরুর আগের।</p>`;
-  if(c.kind==='leave') return `<div class="state lv">${ico('leave','l')}<div><b>ছুটির দিন</b><span>${PAY[c.lv.pay]} ছুটি${c.lv.reason?' · '+esc(c.lv.reason):''}</span></div></div>
-    <p class="small muted">ছুটির দিনে হাতখরচ আর ওভারটাইম হিসাব হয় না।</p>
-    <button class="btn" data-act="tab" data-v="leave">${ico('leave','s')} ছুটির তালিকা দেখুন</button>`;
+  if(c.kind==='leave'){
+    const p=c.lv.pay, multi=c.lv.from!==c.lv.to;
+    return `<div class="state lv">${ico('leave','l')}<div><b>ছুটির দিন</b><span>${multi?fmtDate(c.lv.from)+' – '+fmtDate(c.lv.to):'এক দিনের ছুটি'}${c.lv.reason?' · '+esc(c.lv.reason):''}</span></div></div>
+    <div class="q">${ico('salary','s')} এই ছুটিতে বেতন কাটবে?</div>
+    <div class="choices">
+      <button class="choice good ${p==='paid'?'on':''}" data-act="leaveDayPay" data-d="${ds}" data-p="paid">${ico('got')}<b>কাটবে না</b><small>বেতনসহ ছুটি</small></button>
+      <button class="choice bad ${p==='unpaid'?'on':''}" data-act="leaveDayPay" data-d="${ds}" data-p="unpaid">${ico('notgot')}<b>কাটবে</b><small>বিনা বেতনে</small></button>
+      <button class="choice info ${p==='pending'?'on':''}" data-act="leaveDayPay" data-d="${ds}" data-p="pending">${ico('question')}<b>জানি না</b><small>পরে ঠিক করব</small></button>
+    </div>
+    <p class="small muted" style="margin:0">${mi('umb')} ছুটির দিনে হাতখরচ আর ওভারটাইম হিসাব হয় না।</p>
+    <button class="btn" data-act="unLeave" data-d="${ds}">${ico('sun','s')} ছুটি না, কাজ করেছি</button>`;
+  }
   if(c.kind==='off') return `<div class="state off">${ico('closed','l')}<div><b>অফিস বন্ধ ছিল</b><span>হাতখরচ নেই, বেতনও কাটা হবে না</span></div></div>
     <button class="btn" data-act="unOff" data-d="${ds}">ভুল হয়েছে, অফিস খোলা ছিল</button>`;
   let h='';
@@ -621,7 +646,7 @@ function pageHome(){
   </section></div>`;
   const t=today(), x=monthSum(ui.month), isOt=t>=startDay()&&dayCalc(t).isOtDay&&!leaveOn(t);
   let h=`<div class="wrap stack">`;
-  if(t>=startDay()) h+=`<section class="card today-card ${isOt?'isot':''}"><h2>আজ · ${fmtDate(t,true)}</h2>${dayEditor(t)}</section>`;
+  if(t>=startDay()) h+=`<section class="card today-card ${isOt?'isot':''}">${h2i('sun','আজ · '+fmtDate(t,true))}${dayEditor(t)}</section>`;
   h+=monthSwitch()+`<p class="say-hint">${mi('sound')} যেকোনো কার্ডে ২ সেকেন্ড চেপে ধরলে হিসাবটা শুনতে পাবেন</p>`;
   const mN=mName(ui.month);
   // বেতন
@@ -700,8 +725,8 @@ function pageCal(){
     <div class="sum ot">${ico('ot')}<div><b>${bn(x.o.days.length)}</b><span>দিন ওভারটাইম</span></div></div>
     <div class="sum lv">${ico('leave')}<div><b>${bn(lvN)}</b><span>দিন ছুটি</span></div></div></div>`:''}
   <section class="card"><div class="cal">${cells}</div>
-  <p class="small muted" style="margin:0">যেকোনো দিনে চাপ দিয়ে সেদিনের হিসাব লিখুন বা বদলান।</p></section>
-  <section class="card"><h2>রঙের মানে</h2><div class="legend">
+  <p class="say-hint" style="margin:0">${mi('tick')} যেকোনো দিনে চাপ দিয়ে সেদিনের হিসাব লিখুন বা বদলান</p></section>
+  <section class="card">${h2i('info','কোন রঙের কী মানে')}<div class="legend">
     <div><i style="background:var(--good-bg);color:var(--good)">${mi('tick')}</i>হাতখরচ পেয়েছি</div>
     <div><i style="background:var(--bad-bg);color:var(--bad)">${mi('cross')}</i>হাতখরচ পাইনি</div>
     <div><i style="background:var(--warn-bg);border:1.5px solid var(--warn);color:var(--warn);font-size:9px;font-weight:700">৳৫০</i>কম পেয়েছি (কত টাকা লেখা)</div>
@@ -715,48 +740,37 @@ function pageCal(){
   </div></section></div>`;
 }
 
-/* ---------- খাতা ---------- */
+/* ---------- টাকা: হাতের টাকা + বেতন প্রাপ্তি ---------- */
 function pageLedger(){
-  const w=ui.ledger==='wallet';
-  let h=`<div class="wrap stack"><div class="seg icons" role="tablist">
-    <button data-act="ledgerTab" data-v="cash" class="${ui.ledger==='cash'?'on-info':''}">${ico('purse')}হাতের টাকা</button>
-    <button data-act="ledgerTab" data-v="wallet" class="${w?'on-info':''}">${ico('piggy')}জমা খাতা</button>
-    <button data-act="ledgerTab" data-v="salary" class="${ui.ledger==='salary'?'on-info':''}">${ico('salary')}বেতন প্রাপ্তি</button></div>`;
-  if(ui.ledger==='cash'){
+  const cash=ui.ledger!=='salary';
+  let h=`<div class="wrap stack"><div class="seg two icons" role="tablist">
+    <button data-act="ledgerTab" data-v="cash" class="${cash?'on-info':''}">${ico('purse')}হাতের টাকা</button>
+    <button data-act="ledgerTab" data-v="salary" class="${!cash?'on-info':''}">${ico('salary')}বেতন প্রাপ্তি</button></div>`;
+  if(cash){
     const ev=cashEvents(), bal=ev.length?ev[ev.length-1].bal:0;
     const tin=ev.filter(e=>e.amt>0).reduce((s,e)=>s+e.amt,0), tout=ev.filter(e=>e.amt<0).reduce((s,e)=>s-e.amt,0);
-    h+=`<section class="card cat cash"${sayAttr(`হাতে আছে ${bal<0?'মাইনাস ':''}${sayTk(bal)}। মোট এসেছে ${sayTk(tin)}। খরচ আর জমায় গেছে ${sayTk(tout)}।`)}>
-    <div class="ch"><span class="tile">${ico('purse','l')}</span><div class="tt"><h2>হাতের টাকা</h2><span>বেতন থেকে নিজে নিজে হিসাব হয়</span></div><div class="due ${bal>=0?'ok':''}"><span>এখন আছে</span><b>${bal<0?'−':''}${tk(Math.abs(bal))}</b></div></div>
-    <div class="sumline">পাওয়া টাকা <b>${tk(tin)}</b> − জমায় রাখা ও খরচ <b>${tk(tout)}</b> = <b>${bal<0?'−':''}${tk(Math.abs(bal))}</b></div>
-    <label class="check"><input type="checkbox" id="cashAllow" ${S.cashAllow?'checked':''}> দৈনিক হাতখরচও এখানে আয় হিসেবে ধরুন</label>
+    h+=`<section class="card cat cash"${sayAttr(`হাতে আছে ${bal<0?'মাইনাস ':''}${sayTk(bal)}। মোট এসেছে ${sayTk(tin)}। খরচ হয়েছে ${sayTk(tout)}।`)}>
+    <div class="ch"><span class="tile">${ico('purse','l')}</span><div class="tt"><h2>হাতের টাকা</h2><span>বেতন পেলে নিজে থেকেই যোগ হয়</span></div><div class="due ${bal>=0?'ok':''}"><span>এখন আছে</span><b>${bal<0?'−':''}${tk(Math.abs(bal))}</b></div></div>
+    <div class="three"><div>${ico('coins','xs')}<span>মোট এসেছে</span><b style="color:var(--good)">${tk(tin)}</b></div><div>${ico('bag','xs')}<span>মোট খরচ</span><b style="color:var(--bad)">${tk(tout)}</b></div><div>${ico('purse','xs')}<span>হাতে আছে</span><b>${bal<0?'−':''}${tk(Math.abs(bal))}</b></div></div>
     <div class="btns"><button class="btn bigbtn out" data-act="addCash" data-v="out">${ico('bag')}খরচ করলাম</button><button class="btn bigbtn in" data-act="addCash" data-v="in">${ico('coins')}অন্য আয়</button></div>
-    <p class="small muted" style="margin:0">জমা খাতায় টাকা রাখলে এখান থেকে কমে, জমা থেকে তুললে এখানে বাড়ে।</p></section>
-    <section class="card"><h2>টাকার আসা-যাওয়া</h2><div class="list">${ev.length?ev.slice().reverse().map(e=>`<div class="item">${ico(e.ic,'m',e.arrow?ARROW[e.arrow]:'')}<div class="main"><span class="t">${e.t}</span><span class="s">${fmtDate(e.date)}${e.note?' · '+esc(e.note):''} ${e.id?'':'<span class="tag">অটো</span>'}</span></div><span class="amtcol"><span class="amt ${e.amt>0?'in':'out'}">${e.amt>0?'+':'−'}${tk(Math.abs(e.amt))}</span><span class="bal">থাকে ${e.bal<0?'−':''}${tk(Math.abs(e.bal))}</span></span>${e.id?`<button class="x" data-act="delCash" data-v="${e.id}" aria-label="মুছুন">×</button>`:''}</div>`).join(''):`<div class="empty">${ico('purse','m')}বেতন বা ওভারটাইমের টাকা পেলে এখানে নিজে থেকেই যোগ হবে</div>`}</div></section>`;
-  } else if(w){
-    const t=totals();
-    const list=[...S.wallet].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
-    const tin=S.wallet.filter(x=>x.dir==='in').reduce((s,x)=>s+x.amount,0), tout=S.wallet.filter(x=>x.dir==='out').reduce((s,x)=>s+x.amount,0);
-    h+=`<section class="card cat pig"${sayAttr(`জমা খাতা। মোট রেখেছেন ${sayTk(tin)}। মোট তুলেছেন ${sayTk(tout)}। এখন আছে ${sayTk(t.wallet)}।`)}>
-    <div class="ch"><span class="tile">${ico('piggy','l')}</span><div class="tt"><h2>জমা খাতা</h2><span>যত টাকা রেখেছেন আর তুলেছেন</span></div><div class="due ok"><span>এখন আছে</span><b>${tk(t.wallet)}</b></div></div>
-    <div class="three"><div><span>মোট রেখেছি</span><b style="color:var(--good)">${tk(tin)}</b></div><div><span>মোট তুলেছি</span><b style="color:var(--bad)">${tk(tout)}</b></div><div><span>এখন আছে</span><b>${tk(t.wallet)}</b></div></div>
-    <div class="btns"><button class="btn bigbtn in" data-act="addWallet" data-v="in">${ico('piggy','',ARROW.in)}টাকা রাখলাম</button><button class="btn bigbtn out" data-act="addWallet" data-v="out">${ico('piggy','',ARROW.out)}টাকা তুললাম</button></div></section>
-    <section class="card"><h2>লেনদেনের তালিকা</h2><div class="list">${list.length?list.map(x=>`<div class="item">${ico('piggy','m',ARROW[x.dir])}<div class="main"><span class="t">${x.dir==='in'?'রেখেছি':'তুলেছি'} · ${fmtDate(x.date)}</span>${x.note?`<span class="s">${esc(x.note)}</span>`:''}</div><span class="amt ${x.dir}">${x.dir==='in'?'+':'−'}${tk(x.amount)}</span><button class="x" data-act="delWallet" data-v="${x.id}" aria-label="মুছুন">×</button></div>`).join(''):`<div class="empty">${ico('piggy','m')}এখনো কোনো লেনদেন নেই। উপরের বাটন চেপে প্রথম এন্ট্রি দিন।</div>`}</div></section>`;
+    <label class="check"><input type="checkbox" id="cashAllow" ${S.cashAllow?'checked':''}> ${lab('coins','দৈনিক হাতখরচও আয় হিসেবে ধরুন')}</label></section>
+    <section class="card">${h2i('note','টাকার আসা-যাওয়া')}<div class="list">${ev.length?ev.slice().reverse().map(e=>`<div class="item">${ico(e.ic,'m')}<div class="main"><span class="t">${e.t}</span><span class="s">${fmtDate(e.date)}${e.note?' · '+esc(e.note):''} ${e.id?'':'<span class="tag">নিজে থেকে</span>'}</span></div><span class="amtcol"><span class="amt ${e.amt>0?'in':'out'}">${e.amt>0?'+':'−'}${tk(Math.abs(e.amt))}</span><span class="bal">থাকে ${e.bal<0?'−':''}${tk(Math.abs(e.bal))}</span></span>${e.id?`<button class="x del" data-act="delCash" data-v="${e.id}" aria-label="মুছুন">${mi('trash')}</button>`:''}</div>`).join(''):`<div class="empty">${ico('purse','m')}বেতন বা ওভারটাইমের টাকা পেলে এখানে নিজে থেকেই যোগ হবে</div>`}</div></section>`;
   } else {
     const list=[...S.salary].sort((a,b)=>a.date<b.date?1:-1);
     h+=`<button class="btn primary block" data-act="addSalary">${ico('salary','s')} বেতন পেয়েছি, যোগ করুন</button>
-    <section class="card"><h2>কবে কত বেতন পেয়েছি</h2><div class="list">${list.length?list.map(x=>`<div class="item">${ico('salary','m')}<div class="main"><span class="t">${fmtMonth(x.month)} মাসের বেতন</span><span class="s">পেয়েছি ${fmtDate(x.date)}${x.note?' · '+esc(x.note):''}</span></div><span class="amt in">${tk(x.amount)}</span><button class="x" data-act="delSalary" data-v="${x.id}" aria-label="মুছুন">×</button></div>`).join(''):`<div class="empty">${ico('salary','m')}এখনো কোনো বেতন যোগ করা হয়নি</div>`}</div></section>`;
+    <section class="card">${h2i('salary','কবে কত বেতন পেয়েছি')}<div class="list">${list.length?list.map(x=>`<div class="item">${ico('salary','m')}<div class="main"><span class="t">${fmtMonth(x.month)} মাসের বেতন</span><span class="s">পেয়েছি ${fmtDate(x.date)}${x.note?' · '+esc(x.note):''}</span></div><span class="amt in">${tk(x.amount)}</span><button class="x del" data-act="delSalary" data-v="${x.id}" aria-label="মুছুন">${mi('trash')}</button></div>`).join(''):`<div class="empty">${ico('salary','m')}এখনো কোনো বেতন যোগ করা হয়নি</div>`}</div></section>`;
   }
   return h+`</div>`;
 }
 
-/* ---------- ছুটি ---------- */
-function pageLeave(){
+/* ---------- কয়েক দিনের ছুটি (সেটিংসের ভেতরে) ---------- */
+function leaveSection(){
   const list=[...S.leaves].sort((a,b)=>a.from<b.from?1:-1);
   const days=l=>Math.round((parseD(l.to)-parseD(l.from))/864e5)+1;
-  return `<div class="wrap stack"><button class="btn primary block" data-act="addLeave">${ico('leave','s')} ছুটি যোগ করুন</button>
-  <section class="card"><h2>ছুটির তালিকা</h2><p class="small muted" style="margin:0">বেতন কাটবে কিনা পরে জানলে নিচ থেকে বদলে দিন।</p>
-  <div class="list">${list.length?list.map(l=>`<div class="item" style="flex-wrap:wrap">${ico('leave','m')}<div class="main"><span class="t">${l.from===l.to?fmtDate(l.from,true):fmtDate(l.from)+' – '+fmtDate(l.to)}</span><span class="s">${bn(days(l))} দিন${l.reason?' · '+esc(l.reason):''}</span></div><span class="chip ${PAYC[l.pay]}">${PAY[l.pay]}</span><button class="x" data-act="delLeave" data-v="${l.id}" aria-label="মুছুন">×</button>
-    <div class="seg" style="width:100%">${['pending','paid','unpaid'].map(p=>`<button data-act="leavePay" data-v="${l.id}" data-p="${p}" class="${l.pay===p?'on-info':''}">${PAY[p]}</button>`).join('')}</div></div>`).join(''):`<div class="empty">${ico('leave','m')}কোনো ছুটি নেই</div>`}</div></section></div>`;
+  return `<section class="card"><div class="ch"><span class="tile" style="--cb:var(--lv-bg)">${ico('leave','m')}</span><div class="tt"><h2>ছুটির তালিকা</h2><span>এক দিনের ছুটি ক্যালেন্ডার থেকেও দেওয়া যায়</span></div></div>
+  <button class="btn primary block" data-act="addLeave">${mi('plus')} কয়েক দিনের ছুটি যোগ করুন</button>
+  <div class="list">${list.length?list.map(l=>`<div class="item" style="flex-wrap:wrap">${ico('leave','m')}<div class="main"><span class="t">${l.from===l.to?fmtDate(l.from,true):fmtDate(l.from)+' – '+fmtDate(l.to)}</span><span class="s">${bn(days(l))} দিন${l.reason?' · '+esc(l.reason):''}</span></div><span class="chip ${PAYC[l.pay]}">${PAY[l.pay]}</span><button class="x del" data-act="delLeave" data-v="${l.id}" aria-label="মুছুন">${mi('trash')}</button>
+    <div class="seg" style="width:100%">${['pending','paid','unpaid'].map(p=>`<button data-act="leavePay" data-v="${l.id}" data-p="${p}" class="${l.pay===p?'on-info':''}">${PAY[p]}</button>`).join('')}</div></div>`).join(''):`<div class="empty">${ico('leave','m')}কোনো ছুটি নেই</div>`}</div></section>`;
 }
 
 /* ---------- সেটিংস (PIN লক) ---------- */
@@ -764,60 +778,62 @@ function pageSettings(){
   if(!ui.unlocked) return `<div class="wrap stack"><section class="card">
     <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('lock','l')}</span><div class="tt"><h2>সেটিংস খুলতে পিন দিন</h2><span>শুধু হিসাব যিনি সেট করেন তার জন্য</span></div></div>
     <form data-form="pin" style="display:grid;gap:10px"><input type="password" inputmode="numeric" id="pinIn" autocomplete="off" placeholder="পিন" aria-label="পিন">
-    <button class="btn primary">খুলুন</button></form>${S.pin==='1234'?'<p class="small muted" style="margin:0">প্রথমবার পিন ১২৩৪। খোলার পর পিন বদলে নিন।</p>':''}</section></div>`;
+    <button class="btn primary">${ico('lock','s')} খুলুন</button></form>${S.pin==='1234'?'<p class="small muted" style="margin:0">প্রথমবার পিন ১২৩৪। খোলার পর পিন বদলে নিন।</p>':''}</section></div>`;
   const last=[...S.settings].sort((a,b)=>a.from<b.from?1:-1)[0]||{salary:'',allowance:100,otDays:[5],allowOnOt:true,otType:'fixed',otRate:'',basis:'30',carryAllow:true,carryOt:false};
   const cur=mkOf(today());
   const box='style="display:grid;gap:12px"';
   return `<div class="wrap stack">
   <section class="card"><div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('cal','m')}</span><div class="tt"><h2>হিসাব শুরু</h2></div></div>
-    <label class="f">কোন মাস থেকে হিসাব হবে<input type="month" id="startM" value="${S.startMonth||cur}"></label>
-    <button class="btn primary" data-act="saveStart">সেভ করুন</button></section>
+    <label class="f">${lab('cal','কোন মাস থেকে হিসাব হবে')}<input type="month" id="startM" value="${S.startMonth||cur}"></label>
+    <button class="btn primary" data-act="saveStart">${mi('check')} সেভ করুন</button></section>
 
   <form class="card" data-form="rules" ${box}>
     <div class="ch"><span class="tile" style="--cb:var(--sal-bg)">${ico('salary','m')}</span><div class="tt"><h2>বেতনের নিয়ম</h2></div></div>
     <p class="small muted" style="margin:0">বেতন বাড়লে নতুন মাস দিয়ে আবার সেভ করুন। আগের মাসগুলো পুরনো নিয়মেই থাকবে।</p>
-    <label class="f">কোন মাস থেকে এই নিয়ম চালু<input type="month" id="rFrom" value="${S.settings.length?cur:(S.startMonth||cur)}" required></label>
-    <div class="grid2"><label class="f">মাসিক বেতন (৳)<input type="number" inputmode="numeric" min="0" id="rSal" value="${last.salary}" required></label>
-    <label class="f">দৈনিক হাতখরচ (৳)<input type="number" inputmode="numeric" min="0" id="rAllow" value="${last.allowance}" required></label></div>
-    <div style="display:grid;gap:6px"><span class="small muted" style="font-weight:500">ওভারটাইমের দিন (সাধারণত সাপ্তাহিক ছুটির দিন)</span>
+    <label class="f">${lab('cal','কোন মাস থেকে এই নিয়ম চালু')}<input type="month" id="rFrom" value="${S.settings.length?cur:(S.startMonth||cur)}" required></label>
+    <div class="grid2"><label class="f">${lab('salary','মাসিক বেতন')}<input type="number" inputmode="numeric" min="0" id="rSal" value="${last.salary}" required></label>
+    <label class="f">${lab('coins','দৈনিক হাতখরচ')}<input type="number" inputmode="numeric" min="0" id="rAllow" value="${last.allowance}" required></label></div>
+    <div style="display:grid;gap:6px">${lab('ot','ওভারটাইমের দিন (সাধারণত সাপ্তাহিক ছুটির দিন)')}
       <div class="daypick">${[6,0,1,2,3,4,5].map(d=>`<label><input type="checkbox" name="otd" value="${d}" ${last.otDays.includes(d)?'checked':''}><span>${WD[d]}</span></label>`).join('')}</div></div>
     <label class="check"><input type="checkbox" id="rAllowOt" ${last.allowOnOt!==false?'checked':''}> ওভারটাইমের দিনেও হাতখরচ পাবে</label>
     <label class="check"><input type="checkbox" id="rCarryA" ${last.carryAllow!==false?'checked':''}> না পাওয়া হাতখরচ মাসের বেতনের সাথে যোগ হবে</label>
     <label class="check"><input type="checkbox" id="rCarryO" ${last.carryOt?'checked':''}> না পাওয়া ওভারটাইমের টাকাও বেতনের সাথে যোগ হবে</label>
-    <div class="radio"><span class="small muted">ওভারটাইমের টাকা কীভাবে হিসাব হবে</span>
+    <div class="radio">${lab('ot','ওভারটাইমের টাকা কীভাবে হিসাব হবে')}
       <label><input type="radio" name="otType" value="fixed" ${last.otType!=='hour'?'checked':''}> প্রতিদিন নির্দিষ্ট টাকা</label>
       <label><input type="radio" name="otType" value="hour" ${last.otType==='hour'?'checked':''}> প্রতি ঘণ্টা হিসাবে</label></div>
-    <label class="f">ওভারটাইম রেট (দিনপ্রতি বা ঘণ্টাপ্রতি ৳)<input type="number" inputmode="numeric" min="0" id="rRate" value="${last.otRate}" required></label>
-    <label class="f">বিনা বেতনে ছুটিতে এক দিনের বেতন কীভাবে কাটবে
+    <label class="f">${lab('salary','ওভারটাইম রেট (দিনপ্রতি বা ঘণ্টাপ্রতি ৳)')}<input type="number" inputmode="numeric" min="0" id="rRate" value="${last.otRate}" required></label>
+    <label class="f">${lab('leave','বিনা বেতনে ছুটিতে এক দিনের বেতন কীভাবে কাটবে')}
       <select id="rBasis"><option value="30" ${last.basis==='30'?'selected':''}>বেতন ÷ ৩০</option><option value="cal" ${last.basis==='cal'?'selected':''}>বেতন ÷ ঐ মাসের দিন</option><option value="work" ${last.basis==='work'?'selected':''}>বেতন ÷ কর্মদিবস (ওভারটাইমের দিন বাদে)</option></select></label>
-    <button class="btn primary">নিয়ম সেভ করুন</button>
+    <button class="btn primary">${mi('check')} নিয়ম সেভ করুন</button>
   </form>
 
-  ${S.settings.length?`<section class="card"><h2>নিয়মের ইতিহাস</h2><div class="list">${[...S.settings].sort((a,b)=>a.from<b.from?1:-1).map(r=>`<div class="item"><div class="main"><span class="t">${fmtMonth(r.from)} থেকে</span><span class="s">বেতন ${tk(r.salary)} · হাতখরচ ${tk(r.allowance)} · ওভারটাইম ${tk(r.otRate)}${r.otType==='hour'?'/ঘণ্টা':'/দিন'} · ${r.otDays.map(d=>WD[d]).join(', ')||'কোনো দিন না'}</span></div>${S.settings.length>1?`<button class="x" data-act="delRule" data-v="${r.from}" aria-label="মুছুন">×</button>`:''}</div>`).join('')}</div></section>`:''}
+  ${leaveSection()}
+
+  ${S.settings.length?`<section class="card">${h2i('note','নিয়মের ইতিহাস')}<div class="list">${[...S.settings].sort((a,b)=>a.from<b.from?1:-1).map(r=>`<div class="item"><div class="main"><span class="t">${fmtMonth(r.from)} থেকে</span><span class="s">বেতন ${tk(r.salary)} · হাতখরচ ${tk(r.allowance)} · ওভারটাইম ${tk(r.otRate)}${r.otType==='hour'?'/ঘণ্টা':'/দিন'} · ${r.otDays.map(d=>WD[d]).join(', ')||'কোনো দিন না'}</span></div>${S.settings.length>1?`<button class="x del" data-act="delRule" data-v="${r.from}" aria-label="মুছুন">${mi('trash')}</button>`:''}</div>`).join('')}</div></section>`:''}
 
   <form class="card" data-form="loginpin" ${box}>
     <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('lock','m')}</span><div class="tt"><h2>অ্যাপ খোলার পিন</h2><span>অ্যাপ খুলতে এই ৪ সংখ্যার পিন লাগে</span></div></div>
     <input type="password" inputmode="numeric" maxlength="4" id="lp1" placeholder="নতুন ৪ সংখ্যার পিন" aria-label="নতুন অ্যাপ পিন" autocomplete="off">
-    <input type="password" inputmode="numeric" maxlength="4" id="lp2" placeholder="আবার একই পিন" aria-label="আবার অ্যাপ পিন" autocomplete="off"><button class="btn">অ্যাপের পিন বদলান</button></form>
+    <input type="password" inputmode="numeric" maxlength="4" id="lp2" placeholder="আবার একই পিন" aria-label="আবার অ্যাপ পিন" autocomplete="off"><button class="btn">${mi('check')} অ্যাপের পিন বদলান</button></form>
 
   <form class="card" data-form="newpin" ${box}>
     <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('gear','m')}</span><div class="tt"><h2>সেটিংসের পিন বদলান</h2><span>শুধু আপনার জন্য, অ্যাপের পিন থেকে আলাদা</span></div></div>
     <input type="password" inputmode="numeric" id="np1" placeholder="নতুন পিন (কমপক্ষে ৪ সংখ্যা)" aria-label="নতুন পিন" autocomplete="off">
-    <input type="password" inputmode="numeric" id="np2" placeholder="আবার নতুন পিন" aria-label="আবার নতুন পিন" autocomplete="off"><button class="btn">পিন বদলান</button></form>
+    <input type="password" inputmode="numeric" id="np2" placeholder="আবার নতুন পিন" aria-label="আবার নতুন পিন" autocomplete="off"><button class="btn">${mi('check')} পিন বদলান</button></form>
 
   <section class="card"><div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('backup','m')}</span><div class="tt"><h2>ব্যাকআপ</h2></div></div>
     <p class="small muted" style="margin:0">ফোন বদলালে বা নষ্ট হলে হিসাব হারাবেন না। মাসে একবার ব্যাকআপ নিয়ে WhatsApp বা Drive-এ রেখে দিন।</p>
-    <div class="btns"><button class="btn" data-act="exportB">ব্যাকআপ নিন</button><button class="btn" data-act="importB">ব্যাকআপ ফেরত আনুন</button></div></section>
+    <div class="btns"><button class="btn" data-act="exportB">${ico('backup','s')} ব্যাকআপ নিন</button><button class="btn" data-act="importB">${ico('note','s')} ফেরত আনুন</button></div></section>
 
-  <section class="card"><h2>অন্যান্য</h2><div class="btns"><button class="btn" data-act="lock">সেটিংস লক করুন</button><button class="btn danger" data-act="wipe">সব হিসাব মুছুন</button></div></section>
+  <section class="card">${h2i('gear','অন্যান্য')}<div class="btns"><button class="btn" data-act="lock">${ico('lock','s')} সেটিংস বন্ধ করুন</button><button class="btn danger" data-act="wipe">${mi('trash')} সব হিসাব মুছুন</button></div></section>
   </div>`;
 }
 
 /* ================= মডাল ও টোস্ট ================= */
 let modalFn=null;
-function openModal(title,fn){modalFn=fn;document.getElementById('modal').innerHTML=`<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}"><header><h2>${esc(title)}</h2><button class="x" data-act="close" aria-label="বন্ধ করুন">×</button></header><div id="modalBody" style="display:grid;gap:14px"></div></div></div>`;document.getElementById('modalBody').innerHTML=fn()}
+function openModal(title,fn,icon){modalFn=fn;document.getElementById('modal').innerHTML=`<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}"><header>${icon?h2i(icon,esc(title)):`<h2>${esc(title)}</h2>`}<button class="x" data-act="close" aria-label="বন্ধ করুন">×</button></header><div id="modalBody" style="display:grid;gap:14px"></div></div></div>`;document.getElementById('modalBody').innerHTML=fn()}
 function closeModal(){modalFn=null;document.getElementById('modal').innerHTML=''}
-function askConfirm(msg,ok,fn){openModal('নিশ্চিত?',()=>`<p style="margin:0">${esc(msg)}</p><div class="btns"><button class="btn" data-act="close">না</button><button class="btn danger" data-act="confirmOk">${esc(ok)}</button></div>`);pendingOk=fn}
+function askConfirm(msg,ok,fn){openModal('নিশ্চিত?',()=>`<p style="margin:0">${esc(msg)}</p><div class="btns"><button class="btn" data-act="close">${mi('cross')} না</button><button class="btn danger" data-act="confirmOk">${mi('trash')} ${esc(ok)}</button></div>`,'question');pendingOk=fn}
 let pendingOk=null, toastT;
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2400)}
 
@@ -829,6 +845,15 @@ function commit(msg){save();render();if(msg)toast(msg)}
 function addLeaveRec(from,to,pay,reason){
   for(let d=parseD(from);ymd(d)<=to;d.setDate(d.getDate()+1)) delete S.days[ymd(d)];
   S.leaves.push({id:uid(),from,to,pay,reason});
+}
+// লম্বা ছুটি থেকে শুধু একটা দিন বাদ দেওয়া (দরকার হলে ছুটিটা দুই ভাগ হয়)
+function removeLeaveDay(ds){
+  const l=leaveOn(ds);if(!l)return;
+  const prev=ymd(new Date(parseD(ds).getTime()-864e5)), next=ymd(new Date(parseD(ds).getTime()+864e5));
+  if(l.from===l.to) S.leaves=S.leaves.filter(x=>x!==l);
+  else if(ds===l.from) l.from=next;
+  else if(ds===l.to) l.to=prev;
+  else { S.leaves.push({...l,id:uid(),from:next}); l.to=prev; }
 }
 const salDue=m=>{const x=monthSum(m);return x.sal?x.sal.exp-x.sal.got:0};
 
@@ -844,7 +869,7 @@ document.addEventListener('click',e=>{
     case 'mNext': ui.month=addMonth(ui.month,1);render();break;
     case 'scrim': case 'close': closeModal();break;
     case 'confirmOk': {const f=pendingOk;pendingOk=null;closeModal();f&&f();break}
-    case 'openDay': if(!S.settings.length){toast('আগে সেটিংসে বেতনের নিয়ম দিন');break} openModal(fmtDate(ds,true),()=>dayEditor(ds));break;
+    case 'openDay': if(!S.settings.length){toast('আগে সেটিংসে বেতনের নিয়ম দিন');break} openModal(fmtDate(ds,true),()=>dayEditor(ds),'cal');break;
     // একই বাটন আবার চাপলে উত্তর মুছে যায়
     case 'aFull': {const r=day(ds);delete ui.other['a'+ds];r.allow=r.allow===s.allowance?null:s.allowance;tidy(ds);commit();break}
     case 'aNone': {const r=day(ds);delete ui.other['a'+ds];r.allow=r.allow===0?null:0;tidy(ds);commit();break}
@@ -854,15 +879,17 @@ document.addEventListener('click',e=>{
     case 'oFull': {const r=day(ds),c=dayCalc(ds);delete ui.other['o'+ds];r.otGot=r.otGot===c.otExp?null:c.otExp;commit();break}
     case 'oNone': {const r=day(ds);delete ui.other['o'+ds];r.otGot=r.otGot===0?null:0;commit();break}
     case 'oOther': ui.other['o'+ds]=true;render();break;
-    case 'dayLeave': addLeaveRec(ds,ds,'pending','');closeModal();commit('ছুটি যোগ হলো। বেতন কাটবে কিনা পরে ছুটি পাতায় ঠিক করুন');break;
+    case 'dayLeave': addLeaveRec(ds,ds,'pending','');commit('ছুটি যোগ হলো। বেতন কাটবে কিনা বেছে দিন');break;
+    case 'leaveDayPay': {const l=leaveOn(ds);if(l){l.pay=el.dataset.p;commit('ঠিক করা হয়েছে')}break}
+    case 'unLeave': removeLeaveDay(ds);commit('ছুটি সরানো হয়েছে');break;
     case 'dayOff': {const r=day(ds);r.off=true;delete r.allow;delete r.ot;delete r.otGot;delete r.otHours;commit('অফিস বন্ধ হিসেবে রাখা হলো');break}
     case 'unOff': {const r=day(ds);delete r.off;tidy(ds);commit();break}
     case 'ledgerTab': ui.ledger=v;render();break;
     case 'addCash': openModal(v==='in'?'অন্য আয়':'খরচ করলাম',()=>`<form data-form="cash" data-v="${v}" style="display:grid;gap:12px">
-      <label class="f">কত টাকা<input type="number" inputmode="numeric" min="1" id="cAmt" required></label>
-      <label class="f">তারিখ<input type="date" id="cDate" value="${today()}" required></label>
-      <label class="f">কিসের জন্য (ইচ্ছা হলে)<input type="text" id="cNote" placeholder="${v==='in'?'যেমন: বোনাস':'যেমন: বাজার, বাড়িতে পাঠালাম'}"></label>
-      <button class="btn primary">সেভ করুন</button></form>`);setTimeout(()=>document.getElementById('cAmt')?.focus(),50);break;
+      <label class="f">${lab(v==='in'?'coins':'bag','কত টাকা')}<input type="number" inputmode="numeric" min="1" id="cAmt" required></label>
+      <label class="f">${lab('cal','তারিখ')}<input type="date" id="cDate" value="${today()}" required></label>
+      <label class="f">${lab('note','কিসের জন্য (ইচ্ছা হলে)')}<input type="text" id="cNote" placeholder="${v==='in'?'যেমন: বোনাস':'যেমন: বাজার, বাড়িতে পাঠালাম'}"></label>
+      <button class="btn primary">${mi('check')} সেভ করুন</button></form>`,v==='in'?'coins':'bag');setTimeout(()=>document.getElementById('cAmt')?.focus(),50);break;
     case 'delCash': askConfirm('এই এন্ট্রি মুছে ফেলবেন?','মুছুন',()=>{S.cash=S.cash.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
     case 'voice': openVoice();break;
     case 'listen': startListen();break;
@@ -870,29 +897,23 @@ document.addEventListener('click',e=>{
     case 'key': lockKey(v);break;
     case 'forgot': L.mode='admin';L.buf='';L.err='';renderLock();break;
     case 'backLogin': L.mode='login';L.buf='';L.err='';renderLock();break;
-    case 'addWallet': openModal(v==='in'?'টাকা রাখলাম':'টাকা তুললাম',()=>`<form data-form="wallet" data-v="${v}" style="display:grid;gap:12px">
-      <label class="f">কত টাকা<input type="number" inputmode="numeric" min="1" id="wAmt" required></label>
-      <label class="f">তারিখ<input type="date" id="wDate" value="${today()}" required></label>
-      <label class="f">নোট (ইচ্ছা হলে)<input type="text" id="wNote" placeholder="${v==='in'?'যেমন: বেতন থেকে রাখলাম':'যেমন: বাড়িতে পাঠালাম'}"></label>
-      <button class="btn primary">সেভ করুন</button></form>`);setTimeout(()=>document.getElementById('wAmt')?.focus(),50);break;
-    case 'delWallet': askConfirm('এই লেনদেন মুছে ফেলবেন?','মুছুন',()=>{S.wallet=S.wallet.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
     case 'addSalary': {
       if(!S.startMonth){toast('আগে সেটিংসে হিসাব শুরুর মাস দিন');break}
       const cur=mkOf(today());const months=[];for(let m=S.startMonth;m<=cur;m=addMonth(m,1))months.unshift(m);
       const def=ui.tab==='home'&&months.includes(ui.month)?ui.month:(months[1]||months[0]);
       openModal('বেতন পেয়েছি',()=>`<form data-form="salary" style="display:grid;gap:12px">
-        <label class="f">কোন মাসের বেতন<select id="sMonth" data-salmonth>${months.map(m=>`<option value="${m}" ${m===def?'selected':''}>${fmtMonth(m)} (বাকি ${tk(Math.max(0,salDue(m)))})</option>`).join('')}</select></label>
-        <label class="f">কত টাকা পেয়েছেন<input type="number" inputmode="numeric" min="1" id="sAmt" value="${Math.max(0,salDue(def))||''}" required></label>
+        <label class="f">${lab('cal','কোন মাসের বেতন')}<select id="sMonth" data-salmonth>${months.map(m=>`<option value="${m}" ${m===def?'selected':''}>${fmtMonth(m)} (বাকি ${tk(Math.max(0,salDue(m)))})</option>`).join('')}</select></label>
+        <label class="f">${lab('salary','কত টাকা পেয়েছেন')}<input type="number" inputmode="numeric" min="1" id="sAmt" value="${Math.max(0,salDue(def))||''}" required></label>
         <div id="sHint" class="hint" hidden></div>
-        <label class="f">কবে পেয়েছেন<input type="date" id="sDate" value="${today()}" required></label>
-        <label class="f">নোট (ইচ্ছা হলে)<input type="text" id="sNote"></label>
-        <button class="btn primary">সেভ করুন</button></form>`);break}
+        <label class="f">${lab('cal','কবে পেয়েছেন')}<input type="date" id="sDate" value="${today()}" required></label>
+        <label class="f">${lab('note','নোট (ইচ্ছা হলে)')}<input type="text" id="sNote"></label>
+        <button class="btn primary">${mi('check')} সেভ করুন</button></form>`,'salary');break}
     case 'delSalary': askConfirm('এই বেতনের এন্ট্রি মুছে ফেলবেন?','মুছুন',()=>{S.salary=S.salary.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
     case 'addLeave': openModal('ছুটি যোগ করুন',()=>`<form data-form="leave" style="display:grid;gap:12px">
-      <div class="grid2"><label class="f">কবে থেকে<input type="date" id="lFrom" value="${today()}" required></label><label class="f">কবে পর্যন্ত<input type="date" id="lTo" value="${today()}" required></label></div>
-      <div class="radio"><span class="small muted">বেতন কি কাটবে?</span>${['pending','paid','unpaid'].map((p,i)=>`<label><input type="radio" name="lPay" value="${p}" ${i===0?'checked':''}> ${p==='pending'?'এখনো জানি না':p==='paid'?'না, বেতনসহ ছুটি':'হ্যাঁ, বিনা বেতনে ছুটি'}</label>`).join('')}</div>
-      <label class="f">কারণ (ইচ্ছা হলে)<input type="text" id="lReason" placeholder="যেমন: অসুস্থ, বাড়ি গেছি"></label>
-      <button class="btn primary">সেভ করুন</button></form>`);break;
+      <div class="grid2"><label class="f">${lab('cal','কবে থেকে')}<input type="date" id="lFrom" value="${today()}" required></label><label class="f">${lab('cal','কবে পর্যন্ত')}<input type="date" id="lTo" value="${today()}" required></label></div>
+      <div class="radio">${lab('salary','বেতন কি কাটবে?')}${['pending','paid','unpaid'].map((p,i)=>`<label><input type="radio" name="lPay" value="${p}" ${i===0?'checked':''}> ${p==='pending'?'এখনো জানি না':p==='paid'?'না, বেতনসহ ছুটি':'হ্যাঁ, বিনা বেতনে ছুটি'}</label>`).join('')}</div>
+      <label class="f">${lab('note','কারণ (ইচ্ছা হলে)')}<input type="text" id="lReason" placeholder="যেমন: অসুস্থ, বাড়ি গেছি"></label>
+      <button class="btn primary">${mi('check')} সেভ করুন</button></form>`,'leave');break;
     case 'leavePay': {const l=S.leaves.find(x=>x.id===v);if(l){l.pay=el.dataset.p;commit('বদলানো হয়েছে')}break}
     case 'delLeave': askConfirm('এই ছুটি মুছে ফেলবেন?','মুছুন',()=>{S.leaves=S.leaves.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
     case 'saveStart': {const m=document.getElementById('startM').value;if(!m){toast('মাস বেছে নিন');break}S.startMonth=m;commit('হিসাব শুরুর মাস সেভ হয়েছে');break}
@@ -951,8 +972,6 @@ document.addEventListener('submit',e=>{
       S.settings=S.settings.filter(x=>x.from!==r.from);S.settings.push(r);
       if(!S.startMonth) S.startMonth=r.from;
       commit('বেতনের নিয়ম সেভ হয়েছে');break}
-    case 'wallet': {const amt=num(g('wAmt'));if(amt<=0){toast('টাকার পরিমাণ লিখুন');break}
-      S.wallet.push({id:uid(),dir:f.dataset.v,amount:amt,date:g('wDate')||today(),note:(g('wNote')||'').trim()});closeModal();commit('সেভ হয়েছে');break}
     case 'salary': {const amt=num(g('sAmt'));if(amt<=0){toast('টাকার পরিমাণ লিখুন');break}
       S.salary.push({id:uid(),month:g('sMonth'),amount:amt,date:g('sDate')||today(),note:(g('sNote')||'').trim()});closeModal();commit('বেতন যোগ হয়েছে');break}
     case 'leave': {const from=g('lFrom'),to=g('lTo');if(!from||!to||to<from){toast('তারিখ ঠিক করুন: শেষের তারিখ শুরুর পরে হবে');break}
@@ -1044,7 +1063,7 @@ document.addEventListener('keydown',e=>{if(!L.mode)return;if(/^[0-9]$/.test(e.ke
 
 /* ================= মুখে প্রশ্ন (ভয়েস) ================= */
 const V={state:'idle',heard:'',ans:''};
-const EX=['আমার কত টাকা বাকি?','এই মাসের বেতন কত বাকি?','হাতে কত টাকা আছে?','জমা খাতায় কত আছে?','এই মাসে ওভারটাইম কত দিন?','আজ হাতখরচ পেয়েছি কিনা?'];
+const EX=['আমার কত টাকা বাকি?','এই মাসের বেতন কত বাকি?','হাতে কত টাকা আছে?','এই মাসে হাতখরচ কত পেয়েছি?','এই মাসে ওভারটাইম কত দিন?','আজ হাতখরচ পেয়েছি কিনা?'];
 const MIC='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/></svg>';
 function voiceBody(){
   return `<div class="vbox"><button class="micbig ${V.state==='listening'?'on':''}" data-act="listen" aria-label="বলুন">${MIC}</button>
@@ -1055,7 +1074,7 @@ function voiceBody(){
     <div><span class="small muted">যেমন বলতে পারেন:</span><div class="examples">${EX.map(e=>`<button class="chip c-lv" data-act="ask" data-v="${e}">${e}</button>`).join('')}</div></div>`;
 }
 function refreshModal(){const b=document.getElementById('modalBody');if(b&&modalFn)b.innerHTML=modalFn()}
-function openVoice(){V.heard='';V.ans='';openModal('মুখে প্রশ্ন করুন',voiceBody);startListen()}
+function openVoice(){V.heard='';V.ans='';openModal('মুখে প্রশ্ন করুন',voiceBody,'info');startListen()}
 function startListen(){
   if(window.AndroidBridge&&AndroidBridge.listen){V.state='listening';refreshModal();AndroidBridge.listen();return}
   const R=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -1100,8 +1119,7 @@ function answer(raw){
     day(today()).allow=notGot?0:c.s.allowance; commit();
     return {text:notGot?'ঠিক আছে, লিখে রাখলাম আজ হাতখরচ পাননি।':`ঠিক আছে, লিখে রাখলাম আজ ${sayTk(c.s.allowance)} হাতখরচ পেয়েছেন।`};
   }
-  if(has('জমা','সঞ্চয়','সেভিং','ব্যাংক')) return {text:`জমা খাতায় এখন আছে ${sayTk(t.wallet)}।`};
-  if(has('হাতে','পকেটে','ক্যাশ','নগদ')) return {text:t.cash<0?`হাতের হিসাবে ${sayTk(t.cash)} কম আছে।`:`হাতে এখন আছে ${sayTk(t.cash)}।`};
+  if(has('হাতে','পকেটে','ক্যাশ','নগদ','জমা')) return {text:t.cash<0?`হাতের হিসাবে ${sayTk(t.cash)} কম আছে।`:`হাতে এখন আছে ${sayTk(t.cash)}।`};
   if(has('ছুটি')){const n=x.lv.paid+x.lv.unpaid+x.lv.pending;return {text:n?`${ml} ছুটি ${bn(n)} দিন। বেতনসহ ${bn(x.lv.paid)} দিন, বিনা বেতনে ${bn(x.lv.unpaid)} দিন, জানা নেই ${bn(x.lv.pending)} দিন।`:`${ml} কোনো ছুটি নেই।`}}
   if(has('ওভারটাইম','ওভার টাইম','ওটি','overtime')){
     const n=x.o.days.length, unpaid=x.o.days.filter(c=>!c.otGot).length;
@@ -1117,7 +1135,7 @@ function answer(raw){
     return {text:`${mN} মাসের বেতন। `+(x.sal.carryA>0?`বেতন ${sayTk(x.sal.base)}, সাথে না পাওয়া হাতখরচ ${sayTk(x.sal.carryA)}। `:'')+sayTrio(x.sal.exp,x.sal.got)};
   }
   if(has('বাকি','পাওনা','পাবো','পাব','কোম্পানি','পামু')) return {text:(t.due>=0?`কোম্পানির কাছে মোট পাবেন ${sayTk(t.due)}। `:`কোম্পানি থেকে ${sayTk(t.due)} অগ্রিম পেয়েছেন। `)+dueList(t)+'।'};
-  if(has('টাকা')) return {text:`হাতে আছে ${sayTk(t.cash)}, জমা খাতায় আছে ${sayTk(t.wallet)}। কোম্পানির কাছে ${t.due>=0?'পাবেন '+sayTk(t.due):sayTk(t.due)+' অগ্রিম নিয়েছেন'}।`};
+  if(has('টাকা')) return {text:`হাতে আছে ${sayTk(t.cash)}। কোম্পানির কাছে ${t.due>=0?'পাবেন '+sayTk(t.due):sayTk(t.due)+' অগ্রিম নিয়েছেন'}।`};
   return {fallback:true,text:'বুঝতে পারিনি। এভাবে বলুন: "আমার কত টাকা বাকি?" বা "হাতে কত টাকা আছে?"'};
 }
 
@@ -1136,7 +1154,7 @@ function demo(){
   D.leaves=[{id:uid(),from:lv1,to:lv1,pay:'unpaid',reason:'অসুস্থ'},{id:uid(),from:lv2,to:lv2,pay:'pending',reason:'বাড়ি গেছি'}];
   delete D.days[lv1];delete D.days[lv2];
   D.salary=[{id:uid(),month:st,amount:12000,date:addMonth(st,1)+'-07',note:''},{id:uid(),month:addMonth(cur,-1),amount:8000,date:cur+'-07',note:'বাকিটা পরে দেবে বলেছে'}];
-  D.wallet=[{id:uid(),dir:'in',amount:10000,date:addMonth(st,1)+'-07',note:'বেতন থেকে রাখলাম'},{id:uid(),dir:'out',amount:3000,date:addMonth(st,1)+'-20',note:'বাড়িতে পাঠালাম'},{id:uid(),dir:'in',amount:5000,date:cur+'-07',note:''}];
+  D.cash=[{id:uid(),dir:'out',amount:3000,date:addMonth(st,1)+'-20',note:'বাড়িতে পাঠালাম'},{id:uid(),dir:'out',amount:1200,date:cur+'-09',note:'বাজার'}];
   return D;
 }
 
