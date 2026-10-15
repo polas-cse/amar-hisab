@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:   # Actions ট্যাব থেকে হাতে চালানো যাবে
 
+permissions:
+  contents: write      # Release-এ APK তোলার জন্য
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,3 +30,17 @@ jobs:
         with:
           name: amar-hisab-apk
           path: app/build/outputs/apk/release/*.apk
+
+      # main-এ push হলে "latest" release বদলে নতুন APK — লগইন ছাড়াই স্থায়ী লিংকে নামানো যায়:
+      # https://github.com/<owner>/<repo>/releases/latest/download/amar-hisab.apk
+      - name: Publish to Releases
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk amar-hisab.apk
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest amar-hisab.apk \
+            --title "আমার হিসাব (সর্বশেষ)" \
+            --notes "সর্বশেষ APK। কমিট: ${GITHUB_SHA::7}" \
+            --target "$GITHUB_SHA" --latest
