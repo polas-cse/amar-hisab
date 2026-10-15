@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.view.HapticFeedbackConstants;
 import android.webkit.JavascriptInterface;
@@ -18,7 +20,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Locale;
+
+import org.json.JSONArray;
 
 /**
  * পুরো অ্যাপটা assets/index.html-এ। এই Activity শুধু WebView চালায় আর
@@ -27,6 +32,7 @@ import java.util.Locale;
 public class MainActivity extends Activity {
 
     private static final String DATA_FILE = "hisab.json";
+    private static final int REQ_VOICE = 41;
     private WebView web;
     private TextToSpeech tts;
     private volatile boolean ttsReady = false;
@@ -76,6 +82,31 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         if (tts != null) tts.stop();   // অ্যাপ থেকে বের হলে কথা বন্ধ
+        web.evaluateJavascript("window.appPause&&appPause()", null);   // লক টাইমার শুরু
+        web.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        web.onResume();
+        // ১ মিনিটের বেশি বাইরে থাকলে JS আবার পিন চাইবে
+        web.evaluateJavascript("window.appResume&&appResume()", null);
+    }
+
+    /** Google-এর কথা চেনার স্ক্রিন থেকে ফিরে আসা লেখা JS-কে দেওয়া */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != REQ_VOICE) return;
+        ArrayList<String> res = (resultCode == RESULT_OK && data != null)
+                ? data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) : null;
+        if (res == null || res.isEmpty()) {
+            web.evaluateJavascript("window.onVoiceError&&onVoiceError('cancel')", null);
+        } else {
+            // JSONArray ঠিকমতো escape করে, তাই সরাসরি JS-এ পাঠানো নিরাপদ
+            web.evaluateJavascript("window.onVoiceResult&&onVoiceResult(" + new JSONArray(res) + ")", null);
+        }
     }
 
     @Override
@@ -127,6 +158,24 @@ public class MainActivity extends Activity {
             if (!ttsReady) return false;
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "card");
             return true;
+        }
+
+        /** মুখে প্রশ্ন: ফোনের Google speech স্ক্রিন খোলে, mic permission অ্যাপের লাগে না */
+        @JavascriptInterface
+        public void listen() {
+            runOnUiThread(() -> {
+                if (tts != null) tts.stop();
+                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "bn-BD");
+                i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+                i.putExtra(RecognizerIntent.EXTRA_PROMPT, "বলুন, যেমন: আমার কত টাকা বাকি?");
+                try {
+                    startActivityForResult(i, REQ_VOICE);
+                } catch (ActivityNotFoundException e) {
+                    web.evaluateJavascript("window.onVoiceError&&onVoiceError('noapp')", null);
+                }
+            });
         }
 
         /** ফোনে বাংলা ভয়েস না থাকলে TTS ডেটা ইনস্টলের পাতা খোলা */

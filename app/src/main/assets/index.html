@@ -19,7 +19,7 @@
   --ot:#ef7d17; --ot-2:#de5a0d; --ot-fg:#ffffff; --ot-ink:#a24704; --ot-bg:#ffead6;
   --lv:#2f78d6; --lv-bg:#e0ebfd;
   --off:#6b7590; --off-bg:#e8ebf2;
-  --pig:#d8467d; --pig-bg:#fde4ee;
+  --pig:#d8467d; --pig-bg:#fde4ee; --cash:#9a5a24; --cash-bg:#f6e8da; --band-err:#ffc2c2;
   --shadow:0 1px 2px rgba(23,32,58,.05),0 6px 18px rgba(23,32,58,.06);
   --f-display:"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",sans-serif;
   --f-body:"Hind Siliguri","Noto Sans Bengali","Noto Sans",sans-serif;
@@ -32,7 +32,7 @@
   --good:#52d39c; --good-bg:#10342a; --bad:#ff8c8c; --bad-bg:#3c1c23; --warn:#f2b74f; --warn-bg:#382a10;
   --sal:#52d39c; --sal-bg:#10342a; --alw:#f2bf4f; --alw-bg:#3a2d0e;
   --ot:#f0821e; --ot-2:#d65f0e; --ot-fg:#ffffff; --ot-ink:#ffb36e; --ot-bg:#3e250f;
-  --lv:#80b1ff; --lv-bg:#172a4a; --off:#8f97ad; --off-bg:#222a3b; --pig:#ff80ae; --pig-bg:#3d1828;
+  --lv:#80b1ff; --lv-bg:#172a4a; --off:#8f97ad; --off-bg:#222a3b; --pig:#ff80ae; --pig-bg:#3d1828; --cash:#e3a56c; --cash-bg:#35241a;
   --shadow:0 1px 0 rgba(0,0,0,.25); color-scheme:dark;
 }}
 :root[data-theme="dark"]{
@@ -42,14 +42,14 @@
   --good:#52d39c; --good-bg:#10342a; --bad:#ff8c8c; --bad-bg:#3c1c23; --warn:#f2b74f; --warn-bg:#382a10;
   --sal:#52d39c; --sal-bg:#10342a; --alw:#f2bf4f; --alw-bg:#3a2d0e;
   --ot:#f0821e; --ot-2:#d65f0e; --ot-fg:#ffffff; --ot-ink:#ffb36e; --ot-bg:#3e250f;
-  --lv:#80b1ff; --lv-bg:#172a4a; --off:#8f97ad; --off-bg:#222a3b; --pig:#ff80ae; --pig-bg:#3d1828;
+  --lv:#80b1ff; --lv-bg:#172a4a; --off:#8f97ad; --off-bg:#222a3b; --pig:#ff80ae; --pig-bg:#3d1828; --cash:#e3a56c; --cash-bg:#35241a;
   --shadow:0 1px 0 rgba(0,0,0,.25); color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 button,input,select,textarea{font:inherit;color:inherit}
 .wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-main{padding-block:0 calc(100px + env(safe-area-inset-bottom,0px))}
+main{padding-block:0 calc(170px + env(safe-area-inset-bottom,0px))}
 .stack{display:grid;gap:16px;padding-block:16px}
 h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-height:1.2;text-wrap:balance}
 .muted{color:var(--muted)} .small{font-size:14px}
@@ -78,9 +78,11 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .brk span{font-size:12.5px;color:var(--band-muted)}
 .brk b{font-family:var(--f-display);font-size:17px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;line-height:1.2}
 .brk em{display:block;font-style:normal;font-size:11.5px;font-weight:600;color:var(--band-muted)}
-.pigrow{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--band-muted)}
-.pigrow .ic{width:30px;height:30px}
-.pigrow b{margin-left:auto;color:var(--band-fg);font-family:var(--f-display);font-size:20px}
+.pigrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pigrow div{display:flex;align-items:center;gap:8px;background:var(--band-tile);border-radius:14px;padding:8px 10px;min-width:0}
+.pigrow .ic{width:32px;height:32px}
+.pigrow span{display:grid;font-size:12.5px;color:var(--band-muted);line-height:1.25;min-width:0}
+.pigrow b{color:var(--band-fg);font-family:var(--f-display);font-size:19px;overflow-wrap:anywhere}
 
 .demo{background:var(--warn-bg);color:var(--warn);font-size:14px}
 .demo .wrap{padding-block:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -95,7 +97,10 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .ch .due span{font-size:13px;color:var(--muted);font-weight:600}
 .ch .due b{font-family:var(--f-display);font-size:25px;font-weight:800;line-height:1.1;color:var(--bad);font-variant-numeric:tabular-nums}
 .ch .due.ok b{color:var(--good)}
-.cat.sal{--c:var(--sal);--cb:var(--sal-bg)} .cat.alw{--c:var(--alw);--cb:var(--alw-bg)} .cat.ot{--c:var(--ot);--cb:var(--ot-bg)} .cat.pig{--c:var(--pig);--cb:var(--pig-bg)}
+.ch .due.moved b{color:var(--warn);font-size:20px}
+.sumline{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14px;color:var(--muted);background:var(--surface-2);border-radius:12px;padding:8px 10px}
+.sumline b{color:var(--fg);font-family:var(--f-display);font-size:16px}
+.cat.sal{--c:var(--sal);--cb:var(--sal-bg)} .cat.alw{--c:var(--alw);--cb:var(--alw-bg)} .cat.ot{--c:var(--ot);--cb:var(--ot-bg)} .cat.pig{--c:var(--pig);--cb:var(--pig-bg)} .cat.cash{--c:var(--cash);--cb:var(--cash-bg)}
 .cat{border-top:5px solid var(--c)}
 /* প্রগ্রেস বার: কতটা পেয়েছে */
 .bar{height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
@@ -114,6 +119,7 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .strip .k-good{background:var(--good);color:var(--surface)} .strip .k-bad{background:var(--bad);color:var(--surface)}
 .strip .k-open{background:var(--surface);border:1.5px dashed var(--muted)} .strip .k-lv{background:var(--lv-bg);color:var(--lv)}
 .strip .k-off{background:var(--off-bg);color:var(--off)} .strip .k-ot{background:linear-gradient(160deg,var(--ot),var(--ot-2));color:var(--ot-fg)}
+.strip .k-part{background:var(--warn-bg);color:var(--warn);box-shadow:inset 0 0 0 1.5px var(--warn)}
 .strip .k-rest{background:transparent;border:1px dashed var(--line)} .strip .k-fut{opacity:.35}
 
 /* ওভারটাইমের দিনের টাইল */
@@ -170,6 +176,8 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .seg.two{grid-template-columns:1fr 1fr}
 .seg button{min-height:48px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer;padding:4px 6px;line-height:1.25}
+.seg.icons button{display:grid;justify-items:center;gap:2px;min-height:78px;font-size:14px}
+.seg.icons .ic{width:34px;height:34px}
 .seg button.on-info{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 .msw{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .msw .m{font-family:var(--f-display);font-weight:700;font-size:21px}
@@ -196,6 +204,7 @@ h2{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;line-hei
 .cal .k-good{background:var(--good-bg);border-color:transparent;color:var(--good)}
 .cal .k-bad{background:var(--bad-bg);border-color:transparent;color:var(--bad)}
 .cal .k-open{border:1.5px dashed var(--muted)}
+.cal .k-part{background:var(--warn-bg);border:1.5px solid var(--warn);color:var(--warn)}
 .cal .k-lv{background:var(--lv-bg);border-color:transparent;color:var(--lv)}
 .cal .k-off{background:var(--off-bg);border-color:transparent;color:var(--off)}
 .cal .k-rest{background:transparent;border:1.5px dashed var(--ot);color:var(--ot-ink)}
@@ -255,6 +264,43 @@ nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:re
 .sheet{background:var(--bg);width:100%;max-width:560px;max-height:92%;overflow:auto;border-radius:22px 22px 0 0;padding-block:16px calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
 .sheet header{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;z-index:20;max-width:90%;text-align:center}
+.item .bal{display:block;font-size:12px;color:var(--muted);text-align:right;font-family:var(--f-display)}
+.amtcol{display:grid;justify-items:end}
+.tag{font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;background:var(--surface-2);color:var(--muted)}
+
+/* ===== ভয়েস ===== */
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px));width:66px;height:66px;border-radius:50%;border:3px solid var(--surface);
+  background:linear-gradient(160deg,var(--band-2),var(--band));color:var(--band-fg);display:grid;place-items:center;box-shadow:0 6px 18px rgba(28,47,110,.35);z-index:6;cursor:pointer}
+.fab svg,.micbig svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.fab:focus-visible,.micbig:focus-visible,.keys button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.vbox{display:grid;justify-items:center;gap:8px;padding-block:6px}
+.micbig{width:96px;height:96px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(160deg,var(--band-2),var(--band));color:var(--band-fg);display:grid;place-items:center;box-shadow:0 6px 18px rgba(28,47,110,.3)}
+.micbig svg{width:42px;height:42px}
+.micbig.on{background:linear-gradient(160deg,#e2543f,#c0392b)}
+.vstate{margin:0;font-weight:600;color:var(--muted)}
+.vq{margin:0;color:var(--muted);font-size:14.5px}
+.va{background:var(--accent-soft);color:var(--fg);border-radius:16px;padding:14px 16px;font-size:19px;font-weight:600;line-height:1.55}
+.askrow{display:grid;grid-template-columns:1fr auto;gap:8px}
+.examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.examples button{border:0;cursor:pointer;min-height:36px}
+
+/* ===== লগইন ===== */
+.lock{position:fixed;inset:0;z-index:40;background:linear-gradient(165deg,var(--band-2),var(--band) 70%);color:var(--band-fg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  padding-block:calc(16px + env(safe-area-inset-top,0px)) calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow:auto}
+.lock .logo{width:84px;height:84px;border-radius:24px;background:#ffffff;display:grid;place-items:center}
+.lock h1{margin:0;font-family:var(--f-display);font-size:26px;font-weight:800}
+.lock p{margin:0;color:var(--band-muted);text-align:center;max-width:300px}
+.lock .err{color:var(--band-err);font-weight:700;min-height:1.5em}
+.dots{display:flex;gap:16px;min-height:20px}
+.dots span{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--band-fg)}
+.dots span.f{background:var(--band-fg)}
+.dots.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.keys{display:grid;grid-template-columns:repeat(3,minmax(0,78px));gap:14px}
+.keys button{height:78px;border-radius:50%;border:0;background:var(--band-tile);color:var(--band-fg);font-family:var(--f-display);font-size:32px;font-weight:700;cursor:pointer}
+.keys button:active{background:var(--band-line)}
+.keys .ok{background:var(--good);color:#ffffff;font-size:22px}
+.lock .link{background:transparent;border:0;color:var(--band-fg);text-decoration:underline;font-size:15px;cursor:pointer;min-height:44px}
 .say-hint{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--muted);text-align:center}
 
 /* লং-প্রেসে শোনানো: চেপে ধরলে নিচে ২ সেকেন্ডের দাগ ভরে ওঠে */
@@ -270,7 +316,9 @@ nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:re
 <div id="top"></div>
 <main id="page"></main>
 <nav class="tabs" aria-label="মেনু"><div class="in" id="tabs"></div></nav>
+<button class="fab" data-act="voice" aria-label="মুখে প্রশ্ন করুন"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/></svg></button>
 <div id="modal"></div>
+<div id="lock" class="lock" hidden></div>
 <div id="toast" class="toast" hidden></div>
 
 <script>
@@ -282,7 +330,7 @@ const store={
   get(){try{if(window.AndroidBridge)return AndroidBridge.load()||null;return localStorage.getItem(KEY)}catch(e){return null}},
   set(v){try{if(window.AndroidBridge){AndroidBridge.save(v);return true}localStorage.setItem(KEY,v);return true}catch(e){return false}}
 };
-const blank=()=>({v:1,pin:'1234',startMonth:null,settings:[],days:{},leaves:[],salary:[],wallet:[],demo:false});
+const blank=()=>({v:1,pin:'1234',loginPin:null,startMonth:null,settings:[],days:{},leaves:[],salary:[],wallet:[],cash:[],cashAllow:false,demo:false});
 let S=load();
 function load(){try{const raw=store.get();if(raw)return Object.assign(blank(),JSON.parse(raw))}catch(e){}return blank()}
 function save(){if(!store.set(JSON.stringify(S)))toast('সেভ করা যায়নি, ফোনের জায়গা দেখুন')}
@@ -335,6 +383,8 @@ const IC={
   cal:`<rect x="6" y="9" width="36" height="33" rx="6" fill="#eef2fb" stroke="#c7d0e6" stroke-width="1.5"/><path d="M6 15a6 6 0 0 1 6-6h24a6 6 0 0 1 6 6v5H6z" fill="#e0534a"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#7a2620"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#7a2620"/><g fill="#9aa5c4"><rect x="11" y="25" width="6" height="5" rx="1.5"/><rect x="21" y="25" width="6" height="5" rx="1.5"/><rect x="11" y="33" width="6" height="5" rx="1.5"/><rect x="21" y="33" width="6" height="5" rx="1.5"/></g><rect x="31" y="25" width="6" height="5" rx="1.5" fill="#ef7d17"/><rect x="31" y="33" width="6" height="5" rx="1.5" fill="#1c9862"/>`,
   gear:`<g fill="#7d88a6" transform="translate(24 24)">${[0,45,90,135,180,225,270,315].map(a=>`<rect x="-3.5" y="-20" width="7" height="9" rx="2" transform="rotate(${a})"/>`).join('')}<circle r="14"/></g><circle cx="24" cy="24" r="6" fill="#eef2fb"/>`,
   lock:`<rect x="10" y="21" width="28" height="21" rx="4" fill="#2546b0"/><path d="M16 21v-5a8 8 0 0 1 16 0v5" stroke="#2546b0" stroke-width="4.5" fill="none"/><circle cx="24" cy="30" r="3" fill="#fff"/><rect x="22.5" y="31" width="3" height="6" rx="1.5" fill="#fff"/>`,
+  purse:`<rect x="7" y="9" width="28" height="12" rx="2" fill="#36b47a" transform="rotate(-8 21 15)"/><rect x="4" y="15" width="38" height="27" rx="6" fill="#a8652f"/><rect x="4" y="15" width="38" height="6" rx="3" fill="#874e22"/><rect x="28" y="24" width="16" height="11" rx="4" fill="#874e22"/><circle cx="34" cy="29.5" r="2.8" fill="#f6cc55"/>`,
+  bag:`<path d="M9 17h30l-2.6 24a3 3 0 0 1-3 2.7H14.6a3 3 0 0 1-3-2.7z" fill="#ef7d17"/><path d="M17 21v-7a7 7 0 0 1 14 0v7" stroke="#a24704" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="17" cy="22" r="2" fill="#a24704"/><circle cx="31" cy="22" r="2" fill="#a24704"/>`,
   backup:`<path d="M13 36a9 9 0 0 1-1-18 12 12 0 0 1 23 2 8 8 0 0 1 1 16z" fill="#9db6f4"/><path d="M24 39V24M18 29l6-6 6 6" stroke="#2546b0" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 };
 // জমা/তোলার জন্য তীর-ব্যাজ
@@ -344,6 +394,7 @@ const ico=(k,cls='',extra='')=>`<svg class="ic ${cls}" viewBox="0 0 48 48" aria-
 // ছোট একরঙা আইকন (ক্যালেন্ডারের ঘরে)
 const MI={tick:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',cross:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   umb:'<path d="M3.5 12a8.5 8.5 0 0 1 17 0z"/><path d="M12 12v6.5a2 2 0 0 1-4 0"/>',lock:'<rect x="6" y="11" width="12" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/>',
   sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'};
 const mi=k=>`<svg class="mi" viewBox="0 0 24 24" aria-hidden="true">${MI[k]}</svg>`;
 
@@ -384,7 +435,7 @@ function perDay(mk,s){
 
 function monthSum(mk){
   const[y,m]=mk.split('-').map(Number), n=daysIn(y,m), t=today(), st=startDay();
-  const a={exp:0,got:0,dGot:0,dNo:0,dOpen:0}, o={exp:0,got:0,days:[]}, lv={paid:0,unpaid:0,pending:0};
+  const a={exp:0,got:0,dGot:0,dNo:0,dOpen:0,dPart:0}, o={exp:0,got:0,days:[]}, lv={paid:0,unpaid:0,pending:0};
   let off=0;
   for(let d=1;d<=n;d++){
     const ds=mk+'-'+pad(d); if(ds<st) continue;
@@ -393,7 +444,7 @@ function monthSum(mk){
     const c=dayCalc(ds);
     if(c.kind==='off') off++;
     a.exp+=c.allowExp;
-    if(c.allowGot!=null){a.got+=c.allowGot; if(c.allowGot>0)a.dGot++; else if(c.allowExp>0)a.dNo++}
+    if(c.allowGot!=null){a.got+=c.allowGot; if(c.allowGot>0){a.dGot++; if(c.allowGot<c.allowExp)a.dPart++} else if(c.allowExp>0)a.dNo++}
     else if(c.allowExp>0) a.dOpen++;
     if(c.kind==='work'&&c.r.ot){o.exp+=c.otExp;o.got+=c.otGot||0;o.days.push(c)}
   }
@@ -402,7 +453,11 @@ function monthSum(mk){
     const s=rulesFor(mk+'-01'), pd=perDay(mk,s);
     const cut=Math.round(lv.unpaid*pd);
     const got=S.salary.filter(x=>x.month===mk).reduce((t,x)=>t+x.amount,0);
-    sal={exp:Math.max(0,s.salary-cut),got,cut,pd,full:s.salary};
+    // না পাওয়া হাতখরচ (আর চাইলে ওভারটাইম) মাসের বেতনের সাথে পাওনা হিসেবে যোগ হয়
+    a.toSal=s.carryAllow!==false; o.toSal=!!s.carryOt;
+    const carryA=a.toSal?a.exp-a.got:0, carryO=o.toSal?o.exp-o.got:0;
+    const base=Math.max(0,s.salary-cut);
+    sal={exp:base+carryA+carryO,base,got,cut,pd,full:s.salary,carryA,carryO};
   }
   return {a,o,lv,off,sal};
 }
@@ -410,17 +465,39 @@ function monthSum(mk){
 // সব মাসের হিসাব যোগ করে — নিচের কার্ডগুলোর "বাকি" যোগ করলে হেডারের সংখ্যা মিলবে।
 // (আগে চলতি মাসের বেতন বাদ পড়ত, তাই হেডার ভুল দেখাত)
 function totals(){
-  const r={sal:0,allow:0,ot:0};const cur=mkOf(today());
+  const r={sal:0,allow:0,ot:0,allowMoved:0,otMoved:0};const cur=mkOf(today());
   if(S.startMonth&&S.settings.length){
     for(let mk=S.startMonth;mk<=cur;mk=addMonth(mk,1)){
       const x=monthSum(mk);
-      r.allow+=x.a.exp-x.a.got; r.ot+=x.o.exp-x.o.got;
+      const aM=x.sal&&x.a.toSal, oM=x.sal&&x.o.toSal;    // বেতনে চলে গেলে আলাদা করে আর গোনা হবে না
+      r.allow+=aM?0:x.a.exp-x.a.got; r.ot+=oM?0:x.o.exp-x.o.got;
+      if(aM) r.allowMoved+=x.a.exp-x.a.got; if(oM) r.otMoved+=x.o.exp-x.o.got;
       if(x.sal) r.sal+=x.sal.exp-x.sal.got;
     }
   }
   r.due=r.sal+r.allow+r.ot;   // ঋণাত্মক হলে কোম্পানি অগ্রিম দিয়েছে
   r.wallet=S.wallet.reduce((t,w)=>t+(w.dir==='in'?w.amount:-w.amount),0);
+  const ev=cashEvents(); r.cash=ev.length?ev[ev.length-1].bal:0;
   return r;
+}
+
+// হাতের টাকা: যা পেয়েছেন (বেতন, ওভারটাইম, চাইলে হাতখরচ) − জমা খাতায় রাখা + জমা থেকে তোলা − খরচ
+function cashEvents(){
+  const ev=[], st=startDay();
+  S.salary.forEach(x=>ev.push({date:x.date,amt:x.amount,t:`${fmtMonth(x.month)} মাসের বেতন`,ic:'salary'}));
+  const allowByM={};
+  for(const ds of Object.keys(S.days)){
+    if(ds<st||ds>today()) continue;
+    const c=dayCalc(ds);
+    if(c.otGot>0) ev.push({date:ds,amt:c.otGot,t:'ওভারটাইমের টাকা',ic:'ot'});
+    if(S.cashAllow&&c.allowGot>0){const m=mkOf(ds);const g=allowByM[m]||(allowByM[m]={amt:0,n:0,date:ds});g.amt+=c.allowGot;g.n++;if(ds>g.date)g.date=ds}
+  }
+  for(const m in allowByM){const g=allowByM[m];ev.push({date:g.date,amt:g.amt,t:`${mName(m)} মাসের হাতখরচ (${bn(g.n)} দিন)`,ic:'coins'})}
+  S.wallet.forEach(w=>ev.push({date:w.date,amt:w.dir==='in'?-w.amount:w.amount,t:w.dir==='in'?'জমা খাতায় রাখলাম':'জমা খাতা থেকে তুললাম',ic:'piggy',arrow:w.dir,note:w.note}));
+  (S.cash||[]).forEach(x=>ev.push({date:x.date,amt:x.dir==='in'?x.amount:-x.amount,t:x.dir==='in'?'অন্য আয়':'খরচ করলাম',ic:x.dir==='in'?'coins':'bag',note:x.note,id:x.id}));
+  ev.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  let bal=0; ev.forEach(e=>{bal+=e.amt;e.bal=bal});
+  return ev;
 }
 
 /* ================= UI অবস্থা ================= */
@@ -438,12 +515,15 @@ function render(){
 
 // বাকি থাকলে "৳x", বেশি পেলে "অগ্রিম ৳x"
 const dueTxt=v=>v<0?`<em>অগ্রিম</em>${tk(-v)}`:tk(v);
+// শূন্য বাকিগুলো বাদ, বেতনে চলে যাওয়া অংশ আলাদা করে বলা
+const dueList=t=>{const a=[];if(t.sal)a.push(dueSay('বেতন',t.sal));if(t.allow)a.push(dueSay('হাতখরচ',t.allow));if(t.ot)a.push(dueSay('ওভারটাইম',t.ot));
+  if(t.allowMoved>0)a.push(`না পাওয়া হাতখরচ ${sayTk(t.allowMoved)} বেতনের সাথে ধরা আছে`);if(t.otMoved>0)a.push(`বাকি ওভারটাইম ${sayTk(t.otMoved)} বেতনের সাথে ধরা আছে`);return a.join('। ')};
 const dueSay=(name,v)=>v<0?`${name}ে ${sayTk(v)} অগ্রিম পেয়েছেন`:`${name} বাকি ${sayTk(v)}`;
 
 function renderTop(){
   const t=totals();
   const say=(t.due>=0?`কোম্পানির কাছে মোট পাবেন ${sayTk(t.due)}। `:`কোম্পানি থেকে মোট ${sayTk(t.due)} অগ্রিম পেয়েছেন। `)+
-    [dueSay('বেতন',t.sal),dueSay('হাতখরচ',t.allow),dueSay('ওভারটাইম',t.ot)].join('। ')+`। জমা খাতায় আছে ${sayTk(t.wallet)}।`;
+    dueList(t)+`। হাতে আছে ${sayTk(t.cash)}। জমা খাতায় আছে ${sayTk(t.wallet)}।`;
   document.getElementById('top').innerHTML=`
   <div class="band"><div class="wrap">
     <div class="brand"><h1>আমার হিসাব</h1><span class="today">${fmtDate(today(),true)}</span></div>
@@ -455,10 +535,13 @@ function renderTop(){
     </div>
     <div class="brk">
       <div>${ico('salary')}<span>বেতন</span><b>${dueTxt(t.sal)}</b></div>
-      <div>${ico('coins')}<span>হাতখরচ</span><b>${dueTxt(t.allow)}</b></div>
-      <div>${ico('ot')}<span>ওভারটাইম</span><b>${dueTxt(t.ot)}</b></div>
+      <div>${ico('coins')}<span>হাতখরচ</span><b>${t.allowMoved&&!t.allow?'<em>বেতনে যোগ</em>':''}${dueTxt(t.allow)}</b></div>
+      <div>${ico('ot')}<span>ওভারটাইম</span><b>${t.otMoved&&!t.ot?'<em>বেতনে যোগ</em>':''}${dueTxt(t.ot)}</b></div>
     </div>
-    <div class="pigrow">${ico('piggy')}জমা খাতায় আছে<b>${tk(t.wallet)}</b></div>
+    <div class="pigrow">
+      <div>${ico('purse')}<span>হাতে আছে<b>${t.cash<0?'−':''}${tk(Math.abs(t.cash))}</b></span></div>
+      <div>${ico('piggy')}<span>জমা খাতায়<b>${tk(t.wallet)}</b></span></div>
+    </div>
   </div></div>
   ${S.demo?`<div class="demo"><div class="wrap"><span>নমুনা হিসাব দেখানো হচ্ছে</span><button class="btn sm" data-act="clearDemo">নমুনা মুছুন</button></div></div>`:''}`;
 }
@@ -466,10 +549,11 @@ function renderTop(){
 const monthSwitch=()=>`<div class="msw"><button class="icon-btn" data-act="mPrev" aria-label="আগের মাস">${svgLine(CH.l)}</button><span class="m">${fmtMonth(ui.month)}</span><button class="icon-btn" data-act="mNext" aria-label="পরের মাস">${svgLine(CH.r)}</button></div>`;
 
 // কার্ডের মাথা: ছবি, নাম, বড় করে বাকি
-function cardHead(icon,title,sub,exp,got){
+function cardHead(icon,title,sub,exp,got,moved){
   const d=exp-got;
   return `<div class="ch"><span class="tile">${ico(icon,'l')}</span><div class="tt"><h2>${title}</h2><span>${sub}</span></div>
-    <div class="due ${d<=0?'ok':''}"><span>${d<0?'বেশি পেয়েছি':d===0?'বাকি নেই':'বাকি'}</span><b>${tk(Math.abs(d))}</b></div></div>
+    ${moved&&d>0?`<div class="due moved"><span>বাকি, বেতনে যোগ</span><b>${tk(d)}</b></div>`
+      :`<div class="due ${d<=0?'ok':''}"><span>${d<0?'বেশি পেয়েছি':d===0?'বাকি নেই':'বাকি'}</span><b>${tk(Math.abs(d))}</b></div>`}</div>
     <div class="bar" role="img" aria-label="${bn(exp?Math.round(Math.min(got,exp)/exp*100):0)}% পেয়েছেন"><i style="width:${exp?Math.min(100,got/exp*100):(got?100:0)}%"></i></div>
     <div class="barlbl"><span>পেয়েছি <b>${tk(got)}</b></span><span>মোট পাওনা <b>${tk(exp)}</b></span></div>`;
 }
@@ -526,7 +610,7 @@ function stripCls(c,ds,t){
   if(c.kind==='off') return 'k-off';
   if(c.kind==='rest') return 'k-rest';
   if(c.r.ot) return 'k-ot';
-  if(c.allowExp>0) return c.allowGot==null?'k-open':c.allowGot>0?'k-good':'k-bad';
+  if(c.allowExp>0) return c.allowGot==null?'k-open':c.allowGot===0?'k-bad':c.allowGot<c.allowExp?'k-part':'k-good';
   return c.allowGot>0?'k-good':'';
 }
 function pageHome(){
@@ -542,8 +626,9 @@ function pageHome(){
   const mN=mName(ui.month);
   // বেতন
   if(x.sal){
-    const say=`${mN} মাসের বেতন। ${sayTrio(x.sal.exp,x.sal.got)}`+(x.lv.unpaid?` বিনা বেতনে ছুটি ${bn(x.lv.unpaid)} দিন, তাই ${sayTk(x.sal.cut)} কাটা হয়েছে।`:'')+(x.lv.pending?` ${bn(x.lv.pending)} দিনের ছুটিতে বেতন কাটবে কিনা এখনো জানা নেই।`:'');
-    h+=`<section class="card cat sal"${sayAttr(say)}>${cardHead('salary','বেতন',mN+' মাস',x.sal.exp,x.sal.got)}
+    const say=`${mN} মাসের বেতন। `+(x.sal.carryA>0?`বেতন ${sayTk(x.sal.base)}, সাথে না পাওয়া হাতখরচ ${sayTk(x.sal.carryA)}। `:'')+(x.sal.carryO>0?`সাথে বাকি ওভারটাইম ${sayTk(x.sal.carryO)}। `:'')+`${sayTrio(x.sal.exp,x.sal.got)}`+(x.lv.unpaid?` বিনা বেতনে ছুটি ${bn(x.lv.unpaid)} দিন, তাই ${sayTk(x.sal.cut)} কাটা হয়েছে।`:'')+(x.lv.pending?` ${bn(x.lv.pending)} দিনের ছুটিতে বেতন কাটবে কিনা এখনো জানা নেই।`:'');
+    const extra=(x.sal.carryA||x.sal.carryO)?`<div class="sumline">বেতন <b>${tk(x.sal.base)}</b>${x.sal.carryA?` ${x.sal.carryA>0?'+':'−'} না পাওয়া হাতখরচ <b>${tk(Math.abs(x.sal.carryA))}</b>`:''}${x.sal.carryO?` ${x.sal.carryO>0?'+':'−'} বাকি ওভারটাইম <b>${tk(Math.abs(x.sal.carryO))}</b>`:''} = <b>${tk(x.sal.exp)}</b></div>`:'';
+    h+=`<section class="card cat sal"${sayAttr(say)}>${cardHead('salary','বেতন',mN+' মাস',x.sal.exp,x.sal.got)}${extra}
     ${x.lv.unpaid||x.lv.paid||x.lv.pending?`<div class="facts">
       ${x.lv.unpaid?`<span class="chip c-off">${mi('umb')} বিনা বেতনে ছুটি ${bn(x.lv.unpaid)} দিন · কাটা ${tk(x.sal.cut)}</span>`:''}
       ${x.lv.paid?`<span class="chip c-lv">${mi('umb')} বেতনসহ ছুটি ${bn(x.lv.paid)} দিন</span>`:''}
@@ -554,14 +639,14 @@ function pageHome(){
   const[y,m]=ui.month.split('-').map(Number);let strip='';
   for(let d=1;d<=daysIn(y,m);d++){const ds=ui.month+'-'+pad(d); if(ds<startDay()){strip+=`<i class="k-fut">${bn(d)}</i>`;continue}
     strip+=`<i class="${stripCls(dayCalc(ds),ds,t)}">${bn(d)}</i>`}
-  h+=`<section class="card cat alw"${sayAttr(`${mN} মাসের হাতখরচ। ${sayTrio(x.a.exp,x.a.got)} ${bn(x.a.dGot)} দিন পেয়েছেন, ${bn(x.a.dNo)} দিন পাননি।`+(x.a.dOpen?` ${bn(x.a.dOpen)} দিনের হিসাব লেখা হয়নি।`:''))}>
-    ${cardHead('coins','দৈনিক হাতখরচ',mN+' মাস',x.a.exp,x.a.got)}
+  h+=`<section class="card cat alw"${sayAttr(`${mN} মাসের হাতখরচ। ${sayTrio(x.a.exp,x.a.got)} ${bn(x.a.dGot)} দিন পেয়েছেন, ${bn(x.a.dNo)} দিন পাননি।`+(x.a.dOpen?` ${bn(x.a.dOpen)} দিনের হিসাব লেখা হয়নি।`:'')+(x.sal&&x.a.toSal&&x.a.exp>x.a.got?` বাকি হাতখরচ বেতনের সাথে যোগ হয়েছে।`:''))}>
+    ${cardHead('coins','দৈনিক হাতখরচ',mN+' মাস',x.a.exp,x.a.got,x.sal&&x.a.toSal)}
     <div class="strip" aria-hidden="true">${strip}</div>
-    <div class="facts"><span class="chip c-good">${mi('tick')} পেয়েছি ${bn(x.a.dGot)} দিন</span><span class="chip c-bad">${mi('cross')} পাইনি ${bn(x.a.dNo)} দিন</span>${x.a.dOpen?`<span class="chip c-warn">লেখা হয়নি ${bn(x.a.dOpen)} দিন</span>`:''}${x.o.days.length?`<span class="chip c-ot">${mi('clock')} ওভারটাইম</span>`:''}${x.off?`<span class="chip c-off">${mi('lock')} বন্ধ ${bn(x.off)} দিন</span>`:''}</div></section>`;
+    <div class="facts"><span class="chip c-good">${mi('tick')} পেয়েছি ${bn(x.a.dGot)} দিন</span>${x.a.dPart?`<span class="chip c-warn">কম পেয়েছি ${bn(x.a.dPart)} দিন</span>`:''}<span class="chip c-bad">${mi('cross')} পাইনি ${bn(x.a.dNo)} দিন</span>${x.a.dOpen?`<span class="chip c-warn">লেখা হয়নি ${bn(x.a.dOpen)} দিন</span>`:''}${x.o.days.length?`<span class="chip c-ot">${mi('clock')} ওভারটাইম</span>`:''}${x.off?`<span class="chip c-off">${mi('lock')} বন্ধ ${bn(x.off)} দিন</span>`:''}</div></section>`;
   // ওভারটাইম
   const otUnpaid=x.o.days.filter(c=>!c.otGot).length;
   h+=`<section class="card cat ot"${sayAttr(x.o.days.length?`${mN} মাসে ওভারটাইম ${bn(x.o.days.length)} দিন। ${sayTrio(x.o.exp,x.o.got)}`+(otUnpaid?` ${bn(otUnpaid)} দিনের টাকা এখনো পাননি।`:''):`${mN} মাসে কোনো ওভারটাইম নেই।`)}>
-    ${cardHead('ot','ওভারটাইম',`${mN} মাসে ${bn(x.o.days.length)} দিন`,x.o.exp,x.o.got)}
+    ${cardHead('ot','ওভারটাইম',`${mN} মাসে ${bn(x.o.days.length)} দিন`,x.o.exp,x.o.got,x.sal&&x.o.toSal)}
     ${x.o.days.length?`<div class="ot-tiles">${x.o.days.map(otTile).join('')}</div>`:`<div class="empty">${ico('ot','m')}এই মাসে কোনো ওভারটাইম নেই</div>`}</section>`;
   return h+`</div>`;
 }
@@ -591,11 +676,18 @@ function pageCal(){
       else if(c.kind==='rest'){k='k-rest';s='ছুটি'}
       else if(c.r.ot){                                  // ওভারটাইমের দিন: কমলা
         const paid=c.otGot!=null&&c.otGot>=c.otExp&&c.otExp>0;
-        k=paid?'k-ot':'k-otdue'; s=mi('clock')+(paid?'':'বাকি');
-        if(c.allowGot!=null) dot=`<span class="dot ${c.allowGot>0?'g':'b'}"></span>`;
+        k=paid?'k-ot':'k-otdue'; s=paid?mi('clock'):c.otGot>0?tk(c.otGot):mi('clock')+'বাকি';
+        if(c.allowGot!=null) dot=`<span class="dot ${c.allowGot>0?'g':'b'}"></span>`;   // কোণের ফোঁটা = সেদিনের হাতখরচ
       }
-      else if(c.allowExp>0){ if(c.allowGot==null){k='k-open';s='?'} else if(c.allowGot>0){k='k-good';s=mi('tick')} else {k='k-bad';s=mi('cross')} }
-      else if(c.allowGot>0){k='k-good';s=mi('tick')}
+      else if(c.allowExp>0){
+        const g=c.allowGot;
+        if(g==null){k='k-open';s='?'}
+        else if(g===0){k='k-bad';s=mi('cross')}
+        else if(g<c.allowExp){k='k-part';s=tk(g)}           // কম পেয়েছে: হলুদ, পরিমাণসহ
+        else if(g>c.allowExp){k='k-good';s=tk(g)}           // বেশি পেয়েছে: সবুজ, পরিমাণসহ
+        else {k='k-good';s=mi('tick')}
+      }
+      else if(c.allowGot>0){k='k-good';s=tk(c.allowGot)}
     }
     cells+=`<button class="${k} ${ds===t?'today':''}" data-act="openDay" data-d="${ds}" aria-label="${fmtDate(ds,true)}">${dot}<span class="n">${bn(d)}</span><span class="s">${s}</span></button>`;
   }
@@ -612,6 +704,8 @@ function pageCal(){
   <section class="card"><h2>রঙের মানে</h2><div class="legend">
     <div><i style="background:var(--good-bg);color:var(--good)">${mi('tick')}</i>হাতখরচ পেয়েছি</div>
     <div><i style="background:var(--bad-bg);color:var(--bad)">${mi('cross')}</i>হাতখরচ পাইনি</div>
+    <div><i style="background:var(--warn-bg);border:1.5px solid var(--warn);color:var(--warn);font-size:9px;font-weight:700">৳৫০</i>কম পেয়েছি (কত টাকা লেখা)</div>
+    <div><i style="background:var(--good-bg);color:var(--good);font-size:9px;font-weight:700">৳১৫০</i>বেশি পেয়েছি</div>
     <div><i style="background:linear-gradient(160deg,var(--ot),var(--ot-2));color:var(--ot-fg)">${mi('clock')}</i>ওভারটাইম, টাকা পেয়েছি</div>
     <div><i style="background:repeating-linear-gradient(135deg,var(--ot-bg) 0 5px,var(--surface) 5px 10px);border:2px solid var(--ot);color:var(--ot-ink)">${mi('clock')}</i>ওভারটাইম, টাকা বাকি</div>
     <div><i style="border:1.5px dashed var(--ot);color:var(--ot-ink)"></i>সাপ্তাহিক ছুটি</div>
@@ -624,10 +718,21 @@ function pageCal(){
 /* ---------- খাতা ---------- */
 function pageLedger(){
   const w=ui.ledger==='wallet';
-  let h=`<div class="wrap stack"><div class="seg two" role="tablist">
-    <button data-act="ledgerTab" data-v="wallet" class="${w?'on-info':''}">জমা খাতা</button>
-    <button data-act="ledgerTab" data-v="salary" class="${!w?'on-info':''}">বেতন প্রাপ্তি</button></div>`;
-  if(w){
+  let h=`<div class="wrap stack"><div class="seg icons" role="tablist">
+    <button data-act="ledgerTab" data-v="cash" class="${ui.ledger==='cash'?'on-info':''}">${ico('purse')}হাতের টাকা</button>
+    <button data-act="ledgerTab" data-v="wallet" class="${w?'on-info':''}">${ico('piggy')}জমা খাতা</button>
+    <button data-act="ledgerTab" data-v="salary" class="${ui.ledger==='salary'?'on-info':''}">${ico('salary')}বেতন প্রাপ্তি</button></div>`;
+  if(ui.ledger==='cash'){
+    const ev=cashEvents(), bal=ev.length?ev[ev.length-1].bal:0;
+    const tin=ev.filter(e=>e.amt>0).reduce((s,e)=>s+e.amt,0), tout=ev.filter(e=>e.amt<0).reduce((s,e)=>s-e.amt,0);
+    h+=`<section class="card cat cash"${sayAttr(`হাতে আছে ${bal<0?'মাইনাস ':''}${sayTk(bal)}। মোট এসেছে ${sayTk(tin)}। খরচ আর জমায় গেছে ${sayTk(tout)}।`)}>
+    <div class="ch"><span class="tile">${ico('purse','l')}</span><div class="tt"><h2>হাতের টাকা</h2><span>বেতন থেকে নিজে নিজে হিসাব হয়</span></div><div class="due ${bal>=0?'ok':''}"><span>এখন আছে</span><b>${bal<0?'−':''}${tk(Math.abs(bal))}</b></div></div>
+    <div class="sumline">পাওয়া টাকা <b>${tk(tin)}</b> − জমায় রাখা ও খরচ <b>${tk(tout)}</b> = <b>${bal<0?'−':''}${tk(Math.abs(bal))}</b></div>
+    <label class="check"><input type="checkbox" id="cashAllow" ${S.cashAllow?'checked':''}> দৈনিক হাতখরচও এখানে আয় হিসেবে ধরুন</label>
+    <div class="btns"><button class="btn bigbtn out" data-act="addCash" data-v="out">${ico('bag')}খরচ করলাম</button><button class="btn bigbtn in" data-act="addCash" data-v="in">${ico('coins')}অন্য আয়</button></div>
+    <p class="small muted" style="margin:0">জমা খাতায় টাকা রাখলে এখান থেকে কমে, জমা থেকে তুললে এখানে বাড়ে।</p></section>
+    <section class="card"><h2>টাকার আসা-যাওয়া</h2><div class="list">${ev.length?ev.slice().reverse().map(e=>`<div class="item">${ico(e.ic,'m',e.arrow?ARROW[e.arrow]:'')}<div class="main"><span class="t">${e.t}</span><span class="s">${fmtDate(e.date)}${e.note?' · '+esc(e.note):''} ${e.id?'':'<span class="tag">অটো</span>'}</span></div><span class="amtcol"><span class="amt ${e.amt>0?'in':'out'}">${e.amt>0?'+':'−'}${tk(Math.abs(e.amt))}</span><span class="bal">থাকে ${e.bal<0?'−':''}${tk(Math.abs(e.bal))}</span></span>${e.id?`<button class="x" data-act="delCash" data-v="${e.id}" aria-label="মুছুন">×</button>`:''}</div>`).join(''):`<div class="empty">${ico('purse','m')}বেতন বা ওভারটাইমের টাকা পেলে এখানে নিজে থেকেই যোগ হবে</div>`}</div></section>`;
+  } else if(w){
     const t=totals();
     const list=[...S.wallet].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
     const tin=S.wallet.filter(x=>x.dir==='in').reduce((s,x)=>s+x.amount,0), tout=S.wallet.filter(x=>x.dir==='out').reduce((s,x)=>s+x.amount,0);
@@ -660,7 +765,7 @@ function pageSettings(){
     <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('lock','l')}</span><div class="tt"><h2>সেটিংস খুলতে পিন দিন</h2><span>শুধু হিসাব যিনি সেট করেন তার জন্য</span></div></div>
     <form data-form="pin" style="display:grid;gap:10px"><input type="password" inputmode="numeric" id="pinIn" autocomplete="off" placeholder="পিন" aria-label="পিন">
     <button class="btn primary">খুলুন</button></form>${S.pin==='1234'?'<p class="small muted" style="margin:0">প্রথমবার পিন ১২৩৪। খোলার পর পিন বদলে নিন।</p>':''}</section></div>`;
-  const last=[...S.settings].sort((a,b)=>a.from<b.from?1:-1)[0]||{salary:'',allowance:100,otDays:[5],allowOnOt:true,otType:'fixed',otRate:'',basis:'30'};
+  const last=[...S.settings].sort((a,b)=>a.from<b.from?1:-1)[0]||{salary:'',allowance:100,otDays:[5],allowOnOt:true,otType:'fixed',otRate:'',basis:'30',carryAllow:true,carryOt:false};
   const cur=mkOf(today());
   const box='style="display:grid;gap:12px"';
   return `<div class="wrap stack">
@@ -677,6 +782,8 @@ function pageSettings(){
     <div style="display:grid;gap:6px"><span class="small muted" style="font-weight:500">ওভারটাইমের দিন (সাধারণত সাপ্তাহিক ছুটির দিন)</span>
       <div class="daypick">${[6,0,1,2,3,4,5].map(d=>`<label><input type="checkbox" name="otd" value="${d}" ${last.otDays.includes(d)?'checked':''}><span>${WD[d]}</span></label>`).join('')}</div></div>
     <label class="check"><input type="checkbox" id="rAllowOt" ${last.allowOnOt!==false?'checked':''}> ওভারটাইমের দিনেও হাতখরচ পাবে</label>
+    <label class="check"><input type="checkbox" id="rCarryA" ${last.carryAllow!==false?'checked':''}> না পাওয়া হাতখরচ মাসের বেতনের সাথে যোগ হবে</label>
+    <label class="check"><input type="checkbox" id="rCarryO" ${last.carryOt?'checked':''}> না পাওয়া ওভারটাইমের টাকাও বেতনের সাথে যোগ হবে</label>
     <div class="radio"><span class="small muted">ওভারটাইমের টাকা কীভাবে হিসাব হবে</span>
       <label><input type="radio" name="otType" value="fixed" ${last.otType!=='hour'?'checked':''}> প্রতিদিন নির্দিষ্ট টাকা</label>
       <label><input type="radio" name="otType" value="hour" ${last.otType==='hour'?'checked':''}> প্রতি ঘণ্টা হিসাবে</label></div>
@@ -688,8 +795,13 @@ function pageSettings(){
 
   ${S.settings.length?`<section class="card"><h2>নিয়মের ইতিহাস</h2><div class="list">${[...S.settings].sort((a,b)=>a.from<b.from?1:-1).map(r=>`<div class="item"><div class="main"><span class="t">${fmtMonth(r.from)} থেকে</span><span class="s">বেতন ${tk(r.salary)} · হাতখরচ ${tk(r.allowance)} · ওভারটাইম ${tk(r.otRate)}${r.otType==='hour'?'/ঘণ্টা':'/দিন'} · ${r.otDays.map(d=>WD[d]).join(', ')||'কোনো দিন না'}</span></div>${S.settings.length>1?`<button class="x" data-act="delRule" data-v="${r.from}" aria-label="মুছুন">×</button>`:''}</div>`).join('')}</div></section>`:''}
 
+  <form class="card" data-form="loginpin" ${box}>
+    <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('lock','m')}</span><div class="tt"><h2>অ্যাপ খোলার পিন</h2><span>অ্যাপ খুলতে এই ৪ সংখ্যার পিন লাগে</span></div></div>
+    <input type="password" inputmode="numeric" maxlength="4" id="lp1" placeholder="নতুন ৪ সংখ্যার পিন" aria-label="নতুন অ্যাপ পিন" autocomplete="off">
+    <input type="password" inputmode="numeric" maxlength="4" id="lp2" placeholder="আবার একই পিন" aria-label="আবার অ্যাপ পিন" autocomplete="off"><button class="btn">অ্যাপের পিন বদলান</button></form>
+
   <form class="card" data-form="newpin" ${box}>
-    <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('lock','m')}</span><div class="tt"><h2>পিন বদলান</h2></div></div>
+    <div class="ch"><span class="tile" style="--cb:var(--accent-soft)">${ico('gear','m')}</span><div class="tt"><h2>সেটিংসের পিন বদলান</h2><span>শুধু আপনার জন্য, অ্যাপের পিন থেকে আলাদা</span></div></div>
     <input type="password" inputmode="numeric" id="np1" placeholder="নতুন পিন (কমপক্ষে ৪ সংখ্যা)" aria-label="নতুন পিন" autocomplete="off">
     <input type="password" inputmode="numeric" id="np2" placeholder="আবার নতুন পিন" aria-label="আবার নতুন পিন" autocomplete="off"><button class="btn">পিন বদলান</button></form>
 
@@ -746,6 +858,18 @@ document.addEventListener('click',e=>{
     case 'dayOff': {const r=day(ds);r.off=true;delete r.allow;delete r.ot;delete r.otGot;delete r.otHours;commit('অফিস বন্ধ হিসেবে রাখা হলো');break}
     case 'unOff': {const r=day(ds);delete r.off;tidy(ds);commit();break}
     case 'ledgerTab': ui.ledger=v;render();break;
+    case 'addCash': openModal(v==='in'?'অন্য আয়':'খরচ করলাম',()=>`<form data-form="cash" data-v="${v}" style="display:grid;gap:12px">
+      <label class="f">কত টাকা<input type="number" inputmode="numeric" min="1" id="cAmt" required></label>
+      <label class="f">তারিখ<input type="date" id="cDate" value="${today()}" required></label>
+      <label class="f">কিসের জন্য (ইচ্ছা হলে)<input type="text" id="cNote" placeholder="${v==='in'?'যেমন: বোনাস':'যেমন: বাজার, বাড়িতে পাঠালাম'}"></label>
+      <button class="btn primary">সেভ করুন</button></form>`);setTimeout(()=>document.getElementById('cAmt')?.focus(),50);break;
+    case 'delCash': askConfirm('এই এন্ট্রি মুছে ফেলবেন?','মুছুন',()=>{S.cash=S.cash.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
+    case 'voice': openVoice();break;
+    case 'listen': startListen();break;
+    case 'ask': handleVoice([v]);break;
+    case 'key': lockKey(v);break;
+    case 'forgot': L.mode='admin';L.buf='';L.err='';renderLock();break;
+    case 'backLogin': L.mode='login';L.buf='';L.err='';renderLock();break;
     case 'addWallet': openModal(v==='in'?'টাকা রাখলাম':'টাকা তুললাম',()=>`<form data-form="wallet" data-v="${v}" style="display:grid;gap:12px">
       <label class="f">কত টাকা<input type="number" inputmode="numeric" min="1" id="wAmt" required></label>
       <label class="f">তারিখ<input type="date" id="wDate" value="${today()}" required></label>
@@ -782,10 +906,10 @@ document.addEventListener('click',e=>{
     case 'importB': openModal('ব্যাকআপ ফেরত আনুন',()=>`<p class="small muted" style="margin:0">আগে নেওয়া ব্যাকআপের লেখা এখানে পেস্ট করুন। এখনকার সব হিসাব বদলে যাবে।</p><textarea id="bIn" aria-label="ব্যাকআপ"></textarea><button class="btn primary" data-act="doImport">ফেরত আনুন</button>`);break;
     case 'doImport': {let d;try{d=JSON.parse(document.getElementById('bIn').value);if(!d||!Array.isArray(d.settings)||typeof d.days!=='object')throw 0}catch(e){toast('লেখাটা ঠিক ব্যাকআপ না, আবার কপি করে আনুন');break}
       S=Object.assign(blank(),d);closeModal();commit('ব্যাকআপ থেকে হিসাব ফেরত এসেছে');break}
-    case 'wipe': askConfirm('সব হিসাব চিরতরে মুছে যাবে। আগে ব্যাকআপ নিয়েছেন?','সব মুছুন',()=>{const pin=S.pin;S=blank();S.pin=pin;commit('সব মুছে ফেলা হয়েছে')});break;
+    case 'wipe': askConfirm('সব হিসাব চিরতরে মুছে যাবে। আগে ব্যাকআপ নিয়েছেন?','সব মুছুন',()=>{const pin=S.pin,lp=S.loginPin;S=blank();S.pin=pin;S.loginPin=lp;commit('সব মুছে ফেলা হয়েছে')});break;
     case 'installVoice': closeModal();try{AndroidBridge.installVoice()}catch(e){}break;
-    case 'loadDemo': S=demo();commit('নমুনা হিসাব দেখানো হচ্ছে');break;
-    case 'clearDemo': S=blank();ui.unlocked=false;ui.tab='home';commit('নমুনা মুছে ফেলা হয়েছে');break;
+    case 'loadDemo': {const lp=S.loginPin;S=demo();S.loginPin=lp;}commit('নমুনা হিসাব দেখানো হচ্ছে');break;
+    case 'clearDemo': {const lp=S.loginPin,pin=S.pin;S=blank();S.loginPin=lp;S.pin=pin;ui.unlocked=false;ui.tab='home';commit('নমুনা মুছে ফেলা হয়েছে');break}
   }
 });
 
@@ -798,6 +922,7 @@ function salHint(){
 }
 document.addEventListener('input',e=>{if(e.target.id==='sAmt')salHint()});
 document.addEventListener('change',e=>{
+  if(e.target.id==='cashAllow'){S.cashAllow=e.target.checked;commit();return}
   if(e.target.id==='sMonth'){const a=document.getElementById('sAmt');a.value=Math.max(0,salDue(e.target.value))||'';salHint();return}
   const el=e.target.closest('[data-chg]');if(!el)return;const ds=el.dataset.d, v=el.value===''?null:Math.max(0,num(el.value));
   const r=day(ds);
@@ -812,10 +937,15 @@ document.addEventListener('submit',e=>{
   const g=id=>document.getElementById(id)?.value;
   switch(f.dataset.form){
     case 'pin': if(g('pinIn')===S.pin){ui.unlocked=true;render()} else toast('পিন মেলেনি'); break;
+    case 'loginpin': {const a=g('lp1'),b=g('lp2');if(!/^\d{4}$/.test(a||'')){toast('পিন ঠিক ৪ সংখ্যার দিন');break}if(a!==b){toast('দুইবারের পিন মেলেনি');break}S.loginPin=a;commit('অ্যাপের পিন বদলানো হয়েছে');break}
+    case 'cash': {const amt=num(g('cAmt'));if(amt<=0){toast('টাকার পরিমাণ লিখুন');break}
+      (S.cash||(S.cash=[])).push({id:uid(),dir:f.dataset.v,amount:amt,date:g('cDate')||today(),note:(g('cNote')||'').trim()});closeModal();commit('সেভ হয়েছে');break}
+    case 'ask': {const q=(g('askIn')||'').trim();if(q)handleVoice([q]);break}
     case 'newpin': {const a=g('np1'),b=g('np2');if(!/^\d{4,8}$/.test(a||'')){toast('পিন ৪ থেকে ৮ সংখ্যার দিন');break}if(a!==b){toast('দুইবারের পিন মেলেনি');break}S.pin=a;commit('পিন বদলানো হয়েছে');break}
     case 'rules': {
       const otDays=[...f.querySelectorAll('input[name=otd]:checked')].map(i=>+i.value);
       const r={from:g('rFrom'),salary:num(g('rSal')),allowance:num(g('rAllow')),otDays,allowOnOt:document.getElementById('rAllowOt').checked,
+        carryAllow:document.getElementById('rCarryA').checked,carryOt:document.getElementById('rCarryO').checked,
         otType:f.querySelector('input[name=otType]:checked').value,otRate:num(g('rRate')),basis:g('rBasis')};
       if(!r.from){toast('মাস বেছে নিন');break}
       S.settings=S.settings.filter(x=>x.from!==r.from);S.settings.push(r);
@@ -866,8 +996,130 @@ document.addEventListener('click',e=>{if(justSpoke){justSpoke=false;e.stopPropag
 document.addEventListener('pointerdown',()=>{justSpoke=false},true);
 
 // Android ব্যাক বাটন: আগে মডাল বন্ধ, তারপর হোমে ফেরা, তারপর অ্যাপ বন্ধ
-window.appBack=function(){if(modalFn||document.getElementById('modal').innerHTML){closeModal();return true}if(ui.tab!=='home'){ui.tab='home';render();return true}return false};
+window.appBack=function(){if(L.mode)return false;if(modalFn||document.getElementById('modal').innerHTML){closeModal();return true}if(ui.tab!=='home'){ui.tab='home';render();return true}return false};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modalFn)closeModal()});
+
+/* ================= পিন দিয়ে লগইন ================= */
+// login: অ্যাপ খোলার ৪ সংখ্যার পিন | setup/setup2: নতুন পিন বানানো | admin: পিন ভুলে গেলে সেটিংসের পিন
+const L={mode:null,buf:'',first:null,err:''};
+let hiddenAt=0;
+function renderLock(){
+  const el=document.getElementById('lock');
+  if(!L.mode){el.hidden=true;el.innerHTML='';return}
+  el.hidden=false;
+  const admin=L.mode==='admin', len=admin?Math.max(4,L.buf.length):4;
+  const title={login:'পিন দিন',setup:'নতুন পিন বানান',setup2:'আবার একই পিন দিন',admin:'সেটিংসের পিন দিন'}[L.mode];
+  const sub={login:'অ্যাপ খুলতে আপনার ৪ সংখ্যার পিন দিন',setup:'অ্যাপ খুলতে এই ৪ সংখ্যার পিন লাগবে। মনে রাখার মতো পিন দিন।',setup2:'নিশ্চিত করতে আরেকবার দিন',admin:'যিনি অ্যাপ সেট করেছেন তার পিন দিয়ে নতুন পিন বানান'}[L.mode];
+  const keys=['1','2','3','4','5','6','7','8','9',admin?'ok':'','0','del'];
+  el.innerHTML=`<span class="logo">${ico('company','l')}</span><h1>${title}</h1><p>${sub}</p>
+    <div class="dots ${L.err?'shake':''}" aria-label="${bn(L.buf.length)}টি সংখ্যা দেওয়া হয়েছে">${Array.from({length:len},(_,i)=>`<span class="${i<L.buf.length?'f':''}"></span>`).join('')}</div>
+    <p class="err" role="alert">${L.err}</p>
+    <div class="keys">${keys.map(k=>k===''?'<span></span>':k==='del'?`<button data-act="key" data-v="del" aria-label="মুছুন"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5h11v14H9l-6-7z"/><path d="M12 9l5 6M17 9l-5 6"/></svg></button>`:k==='ok'?`<button class="ok" data-act="key" data-v="ok" aria-label="ঠিক আছে">ঠিক</button>`:`<button data-act="key" data-v="${k}">${bn(k)}</button>`).join('')}</div>
+    ${L.mode==='login'?'<button class="link" data-act="forgot">পিন ভুলে গেছেন?</button>':admin?'<button class="link" data-act="backLogin">ফিরে যান</button>':''}`;
+}
+function lockKey(k){
+  L.err='';
+  if(k==='del'){L.buf=L.buf.slice(0,-1);renderLock();return}
+  if(k==='ok'){ if(L.mode==='admin') checkLock(); return }
+  if(L.buf.length>=(L.mode==='admin'?8:4))return;
+  L.buf+=k;
+  if(L.mode!=='admin'&&L.buf.length===4){renderLock();setTimeout(checkLock,120);return}
+  renderLock();
+}
+function checkLock(){
+  const b=L.buf;L.buf='';
+  if(L.mode==='login'){ if(b===S.loginPin){L.mode=null} else L.err='ভুল পিন, আবার চেষ্টা করুন' }
+  else if(L.mode==='setup'){L.first=b;L.mode='setup2'}
+  else if(L.mode==='setup2'){ if(b===L.first){S.loginPin=b;save();L.mode=null;toast('পিন সেট হয়েছে')} else {L.mode='setup';L.err='দুইবারের পিন মেলেনি, আবার দিন'} }
+  else if(L.mode==='admin'){ if(b===S.pin){L.mode='setup'} else L.err='সেটিংসের পিন মেলেনি' }
+  renderLock(); if(!L.mode) render();
+}
+function lockIfNeeded(){ if(!S.loginPin){L.mode='setup'} else L.mode='login'; L.buf='';L.err=''; ui.unlocked=false; closeModal(); renderLock() }
+// অ্যাপ ১ মিনিটের বেশি পেছনে থাকলে আবার পিন চাইবে
+window.appPause=()=>{hiddenAt=Date.now()};
+window.appResume=()=>{if(hiddenAt&&Date.now()-hiddenAt>60000&&!L.mode)lockIfNeeded();hiddenAt=0};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)appPause();else appResume()});
+// লক স্ক্রিনে ফোনের কিবোর্ডেও সংখ্যা দেওয়া যায়
+document.addEventListener('keydown',e=>{if(!L.mode)return;if(/^[0-9]$/.test(e.key))lockKey(e.key);else if(e.key==='Backspace')lockKey('del');else if(e.key==='Enter')lockKey('ok')});
+
+/* ================= মুখে প্রশ্ন (ভয়েস) ================= */
+const V={state:'idle',heard:'',ans:''};
+const EX=['আমার কত টাকা বাকি?','এই মাসের বেতন কত বাকি?','হাতে কত টাকা আছে?','জমা খাতায় কত আছে?','এই মাসে ওভারটাইম কত দিন?','আজ হাতখরচ পেয়েছি কিনা?'];
+const MIC='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/></svg>';
+function voiceBody(){
+  return `<div class="vbox"><button class="micbig ${V.state==='listening'?'on':''}" data-act="listen" aria-label="বলুন">${MIC}</button>
+    <p class="vstate">${V.state==='listening'?'শুনছি... প্রশ্নটা বলুন':'মাইকে চাপ দিয়ে প্রশ্ন বলুন'}</p></div>
+    ${V.heard?`<p class="vq">আপনি বললেন: “${esc(V.heard)}”</p>`:''}
+    ${V.ans?`<div class="va" role="status">${esc(V.ans)}</div>`:''}
+    <form data-form="ask" class="askrow"><input type="text" id="askIn" placeholder="অথবা লিখে জিজ্ঞেস করুন" aria-label="প্রশ্ন"><button class="btn">জিজ্ঞেস</button></form>
+    <div><span class="small muted">যেমন বলতে পারেন:</span><div class="examples">${EX.map(e=>`<button class="chip c-lv" data-act="ask" data-v="${e}">${e}</button>`).join('')}</div></div>`;
+}
+function refreshModal(){const b=document.getElementById('modalBody');if(b&&modalFn)b.innerHTML=modalFn()}
+function openVoice(){V.heard='';V.ans='';openModal('মুখে প্রশ্ন করুন',voiceBody);startListen()}
+function startListen(){
+  if(window.AndroidBridge&&AndroidBridge.listen){V.state='listening';refreshModal();AndroidBridge.listen();return}
+  const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!R){V.ans='এখানে মাইক চালু করা যাচ্ছে না। নিচে লিখে জিজ্ঞেস করুন, অ্যাপে মুখে বলা যাবে।';refreshModal();return}
+  try{
+    const r=new R();r.lang='bn-BD';r.maxAlternatives=3;
+    r.onresult=e=>handleVoice([...e.results[0]].map(a=>a.transcript));
+    r.onerror=()=>window.onVoiceError('err');
+    r.onend=()=>{if(V.state==='listening'){V.state='idle';refreshModal()}};
+    V.state='listening';refreshModal();r.start();
+  }catch(e){window.onVoiceError('err')}
+}
+// Android থেকে আসে: কয়েকটা সম্ভাব্য লেখা, যেটা বুঝতে পারি সেটা নেওয়া হয়
+window.onVoiceResult=list=>handleVoice(list);
+window.onVoiceError=code=>{V.state='idle';if(code!=='cancel')V.ans=code==='noapp'?'ফোনে কথা শোনার ব্যবস্থা নেই। Play Store থেকে Google অ্যাপ আপডেট করুন।':'ঠিক শুনতে পাইনি, মাইকে চাপ দিয়ে আবার বলুন।';refreshModal()};
+function handleVoice(list){
+  V.state='idle';
+  let res=null;
+  for(const q of list){const r=answer(q||'');if(!r.fallback){res=r;V.heard=q;break}}
+  if(!res){V.heard=list[0]||'';res=answer(V.heard)}
+  V.ans=res.text;
+  if(!modalFn) openModal('মুখে প্রশ্ন করুন',voiceBody);
+  refreshModal(); speak(res.text);
+}
+// বাংলা লেখা এক রকম করা (য়/ড়/ঢ় দুইভাবে লেখা যায়)
+const norm=s=>String(s).normalize('NFD').toLowerCase().replace(/[?।,!.]/g,' ');
+function answer(raw){
+  const q=norm(raw), has=(...w)=>w.some(x=>q.includes(norm(x)));
+  if(!S.settings.length) return {text:'এখনো বেতনের নিয়ম সেট করা হয়নি। আগে সেটিংসে বেতন দিন।'};
+  const t=totals(), cur=mkOf(today());
+  // কোন মাস
+  let mk=cur, ml='এই মাসে';
+  if(has('গত মাস','আগের মাস','গেল মাস','last month')){mk=addMonth(cur,-1);ml='গত মাসে'}
+  else{const i=MONTHS.findIndex(m=>has(m));if(i>=0){let y=+cur.slice(0,4);if(i+1>+cur.slice(5))y--;mk=y+'-'+pad(i+1);ml=MONTHS[i]+' মাসে'}}
+  const x=monthSum(mk), mN=mName(mk);
+  const got=has('পেয়েছি','পাইছি','পাইলাম','পেলাম','দিয়েছে','দিছে'), notGot=has('পাইনি','পাই নাই','পাইনাই','পাই নি','দেয়নি','দেয় নাই','দেয়নাই');
+  const isQ=has('কি ','কিনা','কী','কত','কয়');
+  // কাজ: আজকের হাতখরচ মুখে বলে লেখা
+  if(has('আজ')&&has('হাতখরচ','হাত খরচ','পকেট খরচ')&&(got||notGot)&&!isQ){
+    const c=dayCalc(today());
+    if(c.kind!=='work'||c.allowExp<=0) return {text:'আজ হাতখরচের দিন না, তাই কিছু লেখা হয়নি।'};
+    day(today()).allow=notGot?0:c.s.allowance; commit();
+    return {text:notGot?'ঠিক আছে, লিখে রাখলাম আজ হাতখরচ পাননি।':`ঠিক আছে, লিখে রাখলাম আজ ${sayTk(c.s.allowance)} হাতখরচ পেয়েছেন।`};
+  }
+  if(has('জমা','সঞ্চয়','সেভিং','ব্যাংক')) return {text:`জমা খাতায় এখন আছে ${sayTk(t.wallet)}।`};
+  if(has('হাতে','পকেটে','ক্যাশ','নগদ')) return {text:t.cash<0?`হাতের হিসাবে ${sayTk(t.cash)} কম আছে।`:`হাতে এখন আছে ${sayTk(t.cash)}।`};
+  if(has('ছুটি')){const n=x.lv.paid+x.lv.unpaid+x.lv.pending;return {text:n?`${ml} ছুটি ${bn(n)} দিন। বেতনসহ ${bn(x.lv.paid)} দিন, বিনা বেতনে ${bn(x.lv.unpaid)} দিন, জানা নেই ${bn(x.lv.pending)} দিন।`:`${ml} কোনো ছুটি নেই।`}}
+  if(has('ওভারটাইম','ওভার টাইম','ওটি','overtime')){
+    const n=x.o.days.length, unpaid=x.o.days.filter(c=>!c.otGot).length;
+    if(has('কত দিন','কয় দিন','কয়দিন','কতদিন','কবার')) return {text:`${ml} ওভারটাইম করেছেন ${bn(n)} দিন।`+(unpaid?` তার মধ্যে ${bn(unpaid)} দিনের টাকা পাননি।`:'')};
+    return {text:n?`${ml} ওভারটাইম ${bn(n)} দিন। ${sayTrio(x.o.exp,x.o.got)}`+(x.sal&&x.o.toSal&&x.o.exp>x.o.got?' বাকিটা বেতনের সাথে যোগ হয়েছে।':''):`${ml} কোনো ওভারটাইম নেই।`};
+  }
+  if(has('হাতখরচ','হাত খরচ','পকেট খরচ')){
+    if(has('আজ')){const c=dayCalc(today());return {text:c.allowGot==null?'আজকের হাতখরচ এখনো লেখা হয়নি।':c.allowGot>0?`আজ হাতখরচ পেয়েছেন ${sayTk(c.allowGot)}।`:'আজ হাতখরচ পাননি।'}}
+    return {text:`${ml} হাতখরচ ${bn(x.a.dGot)} দিন পেয়েছেন, ${bn(x.a.dNo)} দিন পাননি। ${sayTrio(x.a.exp,x.a.got)}`+(x.sal&&x.a.toSal&&x.a.exp>x.a.got?' বাকিটা বেতনের সাথে যোগ হয়েছে।':'')};
+  }
+  if(has('বেতন','স্যালারি','সেলারি','মাইনে','salary')){
+    if(!x.sal) return {text:`${mN} মাসের বেতনের হিসাব নেই।`};
+    return {text:`${mN} মাসের বেতন। `+(x.sal.carryA>0?`বেতন ${sayTk(x.sal.base)}, সাথে না পাওয়া হাতখরচ ${sayTk(x.sal.carryA)}। `:'')+sayTrio(x.sal.exp,x.sal.got)};
+  }
+  if(has('বাকি','পাওনা','পাবো','পাব','কোম্পানি','পামু')) return {text:(t.due>=0?`কোম্পানির কাছে মোট পাবেন ${sayTk(t.due)}। `:`কোম্পানি থেকে ${sayTk(t.due)} অগ্রিম পেয়েছেন। `)+dueList(t)+'।'};
+  if(has('টাকা')) return {text:`হাতে আছে ${sayTk(t.cash)}, জমা খাতায় আছে ${sayTk(t.wallet)}। কোম্পানির কাছে ${t.due>=0?'পাবেন '+sayTk(t.due):sayTk(t.due)+' অগ্রিম নিয়েছেন'}।`};
+  return {fallback:true,text:'বুঝতে পারিনি। এভাবে বলুন: "আমার কত টাকা বাকি?" বা "হাতে কত টাকা আছে?"'};
+}
 
 /* ================= নমুনা ডেটা ================= */
 function demo(){
@@ -889,6 +1141,7 @@ function demo(){
 }
 
 render();
+lockIfNeeded();
 </script>
 
 </body></html>
