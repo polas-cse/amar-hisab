@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style>
+</head><body>
+<title>আমার হিসাব</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one-column phone app — summary band on top, big tap targets, fixed bottom tab bar */
+:root{
+  --bg:#eef1f8; --surface:#ffffff; --surface-2:#e5eaf5; --fg:#172036; --muted:#5a6480; --line:#d3daea;
+  --accent:#2346a8; --accent-fg:#ffffff; --accent-soft:#dfe6fb;
+  --good:#11805a; --good-bg:#ddf3e8; --bad:#c03636; --bad-bg:#fbe4e4;
+  --warn:#9a6200; --warn-bg:#fbefd6; --info:#2a64c8; --info-bg:#e0eafb; --off:#6f7890; --off-bg:#e8ebf2;
+  --band:#1d3270; --band-fg:#f2f5ff; --band-muted:#b9c6ef;
+  --f-display:"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",sans-serif;
+  --f-body:"Hind Siliguri","Noto Sans Bengali","Noto Sans",sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e131e; --surface:#161d2c; --surface-2:#1f2839; --fg:#e7ebf5; --muted:#9aa3bd; --line:#2b3550;
+  --accent:#86a2ff; --accent-fg:#0e131e; --accent-soft:#1f2c52;
+  --good:#52d39d; --good-bg:#11352a; --bad:#ff8a8a; --bad-bg:#3b1c22;
+  --warn:#f0b54d; --warn-bg:#382a11; --info:#86b3ff; --info-bg:#182a49; --off:#8d95aa; --off-bg:#222a3a;
+  --band:#18244a; --band-fg:#eef2ff; --band-muted:#9fb0e3; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e131e; --surface:#161d2c; --surface-2:#1f2839; --fg:#e7ebf5; --muted:#9aa3bd; --line:#2b3550;
+  --accent:#86a2ff; --accent-fg:#0e131e; --accent-soft:#1f2c52;
+  --good:#52d39d; --good-bg:#11352a; --bad:#ff8a8a; --bad-bg:#3b1c22;
+  --warn:#f0b54d; --warn-bg:#382a11; --info:#86b3ff; --info-bg:#182a49; --off:#8d95aa; --off-bg:#222a3a;
+  --band:#18244a; --band-fg:#eef2ff; --band-muted:#9fb0e3; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+.num{font-family:var(--f-display);font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{padding-block:0 calc(96px + env(safe-area-inset-bottom,0px))}
+
+/* top band */
+.band{background:var(--band);color:var(--band-fg)}
+.band .wrap{padding-block:18px 22px;display:grid;gap:14px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand h1{margin:0;font-family:var(--f-display);font-size:24px;font-weight:700;letter-spacing:.2px}
+.brand .today{color:var(--band-muted);font-size:14px}
+.totals{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+.tot{display:grid;gap:2px}
+.tot .lbl{font-size:13px;color:var(--band-muted)}
+.tot .val{font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1.1}
+.tot.small .val{font-size:22px}
+
+.demo{background:var(--warn-bg);color:var(--warn);font-size:14px}
+.demo .wrap{padding-block:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:12px}
+.stack{display:grid;gap:14px;padding-block:16px}
+h2{margin:0;font-size:18px;font-weight:700;text-wrap:balance}
+h3{margin:0;font-size:15px;font-weight:600;color:var(--muted)}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* month switcher */
+.msw{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.msw .m{font-weight:700;font-size:18px}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* three-number row: পাওনা / পেয়েছি / বাকি */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.trio div{background:var(--surface-2);border-radius:10px;padding:8px 10px;display:grid;gap:0;min-width:0}
+.trio span{font-size:12px;color:var(--muted)}
+.trio b{font-family:var(--f-display);font-size:19px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.trio .due b{color:var(--bad)}
+.trio .due.zero b{color:var(--good)}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:600;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.c-good{background:var(--good-bg);color:var(--good)} .c-bad{background:var(--bad-bg);color:var(--bad)}
+.c-warn{background:var(--warn-bg);color:var(--warn)} .c-info{background:var(--info-bg);color:var(--info)}
+.c-off{background:var(--off-bg);color:var(--off)}
+
+/* buttons */
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);padding:8px 16px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.block{width:100%}
+.btn.sm{min-height:38px;padding:4px 12px;font-size:14px}
+.btn:focus-visible,.icon-btn:focus-visible,.seg button:focus-visible,.tab:focus-visible,.cal button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* segmented big choice buttons */
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg.two{grid-template-columns:1fr 1fr}
+.seg button{min-height:56px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer;padding:4px 6px;line-height:1.25}
+.seg button small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.seg button.on-good{border-color:var(--good);background:var(--good-bg);color:var(--good)}
+.seg button.on-bad{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.seg button.on-info{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.seg button.on-good small,.seg button.on-bad small,.seg button.on-info small{color:inherit}
+.q{font-weight:600}
+.sub-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px;border-top:1px dashed var(--line)}
+
+/* forms */
+label.f{display:grid;gap:4px;font-size:14px;color:var(--muted);font-weight:500}
+input[type=number],input[type=text],input[type=password],input[type=date],input[type=month],select,textarea{width:100%;min-height:48px;border-radius:10px;border:1px solid var(--line);background:var(--surface);padding:8px 12px;color:var(--fg);font-size:17px}
+textarea{min-height:140px;font-family:ui-monospace,monospace;font-size:13px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.daypick{display:flex;flex-wrap:wrap;gap:6px}
+.daypick label{display:inline-flex}
+.daypick input{position:absolute;opacity:0;pointer-events:none}
+.daypick span{border:2px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;font-weight:600;font-size:14px}
+.daypick input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.daypick input:focus-visible+span{outline:3px solid var(--accent)}
+.radio{display:grid;gap:8px}
+.radio label{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.radio input{width:20px;height:20px;accent-color:var(--accent)}
+.check{display:flex;gap:10px;align-items:center}
+.check input{width:22px;height:22px;accent-color:var(--accent)}
+
+/* lists */
+.list{display:grid}
+.item{display:flex;gap:10px;align-items:center;padding-block:12px;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item .main{flex:1;min-width:0;display:grid}
+.item .main .t{font-weight:600}
+.item .main .s{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.amt{font-family:var(--f-display);font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.amt.in{color:var(--good)} .amt.out{color:var(--bad)}
+.x{width:36px;height:36px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:20px;line-height:1}
+.empty{color:var(--muted);text-align:center;padding:18px 8px}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .wd{font-size:12px;color:var(--muted);text-align:center;font-weight:600}
+.cal button{aspect-ratio:1/1.05;max-width:100%;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;grid-template-rows:1fr auto;justify-items:center;align-items:center;padding:3px 0 4px;font-family:var(--f-display);font-size:17px;position:relative}
+.cal button .mk{font-family:var(--f-body);font-size:10px;font-weight:700;line-height:1}
+.cal button.today{outline:2px solid var(--accent);outline-offset:1px}
+.cal .k-good{background:var(--good-bg);border-color:transparent;color:var(--good)}
+.cal .k-bad{background:var(--bad-bg);border-color:transparent;color:var(--bad)}
+.cal .k-info{background:var(--info-bg);border-color:transparent;color:var(--info)}
+.cal .k-warn{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+.cal .k-off{background:var(--off-bg);border-color:transparent;color:var(--off)}
+.cal .k-rest{background:transparent;border-style:dashed;color:var(--muted)}
+.cal .k-future,.cal .k-before{opacity:.45}
+.cal .ot{position:absolute;top:3px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px}
+
+/* tab bar */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);z-index:5}
+nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tab{border:0;background:transparent;padding:8px 2px 10px;display:grid;justify-items:center;gap:2px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.tab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-current="page"]{color:var(--accent)}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(8,12,24,.5);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding-block:16px calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
+.sheet header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;z-index:20;max-width:90%;text-align:center}
+@media (max-width:360px){.trio b{font-size:16px}.tot .val{font-size:25px}}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+</style>
+
+<div id="top"></div>
+<main id="page"></main>
+<nav class="tabs" aria-label="মেনু"><div class="in" id="tabs"></div></nav>
+<div id="modal"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+'use strict';
+/* ================= স্টোরেজ =================
+   APK-তে AndroidBridge দিয়ে অ্যাপের নিজস্ব ফাইলে সেভ হয় (WebView cache মুছলেও ডেটা থাকে);
+   ব্রাউজারে localStorage, সেটাও না থাকলে শুধু মেমরিতে। */
+const KEY='amar-hisab-v1';
+const store={
+  get(){try{if(window.AndroidBridge)return AndroidBridge.load()||null;return localStorage.getItem(KEY)}catch(e){return null}},
+  set(v){try{if(window.AndroidBridge){AndroidBridge.save(v);return true}localStorage.setItem(KEY,v);return true}catch(e){return false}}
+};
+const blank=()=>({v:1,pin:'1234',startMonth:null,settings:[],days:{},leaves:[],salary:[],wallet:[],demo:false});
+let S=load();
+function load(){try{const raw=store.get();if(raw)return Object.assign(blank(),JSON.parse(raw))}catch(e){}return blank()}
+function save(){if(!store.set(JSON.stringify(S)))toast('সেভ করা যায়নি, ফোনের জায়গা দেখুন')}
+
+/* ================= বাংলা ফরম্যাট ================= */
+const MONTHS=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const WD=['রবি','সোম','মঙ্গল','বুধ','বৃহস্পতি','শুক্র','শনি'];
+const bn=s=>String(s).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const tk=n=>'৳'+bn(Math.round(n||0).toLocaleString('en-IN'));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parseD=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const today=()=>ymd(new Date());
+const mkOf=s=>s.slice(0,7);
+const daysIn=(y,m)=>new Date(y,m,0).getDate();
+const addMonth=(mk,k)=>{const[y,m]=mk.split('-').map(Number);const d=new Date(y,m-1+k,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)};
+const fmtMonth=mk=>{const[y,m]=mk.split('-').map(Number);return MONTHS[m-1]+' '+bn(y)};
+const fmtDate=(s,withWd)=>{const d=parseD(s);return (withWd?WD[d.getDay()]+'বার, ':'')+bn(d.getDate())+' '+MONTHS[d.getMonth()]+(withWd?'':' '+bn(d.getFullYear()))};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const num=v=>{const n=Number(String(v).replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d)));return isFinite(n)?n:0};
+const PAY={paid:'বেতনসহ',unpaid:'বিনা বেতনে',pending:'জানা নেই'};
+const PAYC={paid:'c-info',unpaid:'c-off',pending:'c-warn'};
+
+/* ================= হিসাবের মূল লজিক ================= */
+// কোনো তারিখে কোন বেতনের নিয়ম চালু ছিল — নিয়ম বদলালেও পুরনো মাসের হিসাব বদলায় না
+function rulesFor(ds){
+  const m=mkOf(ds);let best=null;
+  for(const r of [...S.settings].sort((a,b)=>a.from<b.from?-1:1)) if(r.from<=m) best=r;
+  return best||S.settings.slice().sort((a,b)=>a.from<b.from?-1:1)[0]||null;
+}
+const leaveOn=ds=>S.leaves.find(l=>l.from<=ds&&ds<=l.to)||null;
+const startDay=()=>S.startMonth?S.startMonth+'-01':'9999-12-31';
+
+// এক দিনের পাওনা ও পাওয়া
+function dayCalc(ds){
+  const s=rulesFor(ds), r=S.days[ds]||{}, lv=leaveOn(ds);
+  const isOtDay=!!s&&s.otDays.includes(parseD(ds).getDay());
+  let kind;                                  // leave | off | rest | work
+  if(lv) kind='leave';
+  else if(r.off) kind='off';                 // অফিস বন্ধ: হাতখরচ নেই, বেতন কাটা নেই
+  else if(isOtDay&&!r.ot) kind='rest';       // সাপ্তাহিক ছুটি, ওভারটাইম হয়নি
+  else kind='work';
+  const allowOk=kind==='work'&&s&&!(isOtDay&&s.allowOnOt===false);
+  const allowExp=allowOk?s.allowance:0;
+  const otExp=(kind==='work'&&s&&r.ot)?(s.otType==='hour'?Math.round((r.otHours||0)*s.otRate):s.otRate):0;
+  // ছুটির দিনে আগের কোনো এন্ট্রি থাকলেও গোনা হবে না
+  const allowGot=kind==='leave'?null:(r.allow??null);
+  const otGot=(kind==='work'&&r.ot)?(r.otGot??null):null;
+  return {ds,s,r,lv,isOtDay,kind,allowExp,allowGot,otExp,otGot};
+}
+
+// বিনা বেতনে ছুটির এক দিনের বেতন
+function perDay(mk,s){
+  const[y,m]=mk.split('-').map(Number), n=daysIn(y,m);
+  if(s.basis==='cal') return s.salary/n;
+  if(s.basis==='work'){let w=0;for(let d=1;d<=n;d++) if(!s.otDays.includes(new Date(y,m-1,d).getDay())) w++;return s.salary/(w||n)}
+  return s.salary/30;
+}
+
+function monthSum(mk){
+  const[y,m]=mk.split('-').map(Number), n=daysIn(y,m), t=today(), st=startDay();
+  const a={exp:0,got:0,dGot:0,dNo:0,dOpen:0}, o={exp:0,got:0,days:[]}, lv={paid:0,unpaid:0,pending:0};
+  let off=0;
+  for(let d=1;d<=n;d++){
+    const ds=mk+'-'+pad(d); if(ds<st) continue;
+    const L=leaveOn(ds); if(L) lv[L.pay]++;
+    if(ds>t) continue;
+    const c=dayCalc(ds);
+    if(c.kind==='off') off++;
+    a.exp+=c.allowExp;
+    if(c.allowGot!=null){a.got+=c.allowGot; if(c.allowGot>0)a.dGot++; else if(c.allowExp>0)a.dNo++}
+    else if(c.allowExp>0) a.dOpen++;
+    if(c.kind==='work'&&c.r.ot){o.exp+=c.otExp;o.got+=c.otGot||0;o.days.push(c)}
+  }
+  let sal=null;
+  if(S.startMonth&&mk>=S.startMonth&&S.settings.length){
+    const s=rulesFor(mk+'-01'), pd=perDay(mk,s);
+    const cut=Math.round(lv.unpaid*pd);
+    const got=S.salary.filter(x=>x.month===mk).reduce((t,x)=>t+x.amount,0);
+    sal={exp:Math.max(0,s.salary-cut),got,cut,pd,full:s.salary};
+  }
+  return {a,o,lv,off,sal};
+}
+
+// কোম্পানির কাছে মোট বাকি: বেতন শুধু শেষ হওয়া মাসগুলোর, হাতখরচ আর ওভারটাইম আজ পর্যন্ত
+function totals(){
+  let due=0;const cur=mkOf(today());
+  if(S.startMonth&&S.settings.length){
+    for(let mk=S.startMonth;mk<=cur;mk=addMonth(mk,1)){
+      const x=monthSum(mk);
+      due+=(x.a.exp-x.a.got)+(x.o.exp-x.o.got);
+      if(mk<cur&&x.sal) due+=x.sal.exp-x.sal.got;
+    }
+  }
+  const wallet=S.wallet.reduce((t,w)=>t+(w.dir==='in'?w.amount:-w.amount),0);
+  return {due,wallet};
+}
+
+/* ================= UI অবস্থা ================= */
+const ui={tab:'home',month:mkOf(today()),ledger:'wallet',unlocked:false,other:{}};
+const I={
+  home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 8h6M9 12h6"/>',
+  leave:'<path d="M12 21V11"/><path d="M4 11a8 8 0 0 1 16 0z"/><path d="M12 21h-3"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+  l:'<path d="M15 6l-6 6 6 6"/>', r:'<path d="M9 6l6 6-6 6"/>'
+};
+const svg=p=>`<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+const TABS=[['home','হোম','home'],['cal','ক্যালেন্ডার','cal'],['ledger','খাতা','book'],['leave','ছুটি','leave'],['settings','সেটিংস','gear']];
+
+function render(){
+  renderTop();
+  document.getElementById('tabs').innerHTML=TABS.map(([k,l,ic])=>`<button class="tab" data-act="tab" data-v="${k}" ${ui.tab===k?'aria-current="page"':''}>${svg(I[ic])}${l}</button>`).join('');
+  const P=document.getElementById('page');
+  P.innerHTML=({home:pageHome,cal:pageCal,ledger:pageLedger,leave:pageLeave,settings:pageSettings})[ui.tab]();
+  if(modalFn) document.getElementById('modalBody').innerHTML=modalFn();
+}
+
+function renderTop(){
+  const t=totals();
+  document.getElementById('top').innerHTML=`
+  <div class="band"><div class="wrap">
+    <div class="brand"><h1>আমার হিসাব</h1><span class="today">${fmtDate(today(),true)}</span></div>
+    <div class="totals">
+      <div class="tot"><span class="lbl">কোম্পানির কাছে মোট বাকি</span><span class="val">${tk(t.due)}</span></div>
+      <div class="tot small"><span class="lbl">জমা খাতায় আছে</span><span class="val">${tk(t.wallet)}</span></div>
+    </div>
+  </div></div>
+  ${S.demo?`<div class="demo"><div class="wrap"><span>নমুনা হিসাব দেখানো হচ্ছে</span><button class="btn sm" data-act="clearDemo">নমুনা মুছুন</button></div></div>`:''}`;
+}
+
+const monthSwitch=()=>`<div class="msw"><button class="icon-btn" data-act="mPrev" aria-label="আগের মাস">${svg(I.l)}</button><span class="m">${fmtMonth(ui.month)}</span><button class="icon-btn" data-act="mNext" aria-label="পরের মাস">${svg(I.r)}</button></div>`;
+const trio=(exp,got)=>{const d=exp-got;return `<div class="trio"><div><span>পাওনা</span><b>${tk(exp)}</b></div><div><span>পেয়েছি</span><b>${tk(got)}</b></div><div class="due ${d<=0?'zero':''}"><span>${d<0?'বেশি পেয়েছি':'বাকি'}</span><b>${tk(Math.abs(d))}</b></div></div>`};
+
+/* ---------- দিনের এন্ট্রি (হোম ও ক্যালেন্ডার দুই জায়গাতেই) ---------- */
+function dayEditor(ds){
+  const c=dayCalc(ds), s=c.s, r=c.r, W=ds===today()?'আজ':'এই দিন';
+  if(!s) return `<p class="muted">আগে সেটিংসে বেতনের নিয়ম সেট করুন।</p>`;
+  if(ds<startDay()) return `<p class="muted">এই দিন হিসাব শুরুর আগের।</p>`;
+  if(c.kind==='leave') return `<div class="row"><span class="chip ${PAYC[c.lv.pay]}">ছুটি · ${PAY[c.lv.pay]}</span></div>
+    <p class="small muted">ছুটির দিনে হাতখরচ আর ওভারটাইম হিসাব হয় না।</p>
+    <button class="btn" data-act="tab" data-v="leave">ছুটির তালিকা দেখুন</button>`;
+  if(c.kind==='off') return `<div class="row"><span class="chip c-off">অফিস বন্ধ ছিল</span></div>
+    <p class="small muted">এই দিনে হাতখরচ নেই, বেতনও কাটা হবে না।</p>
+    <button class="btn" data-act="unOff" data-d="${ds}">ভুল হয়েছে, অফিস খোলা ছিল</button>`;
+  let h='';
+  // হাতখরচ
+  if(c.kind==='work'&&c.allowExp>0){
+    const g=r.allow, other=ui.other['a'+ds]||(g!=null&&g!==0&&g!==s.allowance);
+    h+=`<div class="q">${W} হাতখরচ পেয়েছেন?</div>
+    <div class="seg">
+      <button data-act="aFull" data-d="${ds}" class="${g===s.allowance&&!other?'on-good':''}">পেয়েছি<small>${tk(s.allowance)}</small></button>
+      <button data-act="aNone" data-d="${ds}" class="${g===0?'on-bad':''}">পাইনি<small>${tk(0)}</small></button>
+      <button data-act="aOther" data-d="${ds}" class="${other?'on-info':''}">অন্য পরিমাণ<small>${other&&g!=null?tk(g):'লিখুন'}</small></button>
+    </div>
+    ${other?`<label class="f">কত টাকা পেয়েছেন<input type="number" inputmode="numeric" min="0" id="aAmt-${ds}" data-chg="aAmt" data-d="${ds}" value="${g??''}"></label>`:''}`;
+  }
+  // ওভারটাইম
+  const showOt=c.isOtDay||r.ot;   // সাধারণ দিনে প্রশ্নটা লুকানো, নিচের ছোট বাটন দিয়ে খোলে
+  if(showOt) h+=`<div class="q">${W}${c.isOtDay?'':' বাড়তি'} ওভারটাইম করেছেন?</div>
+  <div class="seg two">
+    <button data-act="otYes" data-d="${ds}" class="${r.ot?'on-good':''}">হ্যাঁ, করেছি</button>
+    <button data-act="otNo" data-d="${ds}" class="${r.ot===false?'on-bad':''}">না</button>
+  </div>`;
+  if(r.ot){
+    if(s.otType==='hour') h+=`<label class="f">কত ঘণ্টা (প্রতি ঘণ্টা ${tk(s.otRate)})<input type="number" inputmode="decimal" min="0" step="0.5" id="otH-${ds}" data-chg="otH" data-d="${ds}" value="${r.otHours??''}"></label>`;
+    const g=r.otGot, other=ui.other['o'+ds]||(g!=null&&g!==0&&g!==c.otExp);
+    h+=`<div class="q">ওভারটাইমের টাকা পেয়েছেন? <span class="muted small">(পাওনা ${tk(c.otExp)})</span></div>
+    <div class="seg">
+      <button data-act="oFull" data-d="${ds}" class="${g===c.otExp&&g!=null&&!other?'on-good':''}">পুরোটা<small>${tk(c.otExp)}</small></button>
+      <button data-act="oNone" data-d="${ds}" class="${g===0&&c.otExp!==0?'on-bad':''}">এখনো পাইনি</button>
+      <button data-act="oOther" data-d="${ds}" class="${other?'on-info':''}">অন্য পরিমাণ<small>${other&&g!=null?tk(g):'লিখুন'}</small></button>
+    </div>
+    ${other?`<label class="f">কত টাকা পেয়েছেন<input type="number" inputmode="numeric" min="0" id="oAmt-${ds}" data-chg="oAmt" data-d="${ds}" value="${g??''}"></label>`:''}`;
+  }
+  h+=`<div class="sub-actions">${showOt?'':`<button class="btn sm" data-act="otYes" data-d="${ds}">বাড়তি ওভারটাইম করেছি</button>`}<button class="btn sm" data-act="dayLeave" data-d="${ds}">এই দিন ছুটিতে ছিলাম</button><button class="btn sm" data-act="dayOff" data-d="${ds}">অফিস বন্ধ ছিল</button></div>`;
+  return h;
+}
+
+/* ---------- হোম ---------- */
+function pageHome(){
+  if(!S.settings.length) return `<div class="wrap stack"><section class="card">
+    <h2>শুরু করতে বেতনের নিয়ম সেট করুন</h2>
+    <p class="muted">সেটিংসে মাসিক বেতন, দৈনিক হাতখরচ আর ওভারটাইমের নিয়ম দিলে এখানে প্রতি মাসের হিসাব দেখা যাবে।</p>
+    <div class="btns"><button class="btn primary" data-act="tab" data-v="settings">সেটিংসে যান</button><button class="btn" data-act="loadDemo">নমুনা দিয়ে দেখুন</button></div>
+  </section></div>`;
+  const t=today(), x=monthSum(ui.month);
+  let h=`<div class="wrap stack">`;
+  if(t>=startDay()) h+=`<section class="card"><h2>আজ · ${fmtDate(t,true)}</h2>${dayEditor(t)}</section>`;
+  h+=monthSwitch();
+  // বেতন
+  if(x.sal){
+    const cur=ui.month===mkOf(t);
+    h+=`<section class="card"><div class="row between"><h2>বেতন</h2>${cur?'<span class="chip c-info">চলতি মাস</span>':''}</div>
+    ${trio(x.sal.exp,x.sal.got)}
+    <div class="facts">
+      ${x.lv.unpaid?`<span class="chip c-off">বিনা বেতনে ছুটি ${bn(x.lv.unpaid)} দিন · কাটা ${tk(x.sal.cut)}</span>`:''}
+      ${x.lv.paid?`<span class="chip c-info">বেতনসহ ছুটি ${bn(x.lv.paid)} দিন</span>`:''}
+      ${x.lv.pending?`<span class="chip c-warn">ছুটি ${bn(x.lv.pending)} দিন · বেতন কাটবে কিনা জানা নেই</span>`:''}
+    </div>
+    <button class="btn primary block" data-act="addSalary">বেতন পেয়েছি, যোগ করুন</button></section>`;
+  } else h+=`<section class="card"><p class="muted">এই মাস হিসাব শুরুর আগের।</p></section>`;
+  // হাতখরচ
+  h+=`<section class="card"><h2>দৈনিক হাতখরচ</h2>${trio(x.a.exp,x.a.got)}
+    <div class="facts"><span class="chip c-good">পেয়েছি ${bn(x.a.dGot)} দিন</span><span class="chip c-bad">পাইনি ${bn(x.a.dNo)} দিন</span>${x.a.dOpen?`<span class="chip c-warn">লেখা হয়নি ${bn(x.a.dOpen)} দিন</span>`:''}${x.off?`<span class="chip c-off">অফিস বন্ধ ${bn(x.off)} দিন</span>`:''}</div></section>`;
+  // ওভারটাইম
+  h+=`<section class="card"><h2>ওভারটাইম</h2>${trio(x.o.exp,x.o.got)}
+    <div class="list">${x.o.days.length?x.o.days.map(c=>{const st=c.otGot==null||c.otGot===0?['c-bad','পাইনি']:c.otGot<c.otExp?['c-warn','আংশিক '+tk(c.otGot)]:['c-good','পেয়েছি'];
+      return `<div class="item" data-act="openDay" data-d="${c.ds}" style="cursor:pointer"><div class="main"><span class="t">${fmtDate(c.ds,true)}</span><span class="s">${c.s.otType==='hour'?bn(c.r.otHours||0)+' ঘণ্টা · ':''}পাওনা ${tk(c.otExp)}</span></div><span class="chip ${st[0]}">${st[1]}</span></div>`}).join(''):'<div class="empty">এই মাসে কোনো ওভারটাইম নেই</div>'}</div></section>`;
+  return h+`</div>`;
+}
+
+/* ---------- ক্যালেন্ডার ---------- */
+function pageCal(){
+  const[y,m]=ui.month.split('-').map(Number), n=daysIn(y,m), t=today(), st=startDay();
+  const first=(new Date(y,m-1,1).getDay()+1)%7;   // সপ্তাহ শুরু শনিবার
+  let cells=['শনি','রবি','সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র'].map(w=>`<div class="wd">${w}</div>`).join('');
+  for(let i=0;i<first;i++) cells+='<div></div>';
+  for(let d=1;d<=n;d++){
+    const ds=ui.month+'-'+pad(d); let k='',mk='';
+    if(ds<st) k='k-before';
+    else{
+      const c=S.settings.length?dayCalc(ds):null;
+      if(c){
+        if(c.kind==='leave'){k=c.lv.pay==='paid'?'k-info':c.lv.pay==='unpaid'?'k-off':'k-warn';mk='ছুটি'}
+        else if(c.kind==='off'){k='k-off';mk='বন্ধ'}
+        else if(ds>t) k='k-future';
+        else if(c.kind==='rest'){k='k-rest'}
+        else if(c.allowExp>0){ if(c.allowGot==null){k='';mk='?'} else if(c.allowGot>0){k='k-good';mk='✓'} else {k='k-bad';mk='✗'} }
+        else if(c.allowGot>0){k='k-good';mk='✓'}
+      }
+    }
+    const ot=S.settings.length&&ds>=st&&dayCalc(ds).kind==='work'&&(S.days[ds]||{}).ot;
+    cells+=`<button class="${k} ${ds===t?'today':''}" data-act="openDay" data-d="${ds}" aria-label="${fmtDate(ds,true)}">${bn(d)}<span class="mk">${mk}</span>${ot?'<span class="ot" title="ওভারটাইম"></span>':''}</button>`;
+  }
+  return `<div class="wrap stack">${monthSwitch()}<section class="card"><div class="cal">${cells}</div>
+  <div class="legend"><span class="chip c-good">হাতখরচ পেয়েছি</span><span class="chip c-bad">পাইনি</span><span class="chip c-info">বেতনসহ ছুটি</span><span class="chip c-off">বিনা বেতনে / বন্ধ</span><span class="chip c-warn">ছুটি, জানা নেই</span><span class="chip" style="color:var(--accent);background:var(--accent-soft)">ওভারটাইম</span></div>
+  <p class="small muted">যেকোনো দিনে চাপ দিয়ে সেদিনের হিসাব লিখুন বা বদলান। "?" মানে এখনো লেখা হয়নি।</p></section></div>`;
+}
+
+/* ---------- খাতা ---------- */
+function pageLedger(){
+  const w=ui.ledger==='wallet';
+  let h=`<div class="wrap stack"><div class="seg two" role="tablist">
+    <button data-act="ledgerTab" data-v="wallet" class="${w?'on-info':''}">জমা খাতা</button>
+    <button data-act="ledgerTab" data-v="salary" class="${!w?'on-info':''}">বেতন প্রাপ্তি</button></div>`;
+  if(w){
+    const t=totals();
+    const list=[...S.wallet].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
+    const tin=S.wallet.filter(x=>x.dir==='in').reduce((s,x)=>s+x.amount,0), tout=S.wallet.filter(x=>x.dir==='out').reduce((s,x)=>s+x.amount,0);
+    h+=`<section class="card"><div class="trio"><div><span>মোট রেখেছি</span><b>${tk(tin)}</b></div><div><span>মোট তুলেছি</span><b>${tk(tout)}</b></div><div><span>এখন আছে</span><b>${tk(t.wallet)}</b></div></div>
+    <div class="btns"><button class="btn primary" data-act="addWallet" data-v="in">+ টাকা রাখলাম</button><button class="btn" data-act="addWallet" data-v="out">− টাকা তুললাম</button></div></section>
+    <section class="card"><h2>লেনদেনের তালিকা</h2><div class="list">${list.length?list.map(x=>`<div class="item"><div class="main"><span class="t">${x.dir==='in'?'রেখেছি':'তুলেছি'} · ${fmtDate(x.date)}</span>${x.note?`<span class="s">${esc(x.note)}</span>`:''}</div><span class="amt ${x.dir}">${x.dir==='in'?'+':'−'}${tk(x.amount)}</span><button class="x" data-act="delWallet" data-v="${x.id}" aria-label="মুছুন">×</button></div>`).join(''):'<div class="empty">এখনো কোনো লেনদেন নেই। উপরের বাটন চেপে প্রথম এন্ট্রি দিন।</div>'}</div></section>`;
+  } else {
+    const list=[...S.salary].sort((a,b)=>a.date<b.date?1:-1);
+    h+=`<button class="btn primary block" data-act="addSalary">বেতন পেয়েছি, যোগ করুন</button>
+    <section class="card"><h2>কবে কত বেতন পেয়েছি</h2><div class="list">${list.length?list.map(x=>`<div class="item"><div class="main"><span class="t">${fmtMonth(x.month)} মাসের বেতন</span><span class="s">পেয়েছি ${fmtDate(x.date)}${x.note?' · '+esc(x.note):''}</span></div><span class="amt in">${tk(x.amount)}</span><button class="x" data-act="delSalary" data-v="${x.id}" aria-label="মুছুন">×</button></div>`).join(''):'<div class="empty">এখনো কোনো বেতন যোগ করা হয়নি</div>'}</div></section>`;
+  }
+  return h+`</div>`;
+}
+
+/* ---------- ছুটি ---------- */
+function pageLeave(){
+  const list=[...S.leaves].sort((a,b)=>a.from<b.from?1:-1);
+  const days=l=>Math.round((parseD(l.to)-parseD(l.from))/864e5)+1;
+  return `<div class="wrap stack"><button class="btn primary block" data-act="addLeave">ছুটি যোগ করুন</button>
+  <section class="card"><h2>ছুটির তালিকা</h2><p class="small muted">বেতন কাটবে কিনা পরে জানলে নিচ থেকে বদলে দিন।</p>
+  <div class="list">${list.length?list.map(l=>`<div class="item" style="flex-wrap:wrap"><div class="main"><span class="t">${l.from===l.to?fmtDate(l.from,true):fmtDate(l.from)+' – '+fmtDate(l.to)}</span><span class="s">${bn(days(l))} দিন${l.reason?' · '+esc(l.reason):''}</span></div><span class="chip ${PAYC[l.pay]}">${PAY[l.pay]}</span><button class="x" data-act="delLeave" data-v="${l.id}" aria-label="মুছুন">×</button>
+    <div class="seg" style="width:100%">${['pending','paid','unpaid'].map(p=>`<button data-act="leavePay" data-v="${l.id}" data-p="${p}" class="${l.pay===p?'on-info':''}" style="min-height:44px">${PAY[p]}</button>`).join('')}</div></div>`).join(''):'<div class="empty">কোনো ছুটি নেই</div>'}</div></section></div>`;
+}
+
+/* ---------- সেটিংস (PIN লক) ---------- */
+function pageSettings(){
+  if(!ui.unlocked) return `<div class="wrap stack"><section class="card"><h2>সেটিংস খুলতে পিন দিন</h2>
+    <form data-form="pin" class="stack" style="padding:0"><input type="password" inputmode="numeric" id="pinIn" autocomplete="off" placeholder="পিন" aria-label="পিন">
+    <button class="btn primary">খুলুন</button></form>${S.pin==='1234'?'<p class="small muted">প্রথমবার পিন ১২৩৪। খোলার পর পিন বদলে নিন।</p>':''}</section></div>`;
+  const last=[...S.settings].sort((a,b)=>a.from<b.from?1:-1)[0]||{salary:'',allowance:100,otDays:[5],allowOnOt:true,otType:'fixed',otRate:'',basis:'30'};
+  const cur=mkOf(today());
+  return `<div class="wrap stack">
+  <section class="card"><h2>হিসাব শুরু</h2>
+    <label class="f">কোন মাস থেকে হিসাব হবে<input type="month" id="startM" value="${S.startMonth||cur}"></label>
+    <button class="btn primary" data-act="saveStart">সেভ করুন</button></section>
+
+  <form class="card" data-form="rules" style="display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px">
+    <h2>বেতনের নিয়ম</h2>
+    <p class="small muted">বেতন বাড়লে নতুন মাস দিয়ে আবার সেভ করুন। আগের মাসগুলো পুরনো নিয়মেই থাকবে।</p>
+    <label class="f">কোন মাস থেকে এই নিয়ম চালু<input type="month" id="rFrom" value="${S.settings.length?cur:(S.startMonth||cur)}" required></label>
+    <div class="grid2"><label class="f">মাসিক বেতন (৳)<input type="number" inputmode="numeric" min="0" id="rSal" value="${last.salary}" required></label>
+    <label class="f">দৈনিক হাতখরচ (৳)<input type="number" inputmode="numeric" min="0" id="rAllow" value="${last.allowance}" required></label></div>
+    <div class="f" style="display:grid;gap:6px"><span class="small muted" style="font-weight:500">ওভারটাইমের দিন (সাধারণত সাপ্তাহিক ছুটির দিন)</span>
+      <div class="daypick">${[6,0,1,2,3,4,5].map(d=>`<label><input type="checkbox" name="otd" value="${d}" ${last.otDays.includes(d)?'checked':''}><span>${WD[d]}</span></label>`).join('')}</div></div>
+    <label class="check"><input type="checkbox" id="rAllowOt" ${last.allowOnOt!==false?'checked':''}> ওভারটাইমের দিনেও হাতখরচ পাবে</label>
+    <div class="radio"><span class="small muted">ওভারটাইমের টাকা কীভাবে হিসাব হবে</span>
+      <label><input type="radio" name="otType" value="fixed" ${last.otType!=='hour'?'checked':''}> প্রতিদিন নির্দিষ্ট টাকা</label>
+      <label><input type="radio" name="otType" value="hour" ${last.otType==='hour'?'checked':''}> প্রতি ঘণ্টা হিসাবে</label></div>
+    <label class="f">ওভারটাইম রেট (দিনপ্রতি বা ঘণ্টাপ্রতি ৳)<input type="number" inputmode="numeric" min="0" id="rRate" value="${last.otRate}" required></label>
+    <label class="f">বিনা বেতনে ছুটিতে এক দিনের বেতন কীভাবে কাটবে
+      <select id="rBasis"><option value="30" ${last.basis==='30'?'selected':''}>বেতন ÷ ৩০</option><option value="cal" ${last.basis==='cal'?'selected':''}>বেতন ÷ ঐ মাসের দিন</option><option value="work" ${last.basis==='work'?'selected':''}>বেতন ÷ কর্মদিবস (ওভারটাইমের দিন বাদে)</option></select></label>
+    <button class="btn primary">নিয়ম সেভ করুন</button>
+  </form>
+
+  ${S.settings.length?`<section class="card"><h2>নিয়মের ইতিহাস</h2><div class="list">${[...S.settings].sort((a,b)=>a.from<b.from?1:-1).map(r=>`<div class="item"><div class="main"><span class="t">${fmtMonth(r.from)} থেকে</span><span class="s">বেতন ${tk(r.salary)} · হাতখরচ ${tk(r.allowance)} · ওভারটাইম ${tk(r.otRate)}${r.otType==='hour'?'/ঘণ্টা':'/দিন'} · ${r.otDays.map(d=>WD[d]).join(', ')||'কোনো দিন না'}</span></div>${S.settings.length>1?`<button class="x" data-act="delRule" data-v="${r.from}" aria-label="মুছুন">×</button>`:''}</div>`).join('')}</div></section>`:''}
+
+  <form class="card" data-form="newpin" style="display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px">
+    <h2>পিন বদলান</h2><input type="password" inputmode="numeric" id="np1" placeholder="নতুন পিন (কমপক্ষে ৪ সংখ্যা)" aria-label="নতুন পিন" autocomplete="off">
+    <input type="password" inputmode="numeric" id="np2" placeholder="আবার নতুন পিন" aria-label="আবার নতুন পিন" autocomplete="off"><button class="btn">পিন বদলান</button></form>
+
+  <section class="card"><h2>ব্যাকআপ</h2><p class="small muted">ফোন বদলালে বা নষ্ট হলে হিসাব হারাবেন না। মাসে একবার ব্যাকআপ নিয়ে WhatsApp বা Drive-এ রেখে দিন।</p>
+    <div class="btns"><button class="btn" data-act="exportB">ব্যাকআপ নিন</button><button class="btn" data-act="importB">ব্যাকআপ ফেরত আনুন</button></div></section>
+
+  <section class="card"><h2>অন্যান্য</h2><div class="btns"><button class="btn" data-act="lock">সেটিংস লক করুন</button><button class="btn danger" data-act="wipe">সব হিসাব মুছুন</button></div></section>
+  </div>`;
+}
+
+/* ================= মডাল ও টোস্ট ================= */
+let modalFn=null;
+function openModal(title,fn){modalFn=fn;document.getElementById('modal').innerHTML=`<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}"><header><h2>${esc(title)}</h2><button class="x" data-act="close" aria-label="বন্ধ করুন">×</button></header><div id="modalBody" style="display:grid;gap:12px"></div></div></div>`;document.getElementById('modalBody').innerHTML=fn()}
+function closeModal(){modalFn=null;document.getElementById('modal').innerHTML=''}
+function askConfirm(msg,ok,fn){openModal('নিশ্চিত?',()=>`<p>${esc(msg)}</p><div class="btns"><button class="btn" data-act="close">না</button><button class="btn danger" data-act="confirmOk">${esc(ok)}</button></div>`);pendingOk=fn}
+let pendingOk=null, toastT;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2400)}
+
+// দিনের রেকর্ড পরিষ্কার রাখা
+function day(ds){return S.days[ds]||(S.days[ds]={})}
+function tidy(ds){const r=S.days[ds];if(r&&!Object.keys(r).some(k=>r[k]!=null&&r[k]!==undefined))delete S.days[ds]}
+function commit(msg){save();render();if(msg)toast(msg)}
+
+// ছুটি যোগ করলে ঐ দিনগুলোর পুরনো হাতখরচ/ওভারটাইম এন্ট্রি মুছে ফেলা হয়
+function addLeaveRec(from,to,pay,reason){
+  for(let d=parseD(from);ymd(d)<=to;d.setDate(d.getDate()+1)) delete S.days[ymd(d)];
+  S.leaves.push({id:uid(),from,to,pay,reason});
+}
+
+/* ================= ইভেন্ট ================= */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const a=el.dataset.act, ds=el.dataset.d, v=el.dataset.v;
+  if(a==='scrim'&&e.target!==el)return;
+  const s=ds?rulesFor(ds):null;
+  switch(a){
+    case 'tab': ui.tab=v;closeModal();render();window.scrollTo(0,0);break;
+    case 'mPrev': ui.month=addMonth(ui.month,-1);render();break;
+    case 'mNext': ui.month=addMonth(ui.month,1);render();break;
+    case 'scrim': case 'close': closeModal();break;
+    case 'confirmOk': {const f=pendingOk;pendingOk=null;closeModal();f&&f();break}
+    case 'openDay': if(!S.settings.length){toast('আগে সেটিংসে বেতনের নিয়ম দিন');break} openModal(fmtDate(ds,true),()=>dayEditor(ds));break;
+    // হাতখরচ: একই বাটন আবার চাপলে মুছে যায়
+    case 'aFull': {const r=day(ds);delete ui.other['a'+ds];r.allow=r.allow===s.allowance?null:s.allowance;tidy(ds);commit();break}
+    case 'aNone': {const r=day(ds);delete ui.other['a'+ds];r.allow=r.allow===0?null:0;tidy(ds);commit();break}
+    case 'aOther': ui.other['a'+ds]=true;render();setTimeout(()=>{const i=document.querySelectorAll('[id="aAmt-'+ds+'"]');i[i.length-1]?.focus()},30);break;
+    case 'otYes': {const r=day(ds);r.ot=true;commit();break}
+    case 'otNo': {const r=day(ds);r.ot=r.ot===false?null:false;delete r.otGot;delete r.otHours;delete ui.other['o'+ds];tidy(ds);commit();break}
+    case 'oFull': {const r=day(ds),c=dayCalc(ds);delete ui.other['o'+ds];r.otGot=r.otGot===c.otExp?null:c.otExp;commit();break}
+    case 'oNone': {const r=day(ds);delete ui.other['o'+ds];r.otGot=r.otGot===0?null:0;commit();break}
+    case 'oOther': ui.other['o'+ds]=true;render();break;
+    case 'dayLeave': addLeaveRec(ds,ds,'pending','');closeModal();commit('ছুটি যোগ হলো। বেতন কাটবে কিনা পরে ছুটি পাতায় ঠিক করুন');break;
+    case 'dayOff': {const r=day(ds);r.off=true;delete r.allow;delete r.ot;delete r.otGot;delete r.otHours;commit('অফিস বন্ধ হিসেবে রাখা হলো');break}
+    case 'unOff': {const r=day(ds);delete r.off;tidy(ds);commit();break}
+    case 'ledgerTab': ui.ledger=v;render();break;
+    case 'addWallet': openModal(v==='in'?'টাকা রাখলাম':'টাকা তুললাম',()=>`<form data-form="wallet" data-v="${v}" style="display:grid;gap:12px">
+      <label class="f">কত টাকা<input type="number" inputmode="numeric" min="1" id="wAmt" required></label>
+      <label class="f">তারিখ<input type="date" id="wDate" value="${today()}" required></label>
+      <label class="f">নোট (ইচ্ছা হলে)<input type="text" id="wNote" placeholder="${v==='in'?'যেমন: বেতন থেকে রাখলাম':'যেমন: বাড়িতে পাঠালাম'}"></label>
+      <button class="btn primary">সেভ করুন</button></form>`);setTimeout(()=>document.getElementById('wAmt')?.focus(),50);break;
+    case 'delWallet': askConfirm('এই লেনদেন মুছে ফেলবেন?','মুছুন',()=>{S.wallet=S.wallet.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
+    case 'addSalary': {
+      if(!S.startMonth){toast('আগে সেটিংসে হিসাব শুরুর মাস দিন');break}
+      const cur=mkOf(today());const months=[];for(let m=S.startMonth;m<=cur;m=addMonth(m,1))months.unshift(m);
+      const def=ui.tab==='home'&&months.includes(ui.month)?ui.month:(months[1]||months[0]);
+      const due=m=>{const x=monthSum(m);return x.sal?Math.max(0,x.sal.exp-x.sal.got):0};
+      openModal('বেতন পেয়েছি',()=>`<form data-form="salary" style="display:grid;gap:12px">
+        <label class="f">কোন মাসের বেতন<select id="sMonth">${months.map(m=>`<option value="${m}" ${m===def?'selected':''}>${fmtMonth(m)} (বাকি ${tk(due(m))})</option>`).join('')}</select></label>
+        <label class="f">কত টাকা পেয়েছেন<input type="number" inputmode="numeric" min="1" id="sAmt" value="${due(def)||''}" required></label>
+        <label class="f">কবে পেয়েছেন<input type="date" id="sDate" value="${today()}" required></label>
+        <label class="f">নোট (ইচ্ছা হলে)<input type="text" id="sNote"></label>
+        <button class="btn primary">সেভ করুন</button></form>`);break}
+    case 'delSalary': askConfirm('এই বেতনের এন্ট্রি মুছে ফেলবেন?','মুছুন',()=>{S.salary=S.salary.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
+    case 'addLeave': openModal('ছুটি যোগ করুন',()=>`<form data-form="leave" style="display:grid;gap:12px">
+      <div class="grid2"><label class="f">কবে থেকে<input type="date" id="lFrom" value="${today()}" required></label><label class="f">কবে পর্যন্ত<input type="date" id="lTo" value="${today()}" required></label></div>
+      <div class="radio"><span class="small muted">বেতন কি কাটবে?</span>${['pending','paid','unpaid'].map((p,i)=>`<label><input type="radio" name="lPay" value="${p}" ${i===0?'checked':''}> ${p==='pending'?'এখনো জানি না':p==='paid'?'না, বেতনসহ ছুটি':'হ্যাঁ, বিনা বেতনে ছুটি'}</label>`).join('')}</div>
+      <label class="f">কারণ (ইচ্ছা হলে)<input type="text" id="lReason" placeholder="যেমন: অসুস্থ, বাড়ি গেছি"></label>
+      <button class="btn primary">সেভ করুন</button></form>`);break;
+    case 'leavePay': {const l=S.leaves.find(x=>x.id===v);if(l){l.pay=el.dataset.p;commit('বদলানো হয়েছে')}break}
+    case 'delLeave': askConfirm('এই ছুটি মুছে ফেলবেন?','মুছুন',()=>{S.leaves=S.leaves.filter(x=>x.id!==v);commit('মুছে ফেলা হয়েছে')});break;
+    case 'saveStart': {const m=document.getElementById('startM').value;if(!m){toast('মাস বেছে নিন');break}S.startMonth=m;commit('হিসাব শুরুর মাস সেভ হয়েছে');break}
+    case 'delRule': askConfirm(fmtMonth(v)+' থেকে চালু নিয়মটি মুছবেন?','মুছুন',()=>{S.settings=S.settings.filter(r=>r.from!==v);commit('মুছে ফেলা হয়েছে')});break;
+    case 'lock': ui.unlocked=false;render();break;
+    case 'exportB': {const data=JSON.stringify(S);openModal('ব্যাকআপ',()=>`<p class="small muted">নিচের লেখাটা পুরোটা কপি করে কোথাও রেখে দিন। ফেরত আনতে "ব্যাকআপ ফেরত আনুন"-এ পেস্ট করবেন।</p>
+      <textarea id="bOut" readonly>${esc(data)}</textarea><div class="btns"><button class="btn primary" data-act="copyB">কপি করুন</button>${window.AndroidBridge?'<button class="btn" data-act="shareB">শেয়ার করুন</button>':''}</div>`);break}
+    case 'copyB': {const t=document.getElementById('bOut');const fb=()=>{t.focus();t.select();toast('লেখাটা সিলেক্ট করা হয়েছে, কপি চাপুন')};
+      try{navigator.clipboard.writeText(t.value).then(()=>toast('কপি হয়েছে'),fb)}catch(e){fb()}break}
+    case 'shareB': try{AndroidBridge.share(JSON.stringify(S))}catch(e){toast('শেয়ার করা যায়নি')}break;
+    case 'importB': openModal('ব্যাকআপ ফেরত আনুন',()=>`<p class="small muted">আগে নেওয়া ব্যাকআপের লেখা এখানে পেস্ট করুন। এখনকার সব হিসাব বদলে যাবে।</p><textarea id="bIn" aria-label="ব্যাকআপ"></textarea><button class="btn primary" data-act="doImport">ফেরত আনুন</button>`);break;
+    case 'doImport': {let d;try{d=JSON.parse(document.getElementById('bIn').value);if(!d||!Array.isArray(d.settings)||typeof d.days!=='object')throw 0}catch(e){toast('লেখাটা ঠিক ব্যাকআপ না, আবার কপি করে আনুন');break}
+      S=Object.assign(blank(),d);closeModal();commit('ব্যাকআপ থেকে হিসাব ফেরত এসেছে');break}
+    case 'wipe': askConfirm('সব হিসাব চিরতরে মুছে যাবে। আগে ব্যাকআপ নিয়েছেন?','সব মুছুন',()=>{const pin=S.pin;S=blank();S.pin=pin;commit('সব মুছে ফেলা হয়েছে')});break;
+    case 'loadDemo': S=demo();commit('নমুনা হিসাব দেখানো হচ্ছে');break;
+    case 'clearDemo': S=blank();ui.unlocked=false;ui.tab='home';commit('নমুনা মুছে ফেলা হয়েছে');break;
+  }
+});
+
+// টাকার ঘরে লেখা শেষ হলে সেভ (change ইভেন্ট, যাতে লেখার সময় কার্সর না হারায়)
+document.addEventListener('change',e=>{
+  const el=e.target.closest('[data-chg]');if(!el)return;const ds=el.dataset.d, v=el.value===''?null:Math.max(0,num(el.value));
+  const r=day(ds);
+  if(el.dataset.chg==='aAmt') r.allow=v;
+  if(el.dataset.chg==='oAmt') r.otGot=v;
+  if(el.dataset.chg==='otH') r.otHours=v;
+  tidy(ds);commit('সেভ হয়েছে');
+});
+
+document.addEventListener('submit',e=>{
+  const f=e.target.closest('[data-form]');if(!f)return;e.preventDefault();
+  const g=id=>document.getElementById(id)?.value;
+  switch(f.dataset.form){
+    case 'pin': if(g('pinIn')===S.pin){ui.unlocked=true;render()} else toast('পিন মেলেনি'); break;
+    case 'newpin': {const a=g('np1'),b=g('np2');if(!/^\d{4,8}$/.test(a||'')){toast('পিন ৪ থেকে ৮ সংখ্যার দিন');break}if(a!==b){toast('দুইবারের পিন মেলেনি');break}S.pin=a;commit('পিন বদলানো হয়েছে');break}
+    case 'rules': {
+      const otDays=[...f.querySelectorAll('input[name=otd]:checked')].map(i=>+i.value);
+      const r={from:g('rFrom'),salary:num(g('rSal')),allowance:num(g('rAllow')),otDays,allowOnOt:document.getElementById('rAllowOt').checked,
+        otType:f.querySelector('input[name=otType]:checked').value,otRate:num(g('rRate')),basis:g('rBasis')};
+      if(!r.from){toast('মাস বেছে নিন');break}
+      S.settings=S.settings.filter(x=>x.from!==r.from);S.settings.push(r);
+      if(!S.startMonth) S.startMonth=r.from;
+      commit('বেতনের নিয়ম সেভ হয়েছে');break}
+    case 'wallet': {const amt=num(g('wAmt'));if(amt<=0){toast('টাকার পরিমাণ লিখুন');break}
+      S.wallet.push({id:uid(),dir:f.dataset.v,amount:amt,date:g('wDate')||today(),note:(g('wNote')||'').trim()});closeModal();commit('সেভ হয়েছে');break}
+    case 'salary': {const amt=num(g('sAmt'));if(amt<=0){toast('টাকার পরিমাণ লিখুন');break}
+      S.salary.push({id:uid(),month:g('sMonth'),amount:amt,date:g('sDate')||today(),note:(g('sNote')||'').trim()});closeModal();commit('বেতন যোগ হয়েছে');break}
+    case 'leave': {const from=g('lFrom'),to=g('lTo');if(!from||!to||to<from){toast('তারিখ ঠিক করুন: শেষের তারিখ শুরুর পরে হবে');break}
+      if((parseD(to)-parseD(from))/864e5>366){toast('এক বছরের বেশি ছুটি একবারে দেওয়া যাবে না');break}
+      if(S.leaves.some(l=>!(to<l.from||from>l.to))){toast('এই তারিখে আগেই ছুটি আছে');break}
+      addLeaveRec(from,to,f.querySelector('input[name=lPay]:checked').value,(g('lReason')||'').trim());closeModal();commit('ছুটি যোগ হয়েছে');break}
+  }
+});
+
+// Android ব্যাক বাটন: আগে মডাল বন্ধ, তারপর হোমে ফেরা, তারপর অ্যাপ বন্ধ
+window.appBack=function(){if(modalFn||document.getElementById('modal').innerHTML){closeModal();return true}if(ui.tab!=='home'){ui.tab='home';render();return true}return false};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modalFn)closeModal()});
+
+/* ================= নমুনা ডেটা ================= */
+function demo(){
+  const D=blank();const cur=mkOf(today());const st=addMonth(cur,-2);
+  D.demo=true;D.startMonth=st;
+  D.settings=[{from:st,salary:12000,allowance:100,otDays:[5],allowOnOt:true,otType:'fixed',otRate:500,basis:'30'}];
+  const t=today();let i=0;
+  for(let d=parseD(st+'-01');ymd(d)<=t;d.setDate(d.getDate()+1),i++){
+    const ds=ymd(d);if(ds===t)continue;
+    if(d.getDay()===5){ if(i%3!==0) D.days[ds]={ot:true,allow:100,otGot:i%4===1?null:500}; continue }
+    D.days[ds]={allow:(i*7)%9===0?0:100};
+  }
+  const lv1=addMonth(cur,-1)+'-08', lv2=cur+'-03';
+  D.leaves=[{id:uid(),from:lv1,to:lv1,pay:'unpaid',reason:'অসুস্থ'},{id:uid(),from:lv2,to:lv2,pay:'pending',reason:'বাড়ি গেছি'}];
+  delete D.days[lv1];delete D.days[lv2];
+  D.salary=[{id:uid(),month:st,amount:12000,date:addMonth(st,1)+'-07',note:''},{id:uid(),month:addMonth(cur,-1),amount:8000,date:cur+'-07',note:'বাকিটা পরে দেবে বলেছে'}];
+  D.wallet=[{id:uid(),dir:'in',amount:10000,date:addMonth(st,1)+'-07',note:'বেতন থেকে রাখলাম'},{id:uid(),dir:'out',amount:3000,date:addMonth(st,1)+'-20',note:'বাড়িতে পাঠালাম'},{id:uid(),dir:'in',amount:5000,date:cur+'-07',note:''}];
+  return D;
+}
+
+render();
+</script>
+
+</body></html>

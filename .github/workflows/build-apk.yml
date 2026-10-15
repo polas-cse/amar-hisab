@@ -1,0 +1,29 @@
+name: Build APK
+
+on:
+  push:
+  workflow_dispatch:   # Actions ট্যাব থেকে হাতে চালানো যাবে
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # wrapper jar রিপোতে রাখার দরকার নেই — নির্দিষ্ট Gradle ভার্সন সরাসরি বসানো হচ্ছে
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Build release APK
+        run: gradle assembleRelease --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: amar-hisab-apk
+          path: app/build/outputs/apk/release/*.apk
