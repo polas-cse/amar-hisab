@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.HapticFeedbackConstants;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -16,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 /**
  * পুরো অ্যাপটা assets/index.html-এ। এই Activity শুধু WebView চালায় আর
@@ -25,6 +28,8 @@ public class MainActivity extends Activity {
 
     private static final String DATA_FILE = "hisab.json";
     private WebView web;
+    private TextToSpeech tts;
+    private volatile boolean ttsReady = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,31 @@ public class MainActivity extends Activity {
             }
         });
 
+        // বাংলা ভয়েস: আগে bn-BD, না থাকলে bn-IN
+        tts = new TextToSpeech(this, status -> {
+            if (status != TextToSpeech.SUCCESS) return;
+            int r = tts.setLanguage(new Locale("bn", "BD"));
+            if (r < TextToSpeech.LANG_AVAILABLE) r = tts.setLanguage(new Locale("bn", "IN"));
+            if (r >= TextToSpeech.LANG_AVAILABLE) {
+                tts.setSpeechRate(0.9f);   // একটু ধীরে, যাতে সংখ্যা পরিষ্কার শোনা যায়
+                ttsReady = true;
+            }
+        });
+
         setContentView(web);
         web.loadUrl("file:///android_asset/index.html");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (tts != null) tts.stop();   // অ্যাপ থেকে বের হলে কথা বন্ধ
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) tts.shutdown();
+        super.onDestroy();
     }
 
     /** ব্যাক বাটন: আগে JS-কে সুযোগ দাও (মডাল বন্ধ / হোমে ফেরা), না হলে অ্যাপ বন্ধ */
@@ -90,6 +118,27 @@ public class MainActivity extends Activity {
             } catch (IOException e) {
                 return null;
             }
+        }
+
+        /** লং-প্রেসে কার্ডের হিসাব জোরে পড়ে শোনানো। বাংলা ভয়েস না থাকলে false */
+        @JavascriptInterface
+        public boolean speak(String text) {
+            runOnUiThread(() -> web.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS));
+            if (!ttsReady) return false;
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "card");
+            return true;
+        }
+
+        /** ফোনে বাংলা ভয়েস না থাকলে TTS ডেটা ইনস্টলের পাতা খোলা */
+        @JavascriptInterface
+        public void installVoice() {
+            runOnUiThread(() -> {
+                try {
+                    startActivity(new Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA));
+                } catch (Exception e) {
+                    startActivity(new Intent("com.android.settings.TTS_SETTINGS"));
+                }
+            });
         }
 
         /** ব্যাকআপ লেখা WhatsApp / Drive / ইমেইলে পাঠানোর জন্য */

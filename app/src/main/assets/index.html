@@ -164,6 +164,14 @@ nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:re
 .scrim{position:fixed;inset:0;background:rgba(8,12,24,.5);z-index:10;display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--bg);width:100%;max-width:560px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding-block:16px calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
 .sheet header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.say-hint{font-size:13px;color:var(--muted);text-align:center}
+/* লং-প্রেসে শোনানো: চেপে ধরলে নিচে ২ সেকেন্ডের একটা দাগ ভরে ওঠে */
+[data-say]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:relative;overflow:hidden}
+[data-say]::after{content:"";position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--accent);border-radius:0 3px 3px 0}
+.band [data-say]::after{background:var(--band-fg);bottom:-6px}
+.band [data-say]{overflow:visible}
+[data-say].holding::after{width:100%;transition:width 2s linear}
+[data-say].speaking{outline:3px solid var(--accent);outline-offset:2px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;z-index:20;max-width:90%;text-align:center}
 @media (max-width:360px){.trio b{font-size:16px}.tot .val{font-size:25px}}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
@@ -207,6 +215,9 @@ const fmtDate=(s,withWd)=>{const d=parseD(s);return (withWd?WD[d.getDay()]+'ব�
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const num=v=>{const n=Number(String(v).replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d)));return isFinite(n)?n:0};
+const sayTk=n=>bn(Math.round(Math.abs(n||0)))+' টাকা';
+const sayTrio=(exp,got)=>{const d=exp-got;return `পাওনা ${sayTk(exp)}। পেয়েছেন ${sayTk(got)}। `+(d>0?`বাকি ${sayTk(d)}।`:d<0?`পাওনার চেয়ে ${sayTk(d)} বেশি পেয়েছেন।`:'কোনো বাকি নেই।')};
+const sayAttr=t=>` data-say="${esc(t)}"`;
 const PAY={paid:'বেতনসহ',unpaid:'বিনা বেতনে',pending:'জানা নেই'};
 const PAYC={paid:'c-info',unpaid:'c-off',pending:'c-warn'};
 
@@ -311,7 +322,7 @@ function renderTop(){
   document.getElementById('top').innerHTML=`
   <div class="band"><div class="wrap">
     <div class="brand"><h1>আমার হিসাব</h1><span class="today">${fmtDate(today(),true)}</span></div>
-    <div class="totals">
+    <div class="totals"${sayAttr(`কোম্পানির কাছে মোট বাকি ${sayTk(t.due)}। জমা খাতায় আছে ${sayTk(t.wallet)}।`)}>
       <div class="tot"><span class="lbl">কোম্পানির কাছে মোট বাকি</span><span class="val">${tk(t.due)}</span></div>
       <div class="tot small"><span class="lbl">জমা খাতায় আছে</span><span class="val">${tk(t.wallet)}</span></div>
     </div>
@@ -377,11 +388,12 @@ function pageHome(){
   const t=today(), x=monthSum(ui.month);
   let h=`<div class="wrap stack">`;
   if(t>=startDay()) h+=`<section class="card"><h2>আজ · ${fmtDate(t,true)}</h2>${dayEditor(t)}</section>`;
-  h+=monthSwitch();
+  h+=monthSwitch()+`<p class="say-hint">যেকোনো কার্ডে ২ সেকেন্ড চেপে ধরলে হিসাবটা শুনতে পাবেন</p>`;
   // বেতন
   if(x.sal){
     const cur=ui.month===mkOf(t);
-    h+=`<section class="card"><div class="row between"><h2>বেতন</h2>${cur?'<span class="chip c-info">চলতি মাস</span>':''}</div>
+    const mName=MONTHS[+ui.month.slice(5)-1];
+    h+=`<section class="card"${sayAttr(`${mName} মাসের বেতন। ${sayTrio(x.sal.exp,x.sal.got)}`+(x.lv.unpaid?` বিনা বেতনে ছুটি ${bn(x.lv.unpaid)} দিন, তাই ${sayTk(x.sal.cut)} কাটা হয়েছে।`:'')+(x.lv.pending?` ${bn(x.lv.pending)} দিনের ছুটিতে বেতন কাটবে কিনা এখনো জানা নেই।`:''))}><div class="row between"><h2>বেতন</h2>${cur?'<span class="chip c-info">চলতি মাস</span>':''}</div>
     ${trio(x.sal.exp,x.sal.got)}
     <div class="facts">
       ${x.lv.unpaid?`<span class="chip c-off">বিনা বেতনে ছুটি ${bn(x.lv.unpaid)} দিন · কাটা ${tk(x.sal.cut)}</span>`:''}
@@ -391,10 +403,12 @@ function pageHome(){
     <button class="btn primary block" data-act="addSalary">বেতন পেয়েছি, যোগ করুন</button></section>`;
   } else h+=`<section class="card"><p class="muted">এই মাস হিসাব শুরুর আগের।</p></section>`;
   // হাতখরচ
-  h+=`<section class="card"><h2>দৈনিক হাতখরচ</h2>${trio(x.a.exp,x.a.got)}
+  const mN=MONTHS[+ui.month.slice(5)-1];
+  h+=`<section class="card"${sayAttr(`${mN} মাসের হাতখরচ। ${sayTrio(x.a.exp,x.a.got)} ${bn(x.a.dGot)} দিন পেয়েছেন, ${bn(x.a.dNo)} দিন পাননি।`+(x.a.dOpen?` ${bn(x.a.dOpen)} দিনের হিসাব লেখা হয়নি।`:''))}><h2>দৈনিক হাতখরচ</h2>${trio(x.a.exp,x.a.got)}
     <div class="facts"><span class="chip c-good">পেয়েছি ${bn(x.a.dGot)} দিন</span><span class="chip c-bad">পাইনি ${bn(x.a.dNo)} দিন</span>${x.a.dOpen?`<span class="chip c-warn">লেখা হয়নি ${bn(x.a.dOpen)} দিন</span>`:''}${x.off?`<span class="chip c-off">অফিস বন্ধ ${bn(x.off)} দিন</span>`:''}</div></section>`;
   // ওভারটাইম
-  h+=`<section class="card"><h2>ওভারটাইম</h2>${trio(x.o.exp,x.o.got)}
+  const otUnpaid=x.o.days.filter(c=>!c.otGot).length;
+  h+=`<section class="card"${sayAttr(x.o.days.length?`${mN} মাসে ওভারটাইম ${bn(x.o.days.length)} দিন। ${sayTrio(x.o.exp,x.o.got)}`+(otUnpaid?` ${bn(otUnpaid)} দিনের টাকা এখনো পাননি।`:''):`${mN} মাসে কোনো ওভারটাইম নেই।`)}><h2>ওভারটাইম</h2>${trio(x.o.exp,x.o.got)}
     <div class="list">${x.o.days.length?x.o.days.map(c=>{const st=c.otGot==null||c.otGot===0?['c-bad','পাইনি']:c.otGot<c.otExp?['c-warn','আংশিক '+tk(c.otGot)]:['c-good','পেয়েছি'];
       return `<div class="item" data-act="openDay" data-d="${c.ds}" style="cursor:pointer"><div class="main"><span class="t">${fmtDate(c.ds,true)}</span><span class="s">${c.s.otType==='hour'?bn(c.r.otHours||0)+' ঘণ্টা · ':''}পাওনা ${tk(c.otExp)}</span></div><span class="chip ${st[0]}">${st[1]}</span></div>`}).join(''):'<div class="empty">এই মাসে কোনো ওভারটাইম নেই</div>'}</div></section>`;
   return h+`</div>`;
@@ -438,7 +452,7 @@ function pageLedger(){
     const t=totals();
     const list=[...S.wallet].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
     const tin=S.wallet.filter(x=>x.dir==='in').reduce((s,x)=>s+x.amount,0), tout=S.wallet.filter(x=>x.dir==='out').reduce((s,x)=>s+x.amount,0);
-    h+=`<section class="card"><div class="trio"><div><span>মোট রেখেছি</span><b>${tk(tin)}</b></div><div><span>মোট তুলেছি</span><b>${tk(tout)}</b></div><div><span>এখন আছে</span><b>${tk(t.wallet)}</b></div></div>
+    h+=`<section class="card"${sayAttr(`জমা খাতা। মোট রেখেছেন ${sayTk(tin)}। মোট তুলেছেন ${sayTk(tout)}। এখন আছে ${sayTk(t.wallet)}।`)}><div class="trio"><div><span>মোট রেখেছি</span><b>${tk(tin)}</b></div><div><span>মোট তুলেছি</span><b>${tk(tout)}</b></div><div><span>এখন আছে</span><b>${tk(t.wallet)}</b></div></div>
     <div class="btns"><button class="btn primary" data-act="addWallet" data-v="in">+ টাকা রাখলাম</button><button class="btn" data-act="addWallet" data-v="out">− টাকা তুললাম</button></div></section>
     <section class="card"><h2>লেনদেনের তালিকা</h2><div class="list">${list.length?list.map(x=>`<div class="item"><div class="main"><span class="t">${x.dir==='in'?'রেখেছি':'তুলেছি'} · ${fmtDate(x.date)}</span>${x.note?`<span class="s">${esc(x.note)}</span>`:''}</div><span class="amt ${x.dir}">${x.dir==='in'?'+':'−'}${tk(x.amount)}</span><button class="x" data-act="delWallet" data-v="${x.id}" aria-label="মুছুন">×</button></div>`).join(''):'<div class="empty">এখনো কোনো লেনদেন নেই। উপরের বাটন চেপে প্রথম এন্ট্রি দিন।</div>'}</div></section>`;
   } else {
@@ -584,6 +598,7 @@ document.addEventListener('click',e=>{
     case 'doImport': {let d;try{d=JSON.parse(document.getElementById('bIn').value);if(!d||!Array.isArray(d.settings)||typeof d.days!=='object')throw 0}catch(e){toast('লেখাটা ঠিক ব্যাকআপ না, আবার কপি করে আনুন');break}
       S=Object.assign(blank(),d);closeModal();commit('ব্যাকআপ থেকে হিসাব ফেরত এসেছে');break}
     case 'wipe': askConfirm('সব হিসাব চিরতরে মুছে যাবে। আগে ব্যাকআপ নিয়েছেন?','সব মুছুন',()=>{const pin=S.pin;S=blank();S.pin=pin;commit('সব মুছে ফেলা হয়েছে')});break;
+    case 'installVoice': closeModal();try{AndroidBridge.installVoice()}catch(e){}break;
     case 'loadDemo': S=demo();commit('নমুনা হিসাব দেখানো হচ্ছে');break;
     case 'clearDemo': S=blank();ui.unlocked=false;ui.tab='home';commit('নমুনা মুছে ফেলা হয়েছে');break;
   }
@@ -623,6 +638,41 @@ document.addEventListener('submit',e=>{
       addLeaveRec(from,to,f.querySelector('input[name=lPay]:checked').value,(g('lReason')||'').trim());closeModal();commit('ছুটি যোগ হয়েছে');break}
   }
 });
+
+/* ================= লং-প্রেসে শুনানো ================= */
+let hold=null, justSpoke=false;
+function cancelHold(){if(hold){clearTimeout(hold.t);hold.el.classList.remove('holding');hold=null}}
+function speak(text,el){
+  document.querySelectorAll('.speaking').forEach(x=>x.classList.remove('speaking'));
+  if(el){el.classList.add('speaking');setTimeout(()=>el.classList.remove('speaking'),1500)}
+  // APK: Android-এর TextToSpeech (WebView-এ ব্রাউজারের speech API নেই)
+  if(window.AndroidBridge&&AndroidBridge.speak){
+    if(!AndroidBridge.speak(text)) openModal('বাংলা ভয়েস নেই',()=>`<p>শোনার জন্য ফোনে বাংলা ভয়েস ইনস্টল করতে হবে। নিচের বাটন চাপলে Google-এর ভয়েস সেটিংস খুলবে, সেখানে "বাংলা" ডাউনলোড করুন। তারপর অ্যাপ বন্ধ করে আবার খুলুন।</p><button class="btn primary" data-act="installVoice">ভয়েস ইনস্টল করুন</button>`);
+    return;
+  }
+  // ব্রাউজার: Web Speech API, বাংলা ভয়েস থাকলে
+  try{
+    const v=speechSynthesis.getVoices().find(v=>/^bn/i.test(v.lang));
+    if(!v){toast('এই ব্রাউজারে বাংলা ভয়েস নেই, অ্যাপে শোনা যাবে');return}
+    const u=new SpeechSynthesisUtterance(text);u.voice=v;u.lang=v.lang;u.rate=.9;
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){toast('এখানে শোনানো যাচ্ছে না, অ্যাপে শোনা যাবে')}
+}
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+document.addEventListener('pointerdown',e=>{
+  const el=e.target.closest('[data-say]');
+  // বাটন বা চাপ দেওয়ার মতো জিনিসের উপর লং-প্রেস না
+  if(!el||e.target.closest('button,input,select,textarea,a,[data-act]'))return;
+  cancelHold();el.classList.add('holding');
+  hold={el,x:e.clientX,y:e.clientY,t:setTimeout(()=>{el.classList.remove('holding');hold=null;justSpoke=true;speak(el.dataset.say,el)},2000)};
+});
+document.addEventListener('pointermove',e=>{if(hold&&Math.hypot(e.clientX-hold.x,e.clientY-hold.y)>12)cancelHold()});
+['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,cancelHold));
+window.addEventListener('scroll',cancelHold,{passive:true});
+document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-say]'))e.preventDefault()});
+// লং-প্রেসের পরে আঙুল তুললে যেন কোনো ক্লিক না হয়
+document.addEventListener('click',e=>{if(justSpoke){justSpoke=false;e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('pointerdown',()=>{justSpoke=false},true);
 
 // Android ব্যাক বাটন: আগে মডাল বন্ধ, তারপর হোমে ফেরা, তারপর অ্যাপ বন্ধ
 window.appBack=function(){if(modalFn||document.getElementById('modal').innerHTML){closeModal();return true}if(ui.tab!=='home'){ui.tab='home';render();return true}return false};
