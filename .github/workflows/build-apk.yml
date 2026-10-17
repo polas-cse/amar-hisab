@@ -31,16 +31,23 @@ jobs:
           name: amar-hisab-apk
           path: app/build/outputs/apk/release/*.apk
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beton-khata-apk
+          path: betonkhata/build/outputs/apk/release/*.apk
+
       # main-এ push হলে "latest" release বদলে নতুন APK — লগইন ছাড়াই স্থায়ী লিংকে নামানো যায়:
       # https://github.com/<owner>/<repo>/releases/latest/download/amar-hisab.apk
+      # https://github.com/<owner>/<repo>/releases/latest/download/beton-khata.apk
       - name: Publish to Releases
         if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           cp app/build/outputs/apk/release/app-release.apk amar-hisab.apk
+          cp betonkhata/build/outputs/apk/release/betonkhata-release.apk beton-khata.apk
           gh release delete latest --yes --cleanup-tag || true
-          gh release create latest amar-hisab.apk \
-            --title "আমার হিসাব (সর্বশেষ)" \
+          gh release create latest amar-hisab.apk beton-khata.apk \
+            --title "সর্বশেষ APK" \
             --notes "সর্বশেষ APK। কমিট: ${GITHUB_SHA::7}" \
             --target "$GITHUB_SHA" --latest

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- সবুজ টাকার নোট + শিট -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#1D3270" android:pathData="M24,4h60a20,20 0,0 1,20 20v60a20,20 0,0 1,-20 20h-60a20,20 0,0 1,-20 -20v-60a20,20 0,0 1,20 -20z"/>
+    <path android:fillColor="#1F8A5B" android:pathData="M20,34h56a4,4 0,0 1,4 4v30a4,4 0,0 1,-4 4h-56a4,4 0,0 1,-4 -4v-30a4,4 0,0 1,4 -4z"/>
+    <path android:fillColor="#36B47A" android:pathData="M30,42h56a4,4 0,0 1,4 4v30a4,4 0,0 1,-4 4h-56a4,4 0,0 1,-4 -4v-30a4,4 0,0 1,4 -4z"/>
+    <path android:fillColor="#E8FFF3" android:pathData="M58,50a11,11 0,1 1,0 22a11,11 0,1 1,0 -22z"/>
+    <path android:fillColor="#1F8A5B" android:pathData="M53,56h10v3h-10zM53,62h10v3h-10z"/>
+</vector>
